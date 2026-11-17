@@ -1,0 +1,2515 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2026 太陽實驗室之聖誕大亂鬥｜聖誕交換禮物四選一心理戰</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 引入復古襯線體 Fraunces、草寫體 Great Vibes 與繁體中文 Noto Sans TC / Noto Serif TC -->
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Great+Vibes&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'sans-serif'],
+            serif: ['"Fraunces"', '"Noto Serif TC"', 'serif'],
+            script: ['"Great Vibes"', 'cursive'],
+          },
+          colors: {
+            peacock: {
+              950: '#072425',
+              900: '#0b3536',
+              800: '#0f4243',
+              700: '#165658',
+              600: '#1f6e70',
+            },
+            crimson: {
+              800: '#7f1d1d',
+              700: '#9e2626',
+              600: '#b53232',
+              500: '#d63e3e',
+              400: '#f25c5c',
+            },
+            vintageGold: {
+              200: '#f6e3ce',
+              300: '#f0ce7d',
+              400: '#e2b04a',
+              500: '#d49b35',
+              600: '#b37d22',
+            },
+            cream: {
+              100: '#fdf6ee',
+              200: '#f6e3ce',
+              300: '#ebd0b3',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* 極簡高質感深孔雀綠純色基底（已移除複雜背景插畫，讓視線聚焦且不眼花撩亂） */
+    html {
+      scroll-behavior: smooth;
+      font-size: 130%; /* 全站字體放大 30% */
+    }
+    body {
+      background-color: #071f20;
+      color: #fdf6ee;
+      min-height: 100vh;
+    }
+
+    /* 細微雪花飄落動畫（低調點綴） */
+    .snowflake {
+      position: fixed;
+      top: -12px;
+      color: rgba(246, 227, 206, 0.16);
+      user-select: none;
+      pointer-events: none;
+      z-index: 1;
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      to {
+        transform: translateY(105vh) rotate(360deg);
+      }
+    }
+
+    /* 統一俐落深孔雀綠卡片（去除花俏漸層，維持乾淨視覺層次） */
+    .festive-card {
+      background: #0c2b2c;
+      border: 1px solid rgba(226, 176, 74, 0.28);
+      box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.45);
+    }
+
+    /* 統一按鈕規範：放大按鈕尺寸與字體，提升點擊手感與清晰度 */
+    .btn-primary {
+      background-color: #e2b04a;
+      color: #071f20;
+      font-weight: 900;
+      transition: all 0.18s ease;
+    }
+    .btn-primary:hover {
+      background-color: #f0ce7d;
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background-color: #123c3e;
+      color: #fdf6ee;
+      border: 1.5px solid rgba(226, 176, 74, 0.48);
+      font-weight: 800;
+      transition: all 0.18s ease;
+    }
+    .btn-secondary:hover {
+      background-color: #184d50;
+      border-color: #e2b04a;
+    }
+    .btn-ghost {
+      background-color: rgba(255, 255, 255, 0.03);
+      color: #ebd0b3;
+      border: 1px solid rgba(235, 208, 179, 0.3);
+      font-weight: 700;
+      transition: all 0.18s ease;
+    }
+    .btn-ghost:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+    }
+
+    /* 明顯跳出提示震動與彈跳特效 */
+    @keyframes alertShakePop {
+      0% { transform: scale(0.85) translateY(8px); opacity: 0; }
+      50% { transform: scale(1.03) translateX(-4px); opacity: 1; }
+      75% { transform: scale(1.01) translateX(4px); }
+      100% { transform: scale(1) translateX(0); opacity: 1; }
+    }
+    .animate-alert-pop {
+      animation: alertShakePop 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* 大揭曉結果彈跳特效 */
+    @keyframes popCelebration {
+      0% { transform: scale(0.6) rotate(-4deg); opacity: 0; }
+      70% { transform: scale(1.05) rotate(1deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .animate-verdict {
+      animation: popCelebration 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    @keyframes slotPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+    .animate-slot {
+      animation: slotPulse 0.18s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-vintageGold-400 selection:text-peacock-950 relative overflow-x-hidden text-base">
+
+  <!-- 背景雪花容器 -->
+  <div id="snow-container" aria-hidden="true"></div>
+  <!-- 彩帶粒子容器（成功送禮特效用） -->
+  <div id="confetti-container" class="fixed inset-0 pointer-events-none z-[85] overflow-hidden" aria-hidden="true"></div>
+
+  <!-- 頂部置頂活動資訊橫幅（移除匿名題庫與煙霧彈字眼，按鈕全面放大） -->
+  <header class="relative z-20 border-b border-vintageGold-400/25 bg-peacock-950/95 backdrop-blur-md sticky top-0">
+    <div class="max-w-7xl mx-auto px-4 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div class="space-y-1">
+        <div class="flex flex-wrap items-center gap-2">
+          <span id="event-status-pill" class="px-3 py-1 rounded-full text-xs sm:text-sm font-black bg-vintageGold-400/15 text-vintageGold-300 border border-vintageGold-400/40">
+            🎁 階段一：秘密許願與推薦中
+          </span>
+          <span id="event-budget-badge" class="px-3 py-1 rounded-full text-xs sm:text-sm font-bold bg-peacock-800 text-cream-200 border border-vintageGold-400/25">
+            💰 預算：1200 元
+          </span>
+          <span id="host-mode-indicator" class="hidden px-3 py-1 rounded-full bg-vintageGold-400 text-peacock-950 text-xs sm:text-sm font-black">
+            👑 主持人已解鎖
+          </span>
+        </div>
+        <h1 id="event-title-display" class="text-xl sm:text-2xl font-black text-cream-100 tracking-wide">
+          2026 太陽實驗室之聖誕大亂鬥
+        </h1>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+        <button onclick="app.copyShareLink()" class="btn-primary px-5 py-2.5 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg">
+          <span>📤 複製活動連結</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 全域明顯跳出提示 Toast -->
+  <div id="toast-container" class="fixed top-24 left-1/2 -translate-x-1/2 z-[90] flex flex-col items-center gap-2.5 w-11/12 max-w-lg pointer-events-none"></div>
+
+  <!-- 滿版「誰是小天使」公布名字震撼覆蓋層（停頓 1.8 秒） -->
+  <div id="fullscreen-angel-reveal-overlay" class="fixed inset-0 z-[75] hidden items-center justify-center p-4 bg-peacock-950/95 backdrop-blur-lg">
+    <div id="fullscreen-angel-reveal-card" class="w-full max-w-3xl rounded-3xl p-8 sm:p-14 text-center space-y-6 animate-verdict border-4 border-vintageGold-400 bg-peacock-900 shadow-2xl">
+      <!-- 由 JS 動態填入滿版小天使名字 -->
+    </div>
+  </div>
+
+  <!-- 滿版揭曉結果全螢幕震撼特效覆蓋層（成功送禮 / 可惜不是你） -->
+  <div id="fullscreen-verdict-overlay" class="fixed inset-0 z-[70] hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+    <div id="fullscreen-verdict-card" class="w-full max-w-2xl rounded-3xl p-7 sm:p-11 text-center space-y-5 animate-verdict border-4 shadow-2xl relative">
+      <!-- 由 JS 動態填入滿版結果 -->
+    </div>
+  </div>
+
+  <!-- 主內容區塊 -->
+  <main class="relative z-10 max-w-7xl mx-auto px-3 sm:px-6 py-5">
+    
+    <!-- 載入中畫面 -->
+    <div id="view-loading" class="flex flex-col items-center justify-center min-h-[65vh] text-center">
+      <div class="festive-card rounded-2xl px-8 py-6">
+        <div class="text-5xl animate-bounce mb-3">🎅</div>
+        <p class="text-vintageGold-300 font-bold text-lg">正在載入 2026 太陽實驗室之聖誕大亂鬥...</p>
+      </div>
+    </div>
+
+    <div id="view-setup" class="hidden"></div>
+
+    <!-- 2. 活動主畫面視圖 -->
+    <div id="view-event" class="hidden">
+      <div id="interactive-arena" class="space-y-5">
+
+        <!-- 階段一：收集願望大廳 (status === 'collecting') -->
+        <div id="stage-collecting" class="hidden space-y-4">
+          
+          <!-- 進度條與盲抽啟動區 -->
+          <div class="festive-card rounded-2xl p-5 sm:p-6 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h3 class="text-lg sm:text-xl font-black text-cream-100">
+                  🎁 階段一：填寫 1 個自己願望 ＋ 幫 3 位夥伴推薦禮物（每人被填寫 4 次）
+                </h3>
+                <p class="text-sm text-cream-200/80 mt-1">
+                  點擊自己的名字設定 4 位數 PIN 碼，填寫自己想要的禮物並為 3 位指定夥伴推薦好禮（支援<strong>暫存草稿</strong>，隨時可關閉再回來繼續填寫！）。
+                </p>
+              </div>
+              <div class="text-right shrink-0">
+                <span class="text-xs text-cream-200/75">完成進度</span>
+                <div id="collecting-progress-text" class="text-2xl font-black text-vintageGold-400 font-mono">0 / 8 人</div>
+              </div>
+            </div>
+
+            <!-- 進度條 -->
+            <div class="w-full h-3.5 bg-peacock-950 rounded-full overflow-hidden border border-vintageGold-400/30 p-0.5">
+              <div id="collecting-progress-bar" class="h-full bg-vintageGold-400 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+
+            <!-- 8 人全部完成後解鎖的提醒橫幅 -->
+            <div id="ready-to-draw-banner" class="hidden pt-1">
+              <div class="p-4 rounded-xl bg-peacock-950 border border-vintageGold-400/50 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-3 text-center sm:text-left">
+                  <span class="text-3xl animate-bounce">🎉</span>
+                  <div>
+                    <h4 class="font-black text-vintageGold-300 text-base">8 位夥伴全員填寫完成！</h4>
+                    <p class="text-xs sm:text-sm text-cream-200/80">請設定者點選右下角「⚙️ 設定者」檢視每人四選項並確認發佈。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 8 位同事狀態卡網格 -->
+          <div>
+            <h4 class="text-xs sm:text-sm font-bold text-vintageGold-300 uppercase tracking-wider mb-2.5 px-1">
+              點擊自己的名字設定密碼並填寫 4 份禮物（點擊左上角頭像可自由替換專屬 Icon）
+            </h4>
+            <div id="collecting-members-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+              <!-- 由 JS 動態渲染成員卡片 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 階段二：小天使四選一心理戰 (status === 'drawn') -->
+        <div id="stage-drawn" class="hidden space-y-4">
+          <div class="festive-card rounded-2xl p-5 sm:p-6 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h3 class="text-lg sm:text-xl font-black text-cream-100">
+                  🕵️ 階段二：小天使四選一心理戰（從左到右四選一）
+                </h3>
+                <p class="text-xs sm:text-sm text-cream-200/80 mt-0.5">
+                  點擊自己的名字並輸入 <strong class="text-vintageGold-300">4 位數 PIN 碼</strong>，查看你的收禮小主人並從橫向四張卡片中猜出他本人許願的禮物！
+                </p>
+              </div>
+              <div id="unlocked-user-controls" class="hidden">
+                <button onclick="app.lockCurrentTask()" class="btn-secondary px-4 py-2.5 rounded-xl text-xs sm:text-sm">
+                  🔒 隱藏並鎖定畫面
+                </button>
+              </div>
+            </div>
+
+            <!-- 成員選擇按鈕列 -->
+            <div id="drawn-members-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <!-- 由 JS 動態渲染 -->
+            </div>
+          </div>
+
+          <!-- 個人秘密任務卡 -->
+          <div id="personal-mission-card" class="hidden festive-card rounded-2xl border border-vintageGold-400/60 overflow-hidden">
+            <div class="bg-peacock-950 px-5 py-4 border-b border-vintageGold-400/30 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div class="flex items-center gap-3 text-center sm:text-left">
+                <span id="mission-giver-avatar" class="text-3xl">🎅</span>
+                <div>
+                  <div class="text-xs font-bold text-vintageGold-300">小天使（送禮人）：<span id="mission-giver-name">夥伴</span></div>
+                  <div class="text-base sm:text-lg font-black text-cream-100 flex items-center gap-2 flex-wrap justify-center sm:justify-start">
+                    <span>你要送禮的小主人（收禮人）是：</span>
+                    <span class="px-3.5 py-0.5 rounded-lg bg-peacock-800 border border-vintageGold-400 text-vintageGold-300 inline-flex items-center gap-1.5">
+                      <span id="mission-target-avatar">👑</span>
+                      <span id="mission-target-name">小主人</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span id="guess-saved-indicator" class="text-xs sm:text-sm text-vintageGold-300 font-bold hidden">✓ 已記錄猜測</span>
+                <button onclick="app.lockCurrentTask()" class="btn-ghost px-3.5 py-2 rounded-xl text-xs sm:text-sm">
+                  🔒 鎖定隱藏
+                </button>
+              </div>
+            </div>
+
+            <!-- 四選一橫向單排卡片列表（從左到右四個） -->
+            <div class="p-4 sm:p-5 overflow-x-auto">
+              <div id="quiz-options-grid" class="grid grid-cols-4 gap-3 min-w-[760px]">
+                <!-- 由 JS 動態渲染選項 A, B, C, D -->
+              </div>
+            </div>
+          </div>
+
+          <!-- 進入階段三：派對現場一對一揭曉舞台入口（僅設定者／主持人解鎖後才看得到） -->
+          <div id="stage-enter-banner" class="host-only-control hidden festive-card rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="text-center sm:text-left">
+              <h4 class="text-base sm:text-lg font-black text-cream-100">
+                🎊 派對現場準備好「抽取小主人（收禮人）並揭曉誰是小天使（送禮人）」了嗎？
+              </h4>
+              <p class="text-xs sm:text-sm text-cream-200/80">
+                進入現場舞台後，每次隨機抽出一位收禮「小主人」，按下「誰是小天使」將滿版震撼公布送禮人，並進行滿版結果揭曉與最後頒獎！
+              </p>
+            </div>
+            <button onclick="app.requestHostAction('enter_stage')" class="btn-primary w-full sm:w-auto whitespace-nowrap px-6 py-3.5 rounded-xl text-sm sm:text-base shadow-lg">
+              👑 開啟派對現場揭曉舞台
+            </button>
+          </div>
+
+        </div>
+
+        <!-- 階段三：派對現場「抽小主人 → 滿版公布誰是小天使 → 滿版結果 → 頒獎典禮」 (status === 'stage') -->
+        <div id="stage-live-reveal" class="hidden space-y-4">
+          
+          <!-- 主持人控制台狀態列 -->
+          <div class="festive-card rounded-2xl px-5 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">🎙️</span>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="text-base sm:text-lg font-black text-vintageGold-300">派對現場揭曉舞台（抽小主人 ➔ 誰是小天使）</h3>
+                  <span id="stage-progress-badge" class="px-2.5 py-0.5 rounded-full bg-peacock-800 border border-vintageGold-400/35 text-cream-100 text-xs font-bold">
+                    已揭曉 0 / 8 組
+                  </span>
+                </div>
+                <p id="stage-role-subtitle" class="text-xs sm:text-sm text-cream-200/80">
+                  目前為「現場觀眾同步觀看模式」，畫面會即時跟著主持人操作更新！
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2.5">
+              <button type="button" onclick="app.requestHostAction('open_awards')" class="btn-secondary px-4 py-2.5 rounded-xl text-xs sm:text-sm">
+                🏆 查看猜對頒獎台
+              </button>
+              <div id="host-unlock-btn-wrap">
+                <button onclick="app.openHostAuthModal('unlock_only')" class="btn-primary px-4 py-2.5 rounded-xl text-xs sm:text-sm">
+                  👑 主持人解鎖控制
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 主舞台中央互動卡片 -->
+          <div class="festive-card rounded-2xl p-5 sm:p-7 border border-vintageGold-400/50 space-y-4 relative overflow-hidden">
+            
+            <!-- 狀態 A：等待主持人隨機抽取第一位「小主人（收到禮物的人）」 -->
+            <div id="stage-step-idle" class="text-center py-6 space-y-5">
+              <div class="text-6xl">👑🎁</div>
+              <div class="space-y-2">
+                <h4 id="stage-idle-title" class="text-2xl sm:text-3xl font-black text-cream-100">
+                  準備抽取第一位「小主人（收禮幸運兒）」！
+                </h4>
+                <p id="stage-idle-desc" class="text-sm sm:text-base text-cream-200/85 max-w-md mx-auto">
+                  抽出第一位小主人後，每一輪揭曉的小天使將自動接棒成為下一輪的小主人，串成完美一圈！（剩餘 <span id="stage-remaining-count" class="text-vintageGold-300 font-black">8</span> 位）
+                </p>
+              </div>
+
+              <!-- 僅主持人可見的操作按鈕 -->
+              <div class="host-only-control hidden pt-1">
+                <button onclick="app.drawNextMaster()" id="btn-draw-next-presenter" class="btn-primary px-8 py-4 rounded-2xl text-base sm:text-lg shadow-xl">
+                  🎲 隨機抽取第一位小主人（收禮人）
+                </button>
+              </div>
+            </div>
+
+            <!-- 狀態 B：輪盤滾動抽「小主人」動畫中 -->
+            <div id="stage-step-rolling" class="hidden text-center py-8 space-y-4">
+              <div class="text-5xl animate-spin inline-block">🎄</div>
+              <p class="text-sm sm:text-base font-bold text-vintageGold-300 tracking-widest uppercase">正在隨機抽選下一位收禮的小主人...</p>
+              <div class="inline-block px-10 py-4 rounded-2xl bg-peacock-950 border-2 border-vintageGold-400 animate-slot">
+                <span id="stage-rolling-name" class="text-3xl sm:text-5xl font-black text-cream-100">？？？</span>
+              </div>
+            </div>
+
+            <!-- 狀態 C：已抽出「小主人（收禮者）」，等待現場點擊「誰是小天使」 -->
+            <div id="stage-step-master-picked" class="hidden text-center py-5 space-y-5">
+              <div class="inline-block px-5 py-1.5 rounded-full bg-peacock-950 border border-vintageGold-400/50 text-vintageGold-300 text-xs sm:text-sm font-black tracking-wider">
+                ✨ 本輪收禮「小主人」 ✨
+              </div>
+              <div class="flex items-center justify-center gap-3.5">
+                <span id="stage-current-master-avatar" class="text-5xl sm:text-6xl">👑</span>
+                <div id="stage-current-master-big" class="text-4xl sm:text-6xl font-black text-cream-100 tracking-wide">
+                  Coco
+                </div>
+              </div>
+
+              <div class="p-5 rounded-2xl bg-peacock-950 border border-vintageGold-400/35 max-w-xl mx-auto">
+                <div class="text-2xl sm:text-3xl font-black text-vintageGold-300 tracking-wider flex items-center justify-center gap-3 flex-wrap">
+                  <span>小天使</span>
+                  <span class="px-4 py-1 rounded-xl bg-peacock-800 border border-vintageGold-400/50 text-cream-100">？？？</span>
+                  <span>送給</span>
+                  <span class="stage-master-inline text-vintageGold-300">Coco</span>
+                </div>
+              </div>
+
+              <!-- 僅主持人可見的操作按鈕：按下後滿版公布名字並停 1.8 秒 -->
+              <div class="host-only-control hidden pt-2">
+                <button onclick="app.revealCurrentAngel()" class="btn-primary px-9 py-4 rounded-2xl text-base sm:text-xl shadow-xl">
+                  👼 誰是小天使？（滿版揭曉）
+                </button>
+              </div>
+            </div>
+
+            <!-- 狀態 D：已公布「小天使 A 送給 小主人 B」，橫排四張卡片等待主持人點選實際送出的禮物 -->
+            <div id="stage-step-verdict" class="hidden space-y-4">
+              
+              <!-- 頂部關係橫幅 -->
+              <div class="text-center p-4 rounded-2xl bg-peacock-950 border border-vintageGold-400/45 space-y-1.5">
+                <div class="text-xs font-bold text-vintageGold-300 tracking-widest uppercase">本輪小天使 ➔ 小主人配對揭曉</div>
+                <div class="text-2xl sm:text-4xl font-black text-cream-100 flex flex-wrap items-center justify-center gap-3">
+                  <span class="text-xs sm:text-sm px-2.5 py-1 rounded bg-peacock-800 text-vintageGold-300 border border-vintageGold-400/35">小天使</span>
+                  <span id="stage-pair-giver" class="text-cream-100">Jackson</span>
+                  <span class="px-3.5 py-1 rounded-xl bg-vintageGold-400 text-peacock-950 text-base sm:text-xl font-black">送給</span>
+                  <span class="text-xs sm:text-sm px-2.5 py-1 rounded bg-peacock-800 text-vintageGold-300 border border-vintageGold-400/35">小主人</span>
+                  <span id="stage-pair-target" class="text-vintageGold-300">Coco</span>
+                </div>
+                <p id="stage-verdict-instruction" class="text-xs sm:text-sm text-cream-200/85 pt-0.5">
+                  以下為給小天使 <span class="font-bold text-white stage-giver-inline">Jackson</span> 挑選的四個禮物選項，請點選他<strong class="text-vintageGold-300">現場實際買來的禮物</strong>：
+                </p>
+              </div>
+
+              <!-- 揭曉完畢後可重新開啟滿版特效或直接交棒給下一輪小主人 -->
+              <div id="stage-verdict-summary-bar" class="hidden flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-peacock-950 border border-vintageGold-400/60">
+                <div id="stage-verdict-mini-text" class="text-base sm:text-lg font-black text-vintageGold-300">
+                  🎉 成功送禮！
+                </div>
+                <div class="flex items-center gap-2.5">
+                  <button type="button" onclick="app.reopenFullscreenVerdict()" class="btn-secondary px-4 py-2.5 rounded-xl text-sm">
+                    ✨ 再次播放滿版特效
+                  </button>
+                  <button type="button" id="btn-next-relay-round" onclick="app.finishCurrentRound()" class="btn-primary host-only-control px-6 py-2.5 rounded-xl text-sm sm:text-base">
+                    ➡️ 收錄戰績並交棒給下一位小主人
+                  </button>
+                </div>
+              </div>
+
+              <!-- 橫向一排四張禮物圖文卡片（強制 grid-cols-4 從左到右排列） -->
+              <div class="overflow-x-auto">
+                <div id="stage-quiz-cards-grid" class="grid grid-cols-4 gap-3 min-w-[760px]">
+                  <!-- 由 JS 動態渲染 -->
+                </div>
+              </div>
+            </div>
+
+            <!-- 狀態 E：8 位全部揭曉完畢 ➔ 直接進入「最終頒獎典禮舞台」 -->
+            <div id="stage-step-all-done" class="hidden text-center py-5 space-y-5">
+              <div class="space-y-2">
+                <div class="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-peacock-950 border border-vintageGold-400 text-vintageGold-300 text-xs sm:text-sm font-black">
+                  🏆 2026 太陽實驗室聖誕交換禮物・榮譽頒獎典禮 🏆
+                </div>
+                <h4 class="text-2xl sm:text-4xl font-black text-cream-100">
+                  恭喜以下「神準讀心術小天使」獲獎！
+                </h4>
+                <p class="text-sm text-cream-200/85 max-w-xl mx-auto">
+                  只要在心理戰階段有猜對小主人本人許願禮物的夥伴，都將登上榮譽頒獎台接受全場掌聲！
+                </p>
+              </div>
+
+              <!-- 頒獎典禮得獎名單舞台（置中排列，就算只有一人也在正中央） -->
+              <div id="awards-podium-grid" class="flex flex-wrap justify-center items-stretch gap-4 max-w-6xl mx-auto pt-1">
+                <!-- 由 JS 動態填入所有猜對的夥伴獎盃卡 -->
+              </div>
+
+              <div class="pt-2">
+                <button type="button" onclick="app.celebrateAwards()" class="btn-primary px-8 py-4 rounded-2xl text-base shadow-xl">
+                  🎊 全場噴發豪華彩帶祝賀得獎者！
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 已揭曉戰績牆 -->
+          <div id="revealed-history-section" class="hidden space-y-3">
+            <div class="flex items-center justify-between px-1">
+              <h4 class="text-sm sm:text-base font-black text-vintageGold-300">📜 已揭曉配對戰績牆（小天使 ➔ 小主人）</h4>
+              <span id="history-count-text" class="text-xs sm:text-sm text-cream-200/75">0 / 8 組</span>
+            </div>
+            <div id="revealed-history-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <!-- 由 JS 動態渲染 -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 頁面底部：極簡底欄與右下角設定者入口（已移除所有測試按鈕，正式上線版） -->
+      <footer class="mt-8 px-4 py-4 rounded-2xl bg-peacock-950 border border-vintageGold-400/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-cream-200/75">
+        <div>🎄 2026 太陽實驗室之聖誕大亂鬥・MERRY CHRISTMAS &amp; HAPPY NEW YEAR</div>
+        <div class="flex flex-wrap items-center justify-center gap-2">
+          <button type="button" onclick="app.requestHostAction('reset')" class="btn-ghost px-3 py-2 rounded-xl text-xs hover:text-orange-400">
+            重置活動
+          </button>
+          <button type="button" onclick="app.requestHostAction('open_curation')" class="btn-secondary px-4 py-2 rounded-xl text-xs font-black">
+            ⚙️ 設定者
+          </button>
+        </div>
+      </footer>
+    </div>
+
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- 彈窗 6：管理者頁面（檢視「每位小主人的四個選項」並確認發佈） -->
+  <!-- ===================================================================== -->
+  <div id="modal-host-curation" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-sm overflow-y-auto">
+    <div class="festive-card w-full max-w-6xl rounded-2xl p-5 sm:p-6 space-y-5 border border-vintageGold-400/50 my-auto max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-vintageGold-400/25 pb-3.5">
+        <div class="flex items-center gap-3">
+          <span class="text-3xl">⚙️</span>
+          <div>
+            <h3 class="text-lg sm:text-xl font-black text-vintageGold-300">管理者頁面：檢視四選項與確認發佈</h3>
+            <p class="text-xs sm:text-sm text-cream-200/80">已依「相同小主人（收禮人）」彙整四個禮物選項，確認無誤後即可按下確認發佈！</p>
+          </div>
+        </div>
+        <button type="button" onclick="app.closeModal('modal-host-curation')" class="btn-ghost w-10 h-10 rounded-xl flex items-center justify-center text-base">✕</button>
+      </div>
+
+      <!-- 依相同小主人分組排列的總覽卡片網格 -->
+      <div id="grouped-by-master-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- 由 JS 動態填入每位小主人（1 人一張卡，內部整齊列出他的 4 個選項） -->
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-vintageGold-400/25">
+        <button type="button" onclick="app.closeModal('modal-host-curation')" class="btn-ghost px-5 py-3 rounded-xl text-sm">
+          關閉管理者頁面
+        </button>
+        <button type="button" onclick="app.publishCuratedGame()" class="btn-primary px-7 py-3.5 rounded-xl text-sm sm:text-base shadow-lg">
+          🚀 確認發佈（啟動閉環配對並進入階段二）
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 彈窗 0：階段一點擊個人按鈕後，第一個跳出的「設定密碼 / 驗證密碼」視窗 -->
+  <div id="modal-wish-pin-gate" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-sm">
+    <div class="festive-card w-full max-w-sm rounded-2xl p-6 space-y-5 border border-vintageGold-400/50">
+      <div class="text-center space-y-1.5">
+        <div class="w-14 h-14 rounded-2xl bg-peacock-950 border border-vintageGold-400/40 flex items-center justify-center text-3xl mx-auto mb-2">🔐</div>
+        <h3 id="wish-gate-title" class="text-xl font-black text-cream-100">設定密碼：夥伴</h3>
+        <p id="wish-gate-subtitle" class="text-xs sm:text-sm text-cream-200/80">請先設定你的 4 位數個人密碼，輸入後才會開啟禮物清單</p>
+      </div>
+
+      <form onsubmit="app.handleWishPinGateSubmit(event)" class="space-y-4">
+        <input 
+          type="password" 
+          id="wish-gate-pin-input" 
+          inputmode="numeric"
+          pattern="[0-9]{4}"
+          maxlength="4"
+          placeholder="請設定4位數字" 
+          required
+          class="w-full px-4 py-3.5 rounded-xl bg-peacock-950 border border-vintageGold-400/50 text-cream-100 text-base text-center placeholder:tracking-normal placeholder:font-sans focus:outline-none focus:border-vintageGold-300"
+        />
+        <div class="flex items-center gap-3">
+          <button type="button" onclick="app.closeModal('modal-wish-pin-gate')" class="btn-ghost flex-1 py-3.5 rounded-xl text-sm">
+            取消
+          </button>
+          <button type="submit" class="btn-primary flex-1 py-3.5 rounded-xl text-sm sm:text-base shadow">
+            確認並開啟清單 ➔
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 彈窗 1：驗證四碼密碼後才跳出的 4 份禮物清單 Modal -->
+  <div id="modal-wish" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-sm overflow-y-auto">
+    <div class="festive-card w-full max-w-2xl rounded-2xl p-5 sm:p-6 space-y-4 border border-vintageGold-400/50 my-auto max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-vintageGold-400/25 pb-3">
+        <div class="flex items-center gap-2.5">
+          <span class="text-3xl">🎁</span>
+          <div>
+            <h3 id="modal-wish-title" class="text-lg sm:text-xl font-black text-cream-100">填寫 4 份禮物清單</h3>
+            <p id="modal-wish-subtitle" class="text-xs sm:text-sm text-cream-200/80">第 1 欄填自己的願望，第 2~4 欄幫 3 位夥伴推薦他們可能喜歡的禮物</p>
+          </div>
+        </div>
+        <button onclick="app.closeModal('modal-wish')" class="btn-ghost w-10 h-10 rounded-xl flex items-center justify-center text-base">✕</button>
+      </div>
+
+      <form onsubmit="app.handleSaveWish(event, false)" class="space-y-4">
+        <!-- 動態渲染 4 個填寫區塊 -->
+        <div id="wish-four-slots-container" class="space-y-3.5">
+          <!-- 由 JS 動態填入 4 個表單卡片 -->
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+          <button type="button" onclick="app.closeModal('modal-wish')" class="btn-ghost w-full sm:w-auto px-5 py-3.5 rounded-xl text-sm">
+            取消
+          </button>
+          <button type="button" onclick="app.handleSaveWish(event, true)" id="btn-save-draft" class="btn-secondary w-full sm:flex-1 py-3.5 px-4 rounded-xl text-sm">
+            💾 暫存草稿（先存檔，下次可繼續填）
+          </button>
+          <button type="submit" id="btn-save-wish" class="btn-primary w-full sm:flex-1 py-3.5 px-4 rounded-xl text-sm sm:text-base shadow-lg">
+            確認正式送出全部 4 欄 ✨
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 彈窗 2：驗證成員個人 PIN 碼解鎖任務卡 Modal -->
+  <div id="modal-verify-pin" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-sm">
+    <div class="festive-card w-full max-w-sm rounded-2xl p-6 space-y-5 border border-vintageGold-400/50">
+      <div class="text-center space-y-1.5">
+        <div class="w-14 h-14 rounded-2xl bg-peacock-950 border border-vintageGold-400/40 flex items-center justify-center text-3xl mx-auto mb-2">🔐</div>
+        <h3 class="text-xl font-black text-cream-100">身份驗證：<span id="verify-member-name" class="text-vintageGold-300">夥伴</span></h3>
+        <p class="text-xs sm:text-sm text-cream-200/80">請輸入你許願時設定的 4 位數個人 PIN 碼</p>
+      </div>
+
+      <form onsubmit="app.handleVerifyPin(event)" class="space-y-4">
+        <input 
+          type="password" 
+          id="verify-pin-input" 
+          inputmode="numeric"
+          pattern="[0-9]{4}"
+          maxlength="4"
+          placeholder="••••" 
+          required
+          class="w-full px-4 py-3.5 rounded-xl bg-peacock-950 border border-vintageGold-400/50 text-vintageGold-300 font-mono text-2xl tracking-[0.6em] text-center focus:outline-none focus:border-vintageGold-300"
+        />
+        <div class="flex items-center gap-3">
+          <button type="button" onclick="app.closeModal('modal-verify-pin')" class="btn-ghost flex-1 py-3.5 rounded-xl text-sm">
+            取消
+          </button>
+          <button type="submit" class="btn-primary flex-1 py-3.5 rounded-xl text-sm sm:text-base shadow">
+            解鎖任務卡 ➔
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 彈窗 3：主持人密碼驗證 Modal -->
+  <div id="modal-host-auth" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-sm">
+    <div class="festive-card w-full max-w-sm rounded-2xl p-6 space-y-5 border border-vintageGold-400/60">
+      <div class="text-center space-y-1.5">
+        <div class="w-14 h-14 rounded-2xl bg-peacock-950 border border-vintageGold-400/50 flex items-center justify-center text-3xl mx-auto mb-2">👑</div>
+        <h3 class="text-xl font-black text-vintageGold-300">主持人身份驗證</h3>
+        <p id="host-auth-desc" class="text-xs sm:text-sm text-cream-200/80">請輸入建立活動時設定的「主持人專屬密碼」以繼續操作</p>
+      </div>
+
+      <form onsubmit="app.handleHostAuthSubmit(event)" class="space-y-4">
+        <input 
+          type="password" 
+          id="host-auth-input" 
+          placeholder="請輸入主持人專屬密碼" 
+          required
+          class="w-full px-4 py-3.5 rounded-xl bg-peacock-950 border border-vintageGold-400/50 text-vintageGold-200 text-base text-center font-bold focus:outline-none focus:border-vintageGold-300"
+        />
+        <div class="flex items-center gap-3">
+          <button type="button" onclick="app.closeModal('modal-host-auth')" class="btn-ghost flex-1 py-3.5 rounded-xl text-sm">
+            取消
+          </button>
+          <button type="submit" class="btn-primary flex-1 py-3.5 rounded-xl text-sm sm:text-base shadow">
+            確認解鎖 👑
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 彈窗 4：重置活動二次確認 Modal -->
+  <div id="modal-reset-confirm" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-sm">
+    <div class="festive-card w-full max-w-md rounded-2xl p-6 space-y-5 border border-orange-500/60">
+      <div class="text-center space-y-2">
+        <div class="w-14 h-14 rounded-full bg-orange-500/20 border border-orange-400/50 flex items-center justify-center text-3xl mx-auto">🧹</div>
+        <h3 class="text-xl font-black text-cream-100">確定清空所有資料並重置活動？</h3>
+        <p class="text-xs sm:text-sm text-cream-200/80 leading-relaxed">
+          此操作將會<strong class="text-orange-300">清空目前的 8 人名單、願望與推薦禮物網址、圖片名稱與配對紀錄</strong>，讓畫面回到最初的設定狀態。
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3 pt-2">
+        <button type="button" onclick="app.closeModal('modal-reset-confirm')" class="btn-ghost flex-1 py-3.5 rounded-xl text-sm">
+          取消
+        </button>
+        <button type="button" onclick="app.confirmResetEvent()" id="btn-confirm-reset" class="flex-1 py-3.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-black text-sm sm:text-base shadow">
+          確認清空並重置
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 彈窗 5：自訂替換個人聖誕頭像 Icon Modal -->
+  <div id="modal-avatar-picker" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-sm">
+    <div class="festive-card w-full max-w-md rounded-2xl p-6 space-y-4 border border-vintageGold-400/50">
+      <div class="flex items-center justify-between border-b border-vintageGold-400/25 pb-3">
+        <div class="flex items-center gap-2.5">
+          <span id="avatar-picker-current-icon" class="text-3xl">🎄</span>
+          <div>
+            <h3 class="text-lg font-black text-cream-100">替換專屬聖誕頭像</h3>
+            <p class="text-xs sm:text-sm text-cream-200/75">為 <span id="avatar-picker-member-name" class="text-vintageGold-300 font-bold">夥伴</span> 挑選一個最應景的代表圖示</p>
+          </div>
+        </div>
+        <button type="button" onclick="app.closeModal('modal-avatar-picker')" class="btn-ghost w-9 h-9 rounded-xl flex items-center justify-center">✕</button>
+      </div>
+
+      <div id="avatar-options-grid" class="grid grid-cols-5 gap-2.5 py-2">
+        <!-- 由 JS 動態填入聖誕主題 Icon 選項 -->
+      </div>
+
+      <div class="pt-1">
+        <button type="button" onclick="app.closeModal('modal-avatar-picker')" class="btn-ghost w-full py-3 rounded-xl text-sm">
+          關閉
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase 與應用程式邏輯 -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'sun-lab-xmas-2026';
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+      apiKey: "AIzaSyBAudnOQyXx0fAMsVKw9yqhN53NxmbtopY",
+      authDomain: "secret-santa-2de6b.firebaseapp.com",
+      projectId: "secret-santa-2de6b",
+      storageBucket: "secret-santa-2de6b.firebasestorage.app",
+      messagingSenderId: "260337759987",
+      appId: "1:260337759987:web:3ce460e96c8a1a993be986",
+      measurementId: "G-B8377Q1G1G"
+    };
+
+    let db = null;
+    let auth = null;
+    let currentUser = null;
+
+    const HARDCODED_CONFIG = {
+      title: "2026 太陽實驗室之聖誕大亂鬥",
+      budget: "1200",
+      hostPin: "6298",
+      participants: ["Jackson", "Coco", "Jolin", "Anna", "Fish", "小草", "孟庭", "文馨"]
+    };
+
+    const AVATAR_ICONS = [
+      '🎅', '🦌', '⛄', '🎄', '🎁',
+      '🐧', '🦊', '🦉', '🤶', '🧑‍🎄',
+      '🧦', '🔔', '🕯️', '❄️', '🌟',
+      '🍪', '🥛', '🧸', '🐻‍❄️', '🎀'
+    ];
+
+    const state = {
+      eventData: null,
+      membersMap: {},
+      selectedMemberIdForModal: null,
+      verifiedWishPinHash: null,
+      avatarTargetMemberId: null,
+      unlockedMemberId: null,
+      isHostUnlocked: false,
+      pendingHostAction: null,
+      urlFetchTimers: {},
+      rollingInterval: null
+    };
+
+    function initSnowflakes() {
+      const container = document.getElementById('snow-container');
+      if (!container) return;
+      const flakes = ['❄', '❅', '•'];
+      for (let i = 0; i < 16; i++) {
+        const el = document.createElement('div');
+        el.className = 'snowflake';
+        el.textContent = flakes[i % flakes.length];
+        el.style.left = `${Math.random() * 100}vw`;
+        el.style.fontSize = `${Math.random() * 10 + 10}px`;
+        el.style.animationDuration = `${Math.random() * 12 + 12}s`;
+        el.style.animationDelay = `${Math.random() * 10}s`;
+        container.appendChild(el);
+      }
+    }
+
+    function triggerConfettiBurst() {
+      const container = document.getElementById('confetti-container');
+      if (!container) return;
+      container.innerHTML = '';
+      const colors = ['#e2b04a', '#f6e3ce', '#fb923c', '#facc15', '#34d399', '#ffffff', '#f472b6'];
+      for (let i = 0; i < 180; i++) {
+        const piece = document.createElement('div');
+        const isRibbon = i % 3 === 0;
+        const size = isRibbon ? (Math.random() * 8 + 6) : (Math.random() * 10 + 7);
+        piece.style.position = 'absolute';
+        piece.style.left = `${Math.random() * 100}vw`;
+        piece.style.top = `${-20 - Math.random() * 80}px`;
+        piece.style.width = `${size}px`;
+        piece.style.height = isRibbon ? `${size * 2.4}px` : `${size * 0.65}px`;
+        piece.style.backgroundColor = colors[i % colors.length];
+        piece.style.borderRadius = isRibbon ? '999px' : '2px';
+        piece.style.opacity = '0.96';
+        piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+        const duration = Math.random() * 2.4 + 2.2;
+        const delay = Math.random() * 0.7;
+        piece.style.transition = `transform ${duration}s cubic-bezier(0.22, 0.61, 0.36, 1) ${delay}s, top ${duration}s ease-in ${delay}s, opacity 0.6s ease ${duration + delay - 0.5}s`;
+        container.appendChild(piece);
+
+        requestAnimationFrame(() => {
+          piece.style.top = '108vh';
+          piece.style.transform = `translateX(${(Math.random() - 0.5) * 320}px) rotate(${Math.random() * 900 + 360}deg)`;
+          piece.style.opacity = '0';
+        });
+      }
+    }
+
+    async function hashSecret(secret, salt) {
+      const msgUint8 = new TextEncoder().encode(`${salt}:${secret}`);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function getAssignedPeerIdsForMember(memberOrder, totalCount = 8) {
+      const offsets = [1, 3, 5];
+      return offsets.map(offset => `member_${(memberOrder + offset) % totalCount}`);
+    }
+
+    function buildSingleCyclePairs(members) {
+      const shuffled = shuffleArray(members);
+      const n = shuffled.length;
+      const map = {};
+      for (let i = 0; i < n; i++) {
+        map[shuffled[i].id] = shuffled[(i + 1) % n].id;
+      }
+      return map;
+    }
+
+    function buildOptionsForMaster(masterMember, allMembers) {
+      const selfOption = {
+        url: masterMember.wishUrl,
+        title: masterMember.wishTitle || '神秘禮物',
+        image: masterMember.wishImage || ''
+      };
+
+      const peerOptions = [];
+      allMembers.forEach(recommender => {
+        if (recommender.id === masterMember.id) return;
+        const recs = recommender.peerRecommendations || {};
+        const rec = recs[masterMember.id];
+        if (rec && rec.url) {
+          peerOptions.push({
+            url: rec.url,
+            title: rec.title || '夥伴推薦禮物',
+            image: rec.image || ''
+          });
+        }
+      });
+
+      let combined = [selfOption, ...peerOptions];
+      if (combined.length < 4) {
+        const fallbackPool = allMembers
+          .filter(m => m.id !== masterMember.id && m.wishUrl)
+          .map(m => ({
+            url: m.wishUrl,
+            title: m.wishTitle || '神秘禮物',
+            image: m.wishImage || ''
+          }));
+        for (const item of shuffleArray(fallbackPool)) {
+          if (combined.length >= 4) break;
+          if (!combined.some(c => c.url === item.url)) {
+            combined.push(item);
+          }
+        }
+      }
+
+      return shuffleArray(combined.slice(0, 4));
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const toast = document.createElement('div');
+      const styles = {
+        success: 'bg-peacock-900 border-2 border-vintageGold-400 text-vintageGold-200',
+        error: 'bg-orange-950 border-2 border-orange-400 text-orange-100',
+        info: 'bg-peacock-950 border-2 border-vintageGold-400/70 text-cream-100'
+      };
+      const icons = {
+        success: '✅',
+        error: '⚠️',
+        info: '📢'
+      };
+      toast.className = `px-5 py-3.5 rounded-2xl shadow-2xl text-sm sm:text-base font-black text-center backdrop-blur-md animate-alert-pop flex items-center justify-center gap-2.5 ${styles[type] || styles.info}`;
+      toast.innerHTML = `<span class="text-xl shrink-0">${icons[type] || '📢'}</span><span>${escapeHtml(message)}</span>`;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-6px)';
+        setTimeout(() => toast.remove(), 260);
+      }, 3600);
+    }
+
+    function showFullscreenAngelRevealOverlay(angelGiver, masterTarget, onDoneCallback) {
+      const overlay = document.getElementById('fullscreen-angel-reveal-overlay');
+      const card = document.getElementById('fullscreen-angel-reveal-card');
+      if (!overlay || !card || !angelGiver || !masterTarget) {
+        if (onDoneCallback) onDoneCallback();
+        return;
+      }
+
+      card.innerHTML = `
+        <div class="inline-block px-5 py-1.5 rounded-full bg-peacock-950 border border-vintageGold-400 text-vintageGold-300 text-sm sm:text-base font-black tracking-widest">
+          ✨ 誰是小天使（送禮人）揭曉 ✨
+        </div>
+        <div class="py-2 space-y-3">
+          <div class="text-7xl sm:text-8xl animate-bounce">${angelGiver.avatar || '🎅'}</div>
+          <div class="text-5xl sm:text-7xl font-black text-vintageGold-300 tracking-wider drop-shadow">
+            ${escapeHtml(angelGiver.name)}
+          </div>
+        </div>
+        <div class="text-xl sm:text-3xl font-black text-cream-100">
+          準備了神秘聖誕禮物要送給小主人 <span class="text-vintageGold-300 underline">${escapeHtml(masterTarget.name)}</span>！
+        </div>
+      `;
+
+      overlay.classList.remove('hidden');
+      overlay.classList.add('flex');
+
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+        overlay.classList.remove('flex');
+        if (onDoneCallback) onDoneCallback();
+      }, 1800);
+    }
+
+    function showFullscreenVerdictOverlay(angelGiver, masterTarget, isSuccess) {
+      const overlay = document.getElementById('fullscreen-verdict-overlay');
+      const card = document.getElementById('fullscreen-verdict-card');
+      if (!overlay || !card) return;
+
+      if (isSuccess) {
+        card.className = 'w-full max-w-2xl rounded-3xl p-7 sm:p-11 text-center space-y-5 animate-verdict border-4 border-vintageGold-400 bg-peacock-950 shadow-2xl relative';
+        card.innerHTML = `
+          <div class="text-6xl sm:text-7xl">🎉🎁✨</div>
+          <div class="text-4xl sm:text-6xl font-black text-vintageGold-300 tracking-wider">
+            成功送禮！
+          </div>
+          <p class="text-base sm:text-xl text-cream-100 font-bold leading-relaxed">
+            太神啦！小天使 <span class="text-vintageGold-300 font-black">${escapeHtml(angelGiver.name)}</span> 精準猜中小主人 <span class="text-vintageGold-300 font-black">${escapeHtml(masterTarget.name)}</span> 本人許願的禮物！
+          </p>
+          <div class="pt-2">
+            <button type="button" onclick="app.closeFullscreenVerdict()" class="btn-primary px-8 py-3.5 rounded-2xl text-base shadow-lg">
+              查看四選項明細 ➔
+            </button>
+          </div>
+        `;
+      } else {
+        card.className = 'w-full max-w-2xl rounded-3xl p-7 sm:p-11 text-center space-y-5 animate-verdict border-4 border-orange-500 bg-peacock-950 shadow-2xl relative';
+        card.innerHTML = `
+          <div class="text-6xl sm:text-7xl">🧡🎁✨</div>
+          <div class="text-4xl sm:text-6xl font-black text-orange-400 tracking-wider">
+            可惜不是你！
+          </div>
+          <p class="text-base sm:text-xl text-cream-100 font-bold leading-relaxed">
+            小天使 <span class="text-vintageGold-300 font-black">${escapeHtml(angelGiver.name)}</span> 挑中了夥伴推薦的驚喜禮物！小主人 <span class="text-vintageGold-300 font-black">${escapeHtml(masterTarget.name)}</span> 依然收到大家為他精選的好禮！
+          </p>
+          <div class="pt-2">
+            <button type="button" onclick="app.closeFullscreenVerdict()" class="px-8 py-3.5 rounded-2xl bg-orange-500 hover:bg-orange-400 text-peacock-950 font-black text-base shadow-lg transition">
+              查看本人許願對照 ➔
+            </button>
+          </div>
+        `;
+      }
+
+      overlay.classList.remove('hidden');
+      overlay.classList.add('flex');
+    }
+
+    function copyTextToClipboard(text, successMsg) {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-9999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast(successMsg, 'success');
+      } catch (err) {
+        showToast('複製失敗，請手動選取複製', 'error');
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function getEventDocRef() {
+      return doc(db, 'artifacts', appId, 'public', 'data', 'sun_lab_xmas_event', 'config');
+    }
+
+    function getMembersCollectionRef() {
+      return collection(db, 'artifacts', appId, 'public', 'data', 'sun_lab_xmas_members');
+    }
+
+    function getMemberDocRef(memberId) {
+      return doc(db, 'artifacts', appId, 'public', 'data', 'sun_lab_xmas_members', memberId);
+    }
+
+    function switchView(viewName) {
+      ['view-loading', 'view-setup', 'view-event'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+      });
+      const targetEl = document.getElementById(`view-${viewName}`);
+      if (targetEl) targetEl.classList.remove('hidden');
+    }
+
+    async function ensureHardcodedDataInitialized() {
+      try {
+        const eventDocRef = getEventDocRef();
+        const membersSnap = await getDocs(getMembersCollectionRef());
+        if (membersSnap.empty) {
+          const hostPinHash = await hashSecret(HARDCODED_CONFIG.hostPin, 'sun_lab_xmas_host_master');
+          const total = HARDCODED_CONFIG.participants.length;
+          const promises = HARDCODED_CONFIG.participants.map((name, idx) => {
+            const memberId = `member_${idx}`;
+            return setDoc(getMemberDocRef(memberId), {
+              name,
+              order: idx,
+              avatar: AVATAR_ICONS[idx % AVATAR_ICONS.length],
+              hasSubmitted: false,
+              hasDraft: false,
+              pinHash: '',
+              wishUrl: '',
+              wishTitle: '',
+              wishImage: '',
+              assignedPeers: getAssignedPeerIdsForMember(idx, total),
+              peerRecommendations: {},
+              targetMemberId: '',
+              quizOptions: [],
+              guessedOptionIndex: null,
+              revealedInStage: false,
+              revealedOrder: 0,
+              actualChosenIndex: null,
+              wasCorrect: null
+            });
+          });
+          await Promise.all(promises);
+
+          await setDoc(eventDocRef, {
+            title: HARDCODED_CONFIG.title,
+            budget: HARDCODED_CONFIG.budget,
+            hostPinHash,
+            status: 'collecting',
+            stageState: { step: 'idle' },
+            createdAt: Date.now()
+          });
+        }
+      } catch (err) {
+        console.error("Initialization check error:", err);
+      }
+    }
+
+    let lastCelebratedVerdictKey = '';
+    let lastShownAngelRevealKey = '';
+
+    function subscribeToEvent() {
+      if (!currentUser) return;
+
+      onSnapshot(getEventDocRef(), async (docSnap) => {
+        if (!docSnap.exists()) {
+          await ensureHardcodedDataInitialized();
+          return;
+        }
+        state.eventData = docSnap.data();
+        renderEventUI();
+      }, (error) => {
+        console.error("Event snapshot error:", error);
+      });
+
+      onSnapshot(getMembersCollectionRef(), (querySnap) => {
+        const map = {};
+        querySnap.forEach((docItem) => {
+          map[docItem.id] = { id: docItem.id, ...docItem.data() };
+        });
+        state.membersMap = map;
+        if (state.eventData) {
+          renderEventUI();
+        }
+      }, (error) => {
+        console.error("Members snapshot error:", error);
+      });
+    }
+
+    function syncHostPrivilegeUI() {
+      const indicator = document.getElementById('host-mode-indicator');
+      const unlockBtnWrap = document.getElementById('host-unlock-btn-wrap');
+      const roleSubtitle = document.getElementById('stage-role-subtitle');
+      const hostControls = document.querySelectorAll('.host-only-control');
+
+      if (state.isHostUnlocked) {
+        if (indicator) indicator.classList.remove('hidden');
+        if (unlockBtnWrap) unlockBtnWrap.classList.add('hidden');
+        if (roleSubtitle) {
+          roleSubtitle.innerHTML = '<span class="text-vintageGold-300 font-bold">👑 主持人模式已啟動</span>：你可以抽收禮小主人、按下「誰是小天使」並揭曉結果！';
+        }
+        hostControls.forEach(el => el.classList.remove('hidden'));
+      } else {
+        if (indicator) indicator.classList.add('hidden');
+        if (unlockBtnWrap) unlockBtnWrap.classList.remove('hidden');
+        if (roleSubtitle) {
+          roleSubtitle.textContent = '目前為「現場觀眾同步觀看模式」，畫面會即時跟著主持人操作更新！';
+        }
+        hostControls.forEach(el => el.classList.add('hidden'));
+      }
+    }
+
+    function renderEventUI() {
+      if (!state.eventData) {
+        switchView('loading');
+        return;
+      }
+      switchView('event');
+      syncHostPrivilegeUI();
+
+      const ev = state.eventData;
+      const membersList = Object.values(state.membersMap).sort((a, b) => a.order - b.order);
+      const totalCount = membersList.length || 8;
+      const submittedCount = membersList.filter(m => m.hasSubmitted).length;
+
+      document.getElementById('event-title-display').textContent = ev.title;
+
+      const budgetBadge = document.getElementById('event-budget-badge');
+      if (ev.budget) {
+        budgetBadge.textContent = `💰 預算：${ev.budget} 元`;
+        budgetBadge.classList.remove('hidden');
+      }
+
+      const statusPill = document.getElementById('event-status-pill');
+      const stageCollecting = document.getElementById('stage-collecting');
+      const stageDrawn = document.getElementById('stage-drawn');
+      const stageLiveReveal = document.getElementById('stage-live-reveal');
+
+      stageCollecting.classList.add('hidden');
+      stageDrawn.classList.add('hidden');
+      stageLiveReveal.classList.add('hidden');
+
+      if (ev.status === 'collecting') {
+        statusPill.textContent = '🎁 階段一：秘密許願與推薦中';
+        stageCollecting.classList.remove('hidden');
+
+        document.getElementById('collecting-progress-text').textContent = `${submittedCount} / ${totalCount} 人`;
+        const percent = totalCount > 0 ? Math.round((submittedCount / totalCount) * 100) : 0;
+        document.getElementById('collecting-progress-bar').style.width = `${percent}%`;
+
+        const readyBanner = document.getElementById('ready-to-draw-banner');
+        if (totalCount === 8 && submittedCount === 8) {
+          readyBanner.classList.remove('hidden');
+        } else {
+          readyBanner.classList.add('hidden');
+        }
+
+        const grid = document.getElementById('collecting-members-grid');
+        grid.innerHTML = '';
+        membersList.forEach(member => {
+          const isDone = member.hasSubmitted;
+          const isDraft = !isDone && member.hasDraft;
+          const avatarIcon = member.avatar || AVATAR_ICONS[member.order % AVATAR_ICONS.length];
+
+          let badgeHtml = `<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-peacock-950 text-cream-200 border border-vintageGold-400/25">尚未填寫</span>`;
+          let subText = '點擊設定密碼並填寫 4 份禮物';
+          if (isDone) {
+            badgeHtml = `<span class="px-2.5 py-0.5 rounded-full text-xs font-black bg-vintageGold-400 text-peacock-950">已完成 ✅</span>`;
+            subText = '點擊驗證密碼可重新修改';
+          } else if (isDraft) {
+            badgeHtml = `<span class="px-2.5 py-0.5 rounded-full text-xs font-black bg-orange-500 text-peacock-950">草稿已存檔 💾</span>`;
+            subText = '點擊輸入密碼繼續填寫';
+          }
+
+          const card = document.createElement('div');
+          card.role = 'button';
+          card.tabIndex = 0;
+          card.onclick = () => app.openWishModal(member.id);
+          card.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); app.openWishModal(member.id); } };
+          card.className = `p-4 rounded-2xl border cursor-pointer text-left transition transform hover:-translate-y-0.5 active:scale-95 flex flex-col justify-between gap-2.5 ${
+            isDone 
+              ? 'bg-peacock-800 border-vintageGold-400/60' 
+              : isDraft
+                ? 'bg-peacock-900 border-orange-400/60'
+                : 'bg-peacock-950 border-vintageGold-400/25 hover:border-vintageGold-400/60'
+          }`;
+          card.innerHTML = `
+            <div class="flex items-center justify-between w-full">
+              <button type="button" onclick="event.stopPropagation(); app.openAvatarPicker('${member.id}')" title="點擊替換專屬頭像" class="relative group w-11 h-11 rounded-xl bg-peacock-950 border border-vintageGold-400/40 hover:border-vintageGold-300 flex items-center justify-center text-2xl transition">
+                <span>${avatarIcon}</span>
+                <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-vintageGold-400 text-peacock-950 text-[9px] font-black flex items-center justify-center">✎</span>
+              </button>
+              ${badgeHtml}
+            </div>
+            <div>
+              <div class="font-black text-base sm:text-lg text-cream-100 truncate">${escapeHtml(member.name)}</div>
+              <div class="text-xs text-cream-200/65 truncate">${subText}</div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+
+      } else if (ev.status === 'drawn') {
+        statusPill.textContent = '🕵️ 階段二：小天使四選一心理戰';
+        stageDrawn.classList.remove('hidden');
+
+        const drawnGrid = document.getElementById('drawn-members-grid');
+        drawnGrid.innerHTML = '';
+        membersList.forEach(member => {
+          const isUnlocked = state.unlockedMemberId === member.id;
+          const avatarIcon = member.avatar || AVATAR_ICONS[member.order % AVATAR_ICONS.length];
+          const btn = document.createElement('div');
+          btn.role = 'button';
+          btn.tabIndex = 0;
+          btn.onclick = () => app.openVerifyPinModal(member.id);
+          btn.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); app.openVerifyPinModal(member.id); } };
+          btn.className = `p-3 rounded-xl border cursor-pointer text-left transition flex items-center justify-between ${
+            isUnlocked
+              ? 'bg-peacock-800 border-vintageGold-400 text-vintageGold-300'
+              : 'bg-peacock-950 border-vintageGold-400/25 hover:border-vintageGold-400/60 text-cream-100'
+          }`;
+          btn.innerHTML = `
+            <div class="flex items-center gap-2.5 truncate">
+              <button type="button" onclick="event.stopPropagation(); app.openAvatarPicker('${member.id}')" title="點擊替換頭像" class="w-9 h-9 rounded-lg bg-peacock-900 border border-vintageGold-400/35 hover:border-vintageGold-300 flex items-center justify-center text-lg shrink-0">
+                ${avatarIcon}
+              </button>
+              <span class="font-black text-sm sm:text-base truncate">${escapeHtml(member.name)}</span>
+            </div>
+            <span class="text-xs px-2.5 py-1 rounded-lg font-bold shrink-0 ${
+              isUnlocked ? 'bg-vintageGold-400 text-peacock-950' : 'bg-peacock-900 text-cream-200 border border-vintageGold-400/25'
+            }">
+              ${isUnlocked ? '已解鎖' : '查看'}
+            </span>
+          `;
+          drawnGrid.appendChild(btn);
+        });
+
+        renderPersonalMissionCard();
+
+      } else if (ev.status === 'stage') {
+        statusPill.textContent = '🎊 階段三：派對現場揭曉與頒獎';
+        stageLiveReveal.classList.remove('hidden');
+        renderLiveRevealStage(membersList);
+      }
+    }
+
+    function renderPersonalMissionCard() {
+      const card = document.getElementById('personal-mission-card');
+      const topControls = document.getElementById('unlocked-user-controls');
+
+      if (!state.unlockedMemberId || !state.membersMap[state.unlockedMemberId]) {
+        card.classList.add('hidden');
+        topControls.classList.add('hidden');
+        return;
+      }
+
+      const angelGiver = state.membersMap[state.unlockedMemberId];
+      const masterTarget = state.membersMap[angelGiver.targetMemberId];
+      if (!masterTarget || !angelGiver.quizOptions) {
+        card.classList.add('hidden');
+        return;
+      }
+
+      card.classList.remove('hidden');
+      topControls.classList.remove('hidden');
+
+      document.getElementById('mission-giver-avatar').textContent = angelGiver.avatar || '🎅';
+      document.getElementById('mission-giver-name').textContent = angelGiver.name;
+      document.getElementById('mission-target-avatar').textContent = masterTarget.avatar || '👑';
+      document.getElementById('mission-target-name').textContent = masterTarget.name;
+      document.querySelectorAll('.mission-target-inline').forEach(el => {
+        el.textContent = masterTarget.name;
+      });
+
+      const optionsGrid = document.getElementById('quiz-options-grid');
+      optionsGrid.innerHTML = '';
+      const labels = ['A', 'B', 'C', 'D'];
+
+      angelGiver.quizOptions.forEach((optItem, idx) => {
+        const url = typeof optItem === 'string' ? optItem : optItem.url;
+        const title = (typeof optItem === 'object' && optItem.title) ? optItem.title : `精選禮物 ${labels[idx]}`;
+        const image = (typeof optItem === 'object' && optItem.image) ? optItem.image : '';
+        const isGuessed = angelGiver.guessedOptionIndex === idx;
+
+        const optCard = document.createElement('div');
+        optCard.className = `rounded-xl border overflow-hidden transition flex flex-col justify-between ${
+          isGuessed
+            ? 'bg-peacock-800 border-2 border-vintageGold-400'
+            : 'bg-peacock-950 border-vintageGold-400/25 hover:border-vintageGold-400/55'
+        }`;
+
+        optCard.innerHTML = `
+          <div>
+            <div class="relative h-28 bg-peacock-900 border-b border-vintageGold-400/20 flex items-center justify-center overflow-hidden">
+              ${image 
+                ? `<img src="${escapeAttr(image)}" alt="${escapeHtml(title)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" class="w-full h-full object-cover" />
+                   <div style="display:none;" class="w-full h-full flex-col items-center justify-center text-cream-200/50 gap-1"><span class="text-3xl">🎁</span></div>`
+                : `<div class="w-full h-full flex flex-col items-center justify-center text-cream-200/50 gap-1"><span class="text-3xl">🎁</span></div>`
+              }
+              <span class="absolute top-2 left-2 w-7 h-7 rounded-lg ${isGuessed ? 'bg-vintageGold-400 text-peacock-950' : 'bg-peacock-950/90 text-vintageGold-300 border border-vintageGold-400/40'} font-black flex items-center justify-center text-xs">
+                ${labels[idx]}
+              </span>
+              ${isGuessed ? '<span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-vintageGold-400 text-peacock-950 text-[11px] font-black">🎯 我的猜測</span>' : ''}
+            </div>
+
+            <div class="p-3 pb-1.5">
+              <div class="text-[11px] font-bold text-vintageGold-300/80">選項 ${labels[idx]}</div>
+              <h4 class="font-black text-cream-100 text-sm leading-snug mt-0.5 line-clamp-2 min-h-[2.4rem]">
+                ${escapeHtml(title)}
+              </h4>
+            </div>
+          </div>
+
+          <div class="p-3 pt-1.5 space-y-2">
+            <div class="flex items-center gap-1.5">
+              <a href="${escapeAttr(url)}" target="_blank" rel="noopener noreferrer" class="btn-secondary flex-1 py-2 px-2 rounded-lg text-xs text-center">
+                查看網頁 ↗
+              </a>
+              <button type="button" onclick="app.copyQuizUrl(${idx})" class="btn-ghost py-2 px-2.5 rounded-lg text-xs" title="複製網址">
+                📋
+              </button>
+            </div>
+
+            <button type="button" onclick="app.selectGuessOption(${idx})" class="w-full py-2.5 px-3 rounded-lg font-black text-xs transition ${
+              isGuessed
+                ? 'btn-primary'
+                : 'btn-secondary'
+            }">
+              ${isGuessed ? '✅ 已標記猜測' : '🤔 標記我的猜測'}
+            </button>
+          </div>
+        `;
+        optionsGrid.appendChild(optCard);
+      });
+
+      const savedIndicator = document.getElementById('guess-saved-indicator');
+      if (typeof angelGiver.guessedOptionIndex === 'number') {
+        savedIndicator.classList.remove('hidden');
+      } else {
+        savedIndicator.classList.add('hidden');
+      }
+    }
+
+    function renderLiveRevealStage(membersList) {
+      const revealedList = membersList.filter(m => m.revealedInStage);
+      const unrevealedList = membersList.filter(m => !m.revealedInStage);
+
+      document.getElementById('stage-progress-badge').textContent = `已揭曉 ${revealedList.length} / ${membersList.length} 組`;
+
+      const stepIdle = document.getElementById('stage-step-idle');
+      const stepRolling = document.getElementById('stage-step-rolling');
+      const stepMasterPicked = document.getElementById('stage-step-master-picked');
+      const stepVerdict = document.getElementById('stage-step-verdict');
+      const stepAllDone = document.getElementById('stage-step-all-done');
+
+      [stepIdle, stepRolling, stepMasterPicked, stepVerdict, stepAllDone].forEach(el => el.classList.add('hidden'));
+
+      const st = state.eventData.stageState || { step: 'idle' };
+
+      if (st.step === 'rolling') {
+        stepRolling.classList.remove('hidden');
+        startLocalRollingVisual(unrevealedList.length > 0 ? unrevealedList : membersList);
+      } else {
+        stopLocalRollingVisual();
+      }
+
+      if (st.step === 'idle') {
+        if (unrevealedList.length === 0) {
+          stepAllDone.classList.remove('hidden');
+          renderAwardsCeremony(membersList);
+        } else {
+          stepIdle.classList.remove('hidden');
+          document.getElementById('stage-remaining-count').textContent = unrevealedList.length;
+        }
+      } else if (st.step === 'master_picked' && st.currentMasterId) {
+        const master = state.membersMap[st.currentMasterId];
+        if (master) {
+          stepMasterPicked.classList.remove('hidden');
+          document.getElementById('stage-current-master-avatar').textContent = master.avatar || '👑';
+          document.getElementById('stage-current-master-big').textContent = master.name;
+          document.querySelectorAll('.stage-master-inline').forEach(el => el.textContent = master.name);
+        }
+      } else if ((st.step === 'angel_revealed' || st.step === 'verdict_shown') && st.currentMasterId) {
+        const master = state.membersMap[st.currentMasterId];
+        const angelGiver = master ? membersList.find(m => m.targetMemberId === master.id) : null;
+
+        if (angelGiver && master) {
+          // 若剛進入 angel_revealed 階段，觸發滿版「誰是小天使」名字震撼停留 1.8 秒
+          const angelRevealKey = `${master.id}_${angelGiver.id}`;
+          if (st.step === 'angel_revealed' && lastShownAngelRevealKey !== angelRevealKey) {
+            lastShownAngelRevealKey = angelRevealKey;
+            showFullscreenAngelRevealOverlay(angelGiver, master);
+          }
+
+          stepVerdict.classList.remove('hidden');
+          document.getElementById('stage-pair-giver').textContent = angelGiver.name;
+          document.getElementById('stage-pair-target').textContent = master.name;
+          document.querySelectorAll('.stage-giver-inline').forEach(el => el.textContent = angelGiver.name);
+
+          const summaryBar = document.getElementById('stage-verdict-summary-bar');
+          const miniText = document.getElementById('stage-verdict-mini-text');
+          const instructionEl = document.getElementById('stage-verdict-instruction');
+          const cardsGrid = document.getElementById('stage-quiz-cards-grid');
+          cardsGrid.innerHTML = '';
+
+          const labels = ['A', 'B', 'C', 'D'];
+          const hasVerdict = st.step === 'verdict_shown' && typeof st.chosenOptionIndex === 'number';
+
+          if (hasVerdict) {
+            const chosenOpt = angelGiver.quizOptions[st.chosenOptionIndex];
+            const chosenUrl = typeof chosenOpt === 'string' ? chosenOpt : chosenOpt.url;
+            const isSuccess = chosenUrl === master.wishUrl;
+
+            summaryBar.classList.remove('hidden');
+            instructionEl.innerHTML = `現場揭曉結果出爐！以下為小主人 <span class="font-bold text-vintageGold-300">${escapeHtml(master.name)}</span> 的本人許願對照：`;
+
+            if (isSuccess) {
+              miniText.innerHTML = `<span class="text-vintageGold-300 font-black">🎉 成功送禮！</span> 小天使 ${escapeHtml(angelGiver.name)} 精準命中 ${escapeHtml(master.name)} 的願望！`;
+            } else {
+              miniText.innerHTML = `<span class="text-orange-400 font-black">🧡 可惜不是你！</span> 小天使 ${escapeHtml(angelGiver.name)} 買到了夥伴推薦的驚喜禮物！`;
+            }
+
+            const celebrationKey = `${master.id}_${st.chosenOptionIndex}`;
+            if (lastCelebratedVerdictKey !== celebrationKey) {
+              lastCelebratedVerdictKey = celebrationKey;
+              if (isSuccess) triggerConfettiBurst();
+              showFullscreenVerdictOverlay(angelGiver, master, isSuccess);
+            }
+          } else {
+            summaryBar.classList.add('hidden');
+            instructionEl.innerHTML = state.isHostUnlocked
+              ? `👑 <strong>主持人請點選</strong>：根據小天使 <span class="text-white font-bold">${escapeHtml(angelGiver.name)}</span> 現場拿出的禮物點擊下方對應卡片！`
+              : `等待主持人點選小天使 <span class="font-bold text-white">${escapeHtml(angelGiver.name)}</span> 現場實際送出的禮物...`;
+          }
+
+          angelGiver.quizOptions.forEach((optItem, idx) => {
+            const url = typeof optItem === 'string' ? optItem : optItem.url;
+            const title = (typeof optItem === 'object' && optItem.title) ? optItem.title : `精選禮物 ${labels[idx]}`;
+            const image = (typeof optItem === 'object' && optItem.image) ? optItem.image : '';
+            const isTrueWish = url === master.wishUrl;
+            const isChosen = hasVerdict && st.chosenOptionIndex === idx;
+            const wasPreGuessed = angelGiver.guessedOptionIndex === idx;
+
+            let borderStyle = 'border-vintageGold-400/25 bg-peacock-950';
+            if (hasVerdict) {
+              if (isTrueWish) {
+                borderStyle = 'border-2 border-vintageGold-400 bg-peacock-800';
+              } else if (isChosen) {
+                borderStyle = 'border-2 border-orange-500 bg-orange-950/50';
+              } else {
+                borderStyle = 'border-vintageGold-400/15 bg-peacock-950/60 opacity-60';
+              }
+            }
+
+            const cardEl = document.createElement('div');
+            cardEl.className = `rounded-xl overflow-hidden transition flex flex-col justify-between ${borderStyle}`;
+            cardEl.innerHTML = `
+              <div>
+                <div class="relative h-28 bg-peacock-900 border-b border-vintageGold-400/20 flex items-center justify-center overflow-hidden">
+                  ${image 
+                    ? `<img src="${escapeAttr(image)}" alt="${escapeHtml(title)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" class="w-full h-full object-cover" />
+                       <div style="display:none;" class="w-full h-full flex-col items-center justify-center text-cream-200/50"><span class="text-3xl">🎁</span></div>`
+                    : `<div class="w-full h-full flex flex-col items-center justify-center text-cream-200/50"><span class="text-3xl">🎁</span></div>`
+                  }
+                  <span class="absolute top-2 left-2 w-7 h-7 rounded-lg bg-peacock-950/90 text-vintageGold-300 border border-vintageGold-400/40 font-black flex items-center justify-center text-xs">
+                    ${labels[idx]}
+                  </span>
+                  ${hasVerdict && isTrueWish ? `<span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-vintageGold-400 text-peacock-950 text-[11px] font-black">⭐ 本人許願</span>` : ''}
+                  ${hasVerdict && isChosen && !isTrueWish ? `<span class="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-orange-500 text-peacock-950 text-[11px] font-black">📦 實際送出</span>` : ''}
+                  ${wasPreGuessed ? `<span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-peacock-950/90 border border-vintageGold-400/40 text-vintageGold-300 text-[10px] font-bold">🤔 原本猜這</span>` : ''}
+                </div>
+
+                <div class="p-3 pb-1.5">
+                  <h5 class="font-black text-cream-100 text-sm leading-snug line-clamp-2 min-h-[2.4rem]">${escapeHtml(title)}</h5>
+                </div>
+              </div>
+
+              <div class="p-3 pt-1.5 space-y-1.5">
+                <a href="${escapeAttr(url)}" target="_blank" rel="noopener noreferrer" class="btn-secondary block w-full py-2 px-2 rounded-lg text-xs text-center">
+                  查看網頁 ↗
+                </a>
+                ${(!hasVerdict && state.isHostUnlocked) ? `
+                  <button type="button" onclick="app.selectStageActualGift(${idx})" class="btn-primary w-full py-2.5 px-2 rounded-lg text-xs shadow">
+                    👑 送這個！滿版揭曉
+                  </button>
+                ` : ''}
+              </div>
+            `;
+            cardsGrid.appendChild(cardEl);
+          });
+        }
+      }
+
+      const historySection = document.getElementById('revealed-history-section');
+      const historyGrid = document.getElementById('revealed-history-grid');
+      if (revealedList.length > 0) {
+        historySection.classList.remove('hidden');
+        document.getElementById('history-count-text').textContent = `${revealedList.length} / ${membersList.length} 組`;
+        historyGrid.innerHTML = '';
+
+        const sortedHistory = [...revealedList].sort((a, b) => (a.revealedOrder || 0) - (b.revealedOrder || 0));
+        sortedHistory.forEach(master => {
+          const angelGiver = membersList.find(m => m.targetMemberId === master.id);
+          if (!angelGiver) return;
+          const isSuccess = angelGiver.wasCorrect === true;
+          const card = document.createElement('div');
+          card.className = `p-3.5 rounded-xl border flex items-center justify-between gap-2 ${
+            isSuccess
+              ? 'bg-peacock-800 border-vintageGold-400/60'
+              : 'bg-peacock-950 border-orange-500/50'
+          }`;
+          card.innerHTML = `
+            <div class="min-w-0">
+              <div class="text-sm font-black text-cream-100 flex items-center gap-1.5 truncate">
+                <span>${angelGiver.avatar || '🎅'} ${escapeHtml(angelGiver.name)}</span>
+                <span class="text-vintageGold-300 text-xs">➔</span>
+                <span class="text-vintageGold-300">${master.avatar || '👑'} ${escapeHtml(master.name)}</span>
+              </div>
+              <div class="text-xs text-cream-200/75 truncate mt-0.5">
+                願望：<a href="${escapeAttr(master.wishUrl)}" target="_blank" rel="noopener noreferrer" class="underline text-vintageGold-300">${escapeHtml(master.wishTitle || '商品')} ↗</a>
+              </div>
+            </div>
+            <span class="shrink-0 px-2.5 py-1 rounded-lg text-xs font-black ${
+              isSuccess
+                ? 'bg-vintageGold-400 text-peacock-950'
+                : 'bg-orange-500/20 border border-orange-400 text-orange-300'
+            }">
+              ${isSuccess ? '🎉 成功送禮' : '🧡 可惜不是你'}
+            </span>
+          `;
+          historyGrid.appendChild(card);
+        });
+      } else {
+        historySection.classList.add('hidden');
+      }
+    }
+
+    function renderAwardsCeremony(membersList) {
+      const grid = document.getElementById('awards-podium-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      const winners = membersList.filter(angel => {
+        const master = state.membersMap[angel.targetMemberId];
+        if (!master || !angel.quizOptions) return false;
+        const guessedCorrect = typeof angel.guessedOptionIndex === 'number' && (() => {
+          const opt = angel.quizOptions[angel.guessedOptionIndex];
+          const url = typeof opt === 'string' ? opt : opt.url;
+          return url === master.wishUrl;
+        })();
+        return guessedCorrect || angel.wasCorrect === true;
+      });
+
+      if (winners.length === 0) {
+        grid.innerHTML = `
+          <div class="w-full max-w-xl p-6 rounded-2xl bg-peacock-950 border border-vintageGold-400/35 text-center space-y-2">
+            <div class="text-4xl">🎄</div>
+            <div class="text-lg font-black text-vintageGold-300">全員獲得「最佳聖誕驚喜參與獎」！</div>
+            <p class="text-sm text-cream-200/80">大家的推薦禮物都太有創意了，成功製造完美心理戰迷霧！</p>
+          </div>
+        `;
+        return;
+      }
+
+      winners.forEach((winner, idx) => {
+        const master = state.membersMap[winner.targetMemberId];
+        const card = document.createElement('div');
+        card.className = 'w-full max-w-[260px] p-5 rounded-2xl bg-peacock-950 border-2 border-vintageGold-400 text-center space-y-2 shadow-xl';
+        card.innerHTML = `
+          <div class="inline-block px-3 py-0.5 rounded-full bg-vintageGold-400 text-peacock-950 text-xs font-black">
+            🏅 神準讀心獎 #${idx + 1}
+          </div>
+          <div class="text-5xl pt-1">${winner.avatar || '🎅'}</div>
+          <div class="text-xl font-black text-cream-100">${escapeHtml(winner.name)}</div>
+          <div class="text-xs text-vintageGold-300 font-bold">
+            成功猜中小主人「${master ? escapeHtml(master.name) : ''}」的心願！
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function startLocalRollingVisual(candidates) {
+      if (state.rollingInterval) return;
+      const nameEl = document.getElementById('stage-rolling-name');
+      let idx = 0;
+      state.rollingInterval = setInterval(() => {
+        if (candidates.length > 0 && nameEl) {
+          nameEl.textContent = candidates[idx % candidates.length].name;
+          idx++;
+        }
+      }, 85);
+    }
+
+    function stopLocalRollingVisual() {
+      if (state.rollingInterval) {
+        clearInterval(state.rollingInterval);
+        state.rollingInterval = null;
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function escapeAttr(url) {
+      if (!url) return '#';
+      try {
+        const parsed = new URL(url);
+        if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+          return parsed.href;
+        }
+      } catch (e) {}
+      return '#';
+    }
+
+    window.app = {
+      copyShareLink() {
+        const shareUrl = window.location.href;
+        const title = state.eventData ? state.eventData.title : '2026 太陽實驗室之聖誕大亂鬥';
+        const msg = `🎄【${title}】聖誕交換禮物四選一心理戰開跑啦！\n點擊連結並點選自己的名字，填寫自己想要的禮物＋幫 3 位夥伴推薦禮物：\n${shareUrl}`;
+        copyTextToClipboard(msg, '已複製活動連結與邀請訊息！快貼到實驗室群組吧 🎁');
+      },
+
+      openAvatarPicker(memberId) {
+        const member = state.membersMap[memberId];
+        if (!member) return;
+        state.avatarTargetMemberId = memberId;
+
+        const currentIcon = member.avatar || AVATAR_ICONS[member.order % AVATAR_ICONS.length];
+        document.getElementById('avatar-picker-current-icon').textContent = currentIcon;
+        document.getElementById('avatar-picker-member-name').textContent = member.name;
+
+        const grid = document.getElementById('avatar-options-grid');
+        grid.innerHTML = '';
+        AVATAR_ICONS.forEach(icon => {
+          const isSelected = icon === currentIcon;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.onclick = () => this.selectAvatarIcon(icon);
+          btn.className = `h-12 rounded-xl text-2xl flex items-center justify-center transition transform hover:scale-105 active:scale-95 ${
+            isSelected
+              ? 'bg-vintageGold-400 text-peacock-950 ring-2 ring-cream-100'
+              : 'bg-peacock-950 hover:bg-peacock-800 border border-vintageGold-400/25'
+          }`;
+          btn.textContent = icon;
+          grid.appendChild(btn);
+        });
+
+        const modal = document.getElementById('modal-avatar-picker');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      },
+
+      async selectAvatarIcon(icon) {
+        const memberId = state.avatarTargetMemberId;
+        const member = state.membersMap[memberId];
+        if (!member) return;
+
+        try {
+          await updateDoc(getMemberDocRef(memberId), { avatar: icon });
+          this.closeModal('modal-avatar-picker');
+          showToast(`已將 ${member.name} 的頭像更新為 ${icon}`, 'success');
+        } catch (err) {
+          console.error(err);
+          showToast('更新頭像失敗，請稍後再試', 'error');
+        }
+      },
+
+      onSlotUrlInput(slotKey, val) {
+        clearTimeout(state.urlFetchTimers[slotKey]);
+        const trimmed = val.trim();
+        if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://')) return;
+        state.urlFetchTimers[slotKey] = setTimeout(() => {
+          this.fetchSlotMetadata(slotKey, trimmed, false);
+        }, 250);
+      },
+
+      async fetchSlotMetadata(slotKey, url, isManualClick = false) {
+        const trimmed = (url || '').trim();
+        try {
+          const parsed = new URL(trimmed);
+          if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') throw new Error();
+        } catch (_) {
+          if (isManualClick) showToast('請先輸入有效的 http:// 或 https:// 網址', 'error');
+          return;
+        }
+
+        const statusEl = document.getElementById(`slot-status-${slotKey}`);
+        if (statusEl) {
+          statusEl.textContent = '⚡ 正在極速抓取商品名稱與縮圖...';
+          statusEl.classList.remove('hidden');
+        }
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4500);
+
+        const fetchMicrolink = async () => {
+          const res = await fetch(`https://api.microlink.io?url=${encodeURIComponent(trimmed)}`, { signal: controller.signal });
+          const json = await res.json();
+          if (json && json.status === 'success' && json.data) {
+            return {
+              title: (json.data.title || '').trim(),
+              image: (json.data.image && json.data.image.url) ? json.data.image.url : ''
+            };
+          }
+          throw new Error('Microlink empty');
+        };
+
+        const fetchJsonLink = async () => {
+          const res = await fetch(`https://jsonlink.io/api/extract?url=${encodeURIComponent(trimmed)}`, { signal: controller.signal });
+          const json = await res.json();
+          if (json && (json.title || (json.images && json.images.length > 0))) {
+            return {
+              title: (json.title || '').trim(),
+              image: (json.images && json.images[0]) ? json.images[0] : ''
+            };
+          }
+          throw new Error('Jsonlink empty');
+        };
+
+        try {
+          const data = await Promise.any([fetchMicrolink(), fetchJsonLink()]);
+          clearTimeout(timeoutId);
+
+          const titleInput = document.getElementById(`slot-title-${slotKey}`);
+          const imgInput = document.getElementById(`slot-image-${slotKey}`);
+          const isBlockedTitle = /登入|驗證|Access Denied|Just a moment|Robot|Captcha/i.test(data.title);
+
+          if (data.title && !isBlockedTitle && titleInput && !titleInput.value.trim()) {
+            titleInput.value = data.title.slice(0, 36);
+          }
+          if (data.image && imgInput && !imgInput.value.trim()) {
+            imgInput.value = data.image;
+          }
+
+          if (statusEl) {
+            statusEl.textContent = ((data.title && !isBlockedTitle) || data.image)
+              ? '✅ 已快速帶入預覽！可自行精簡名稱'
+              : '⚠️ 此網站有防爬蟲保護，請直接輸入簡短禮物名稱即可';
+          }
+        } catch (err) {
+          clearTimeout(timeoutId);
+          if (statusEl) {
+            statusEl.textContent = '⚠️ 無法自動讀取，請直接在下方手動輸入禮物名稱即可';
+          }
+        }
+      },
+
+      openWishModal(memberId) {
+        const member = state.membersMap[memberId];
+        if (!member) return;
+        state.selectedMemberIdForModal = memberId;
+        state.verifiedWishPinHash = null;
+
+        document.getElementById('wish-gate-pin-input').value = '';
+        const hasPin = Boolean(member.pinHash);
+        if (hasPin) {
+          document.getElementById('wish-gate-title').textContent = `輸入密碼：${member.name}`;
+          document.getElementById('wish-gate-subtitle').textContent = '請輸入你先前設定的 4 位數個人密碼以開啟禮物清單';
+          document.getElementById('wish-gate-pin-input').placeholder = '請輸入4位數字';
+        } else {
+          document.getElementById('wish-gate-title').textContent = `設定密碼：${member.name}`;
+          document.getElementById('wish-gate-subtitle').textContent = '請先設定你的 4 位數個人密碼，輸入後才會開啟禮物清單';
+          document.getElementById('wish-gate-pin-input').placeholder = '請設定4位數字';
+        }
+
+        const gateModal = document.getElementById('modal-wish-pin-gate');
+        gateModal.classList.remove('hidden');
+        gateModal.classList.add('flex');
+        setTimeout(() => document.getElementById('wish-gate-pin-input').focus(), 100);
+      },
+
+      async handleWishPinGateSubmit(e) {
+        e.preventDefault();
+        const memberId = state.selectedMemberIdForModal;
+        const member = state.membersMap[memberId];
+        if (!member) return;
+
+        const pin = document.getElementById('wish-gate-pin-input').value.trim();
+        if (!/^\d{4}$/.test(pin)) {
+          showToast('個人密碼必須是 4 位數字！', 'error');
+          return;
+        }
+
+        const inputHash = await hashSecret(pin, `sun_lab_${memberId}`);
+        if (member.pinHash && inputHash !== member.pinHash) {
+          showToast('個人密碼錯誤！請輸入正確的 4 位數密碼', 'error');
+          document.getElementById('wish-gate-pin-input').value = '';
+          return;
+        }
+
+        state.verifiedWishPinHash = inputHash;
+        this.closeModal('modal-wish-pin-gate');
+        this.renderAndOpenWishListModal(member);
+      },
+
+      renderAndOpenWishListModal(member) {
+        const assignedIds = member.assignedPeers && member.assignedPeers.length === 3
+          ? member.assignedPeers
+          : getAssignedPeerIdsForMember(member.order, 8);
+
+        const slotsContainer = document.getElementById('wish-four-slots-container');
+        slotsContainer.innerHTML = '';
+
+        const selfSlotHtml = this.buildWishSlotCardHtml({
+          slotKey: 'self',
+          badge: '第 1 欄（必填）',
+          heading: `⭐ ${escapeHtml(member.name)} 自己想要的禮物`,
+          sub: '這就是你的真實許願禮物，配對後會混入給你的小天使猜！',
+          url: member.wishUrl || '',
+          title: member.wishTitle || '',
+          image: member.wishImage || '',
+          isHighlight: true
+        });
+        slotsContainer.insertAdjacentHTML('beforeend', selfSlotHtml);
+
+        const existingRecs = member.peerRecommendations || {};
+        assignedIds.forEach((peerId, idx) => {
+          const peer = state.membersMap[peerId];
+          const peerName = peer ? peer.name : `夥伴 ${idx + 1}`;
+          const peerAvatar = peer ? (peer.avatar || '🎁') : '🎁';
+          const savedRec = existingRecs[peerId] || {};
+
+          const peerSlotHtml = this.buildWishSlotCardHtml({
+            slotKey: peerId,
+            badge: `第 ${idx + 2} 欄（推薦給夥伴）`,
+            heading: `${peerAvatar} 推薦給「${escapeHtml(peerName)}」的禮物`,
+            sub: `想想 ${escapeHtml(peerName)} 平常的喜好，推薦一個他可能會喜歡的禮物！`,
+            url: savedRec.url || '',
+            title: savedRec.title || '',
+            image: savedRec.image || '',
+            isHighlight: false
+          });
+          slotsContainer.insertAdjacentHTML('beforeend', peerSlotHtml);
+        });
+
+        document.getElementById('modal-wish-title').textContent = `填寫 4 份禮物清單：${member.name}`;
+        document.getElementById('modal-wish-subtitle').textContent = '已完成密碼驗證，支援隨時暫存草稿或直接正式送出';
+
+        const modal = document.getElementById('modal-wish');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      },
+
+      buildWishSlotCardHtml({ slotKey, badge, heading, sub, url, title, image, isHighlight }) {
+        return `
+          <div class="p-4 rounded-xl border ${isHighlight ? 'bg-peacock-900 border-vintageGold-400/60' : 'bg-peacock-950 border-vintageGold-400/25'} space-y-3">
+            <div class="flex items-center justify-between gap-2">
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded bg-vintageGold-400/20 text-vintageGold-300 text-xs font-black mb-1">${badge}</span>
+                <h4 class="text-base font-black text-cream-100">${heading}</h4>
+                <p class="text-xs text-cream-200/75">${sub}</p>
+              </div>
+            </div>
+
+            <div class="flex gap-2">
+              <input 
+                type="url" 
+                id="slot-url-${slotKey}" 
+                value="${escapeAttr(url) === '#' ? '' : escapeAttr(url)}"
+                oninput="app.onSlotUrlInput('${slotKey}', this.value)"
+                placeholder="貼上商品網址 https://..." 
+                class="flex-1 px-3.5 py-2.5 rounded-xl bg-peacock-950 border border-vintageGold-400/40 text-cream-100 text-sm focus:outline-none focus:border-vintageGold-300"
+              />
+              <button type="button" onclick="app.fetchSlotMetadata('${slotKey}', document.getElementById('slot-url-${slotKey}').value, true)" class="btn-secondary px-3.5 py-2.5 rounded-xl text-xs whitespace-nowrap">
+                ⚡ 抓取預覽
+              </button>
+            </div>
+            <p id="slot-status-${slotKey}" class="text-xs text-vintageGold-300 hidden"></p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <input 
+                type="text" 
+                id="slot-title-${slotKey}" 
+                value="${escapeHtml(title)}"
+                placeholder="禮物簡短名稱（例如：肩頸按摩器）" 
+                maxlength="36"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-peacock-950 border border-vintageGold-400/35 text-cream-100 text-sm focus:outline-none focus:border-vintageGold-300"
+              />
+              <input 
+                type="url" 
+                id="slot-image-${slotKey}" 
+                value="${escapeAttr(image) === '#' ? '' : escapeAttr(image)}"
+                placeholder="商品圖片網址（選填）" 
+                class="w-full px-3.5 py-2.5 rounded-xl bg-peacock-950 border border-vintageGold-400/35 text-cream-100 text-sm focus:outline-none focus:border-vintageGold-300"
+              />
+            </div>
+          </div>
+        `;
+      },
+
+      closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (!modal) return;
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      },
+
+      async handleSaveWish(e, isDraft = false) {
+        if (e) e.preventDefault();
+        const memberId = state.selectedMemberIdForModal;
+        const member = state.membersMap[memberId];
+        if (!member || !state.verifiedWishPinHash) return;
+
+        const selfUrl = document.getElementById('slot-url-self').value.trim();
+        const selfTitle = document.getElementById('slot-title-self').value.trim();
+        const selfImage = document.getElementById('slot-image-self').value.trim();
+
+        const assignedIds = member.assignedPeers && member.assignedPeers.length === 3
+          ? member.assignedPeers
+          : getAssignedPeerIdsForMember(member.order, 8);
+
+        const peerRecommendations = {};
+        for (const peerId of assignedIds) {
+          const pUrl = document.getElementById(`slot-url-${peerId}`).value.trim();
+          const pTitle = document.getElementById(`slot-title-${peerId}`).value.trim();
+          const pImage = document.getElementById(`slot-image-${peerId}`).value.trim();
+          peerRecommendations[peerId] = { url: pUrl, title: pTitle, image: pImage };
+        }
+
+        if (!isDraft) {
+          const validateUrl = (u) => {
+            try {
+              const parsed = new URL(u);
+              return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+            } catch (_) {
+              return false;
+            }
+          };
+
+          if (!validateUrl(selfUrl) || !selfTitle) {
+            showToast('正式送出前，請完整填寫第 1 欄「自己想要的禮物」網址與名稱！', 'error');
+            return;
+          }
+
+          for (const peerId of assignedIds) {
+            const peerName = state.membersMap[peerId] ? state.membersMap[peerId].name : peerId;
+            const rec = peerRecommendations[peerId];
+            if (!validateUrl(rec.url) || !rec.title) {
+              showToast(`正式送出前，請完整填寫推薦給「${peerName}」的禮物網址與名稱！`, 'error');
+              return;
+            }
+          }
+        }
+
+        const btnSubmit = document.getElementById('btn-save-wish');
+        const btnDraft = document.getElementById('btn-save-draft');
+        if (btnSubmit) btnSubmit.disabled = true;
+        if (btnDraft) btnDraft.disabled = true;
+
+        try {
+          await updateDoc(getMemberDocRef(memberId), {
+            pinHash: state.verifiedWishPinHash,
+            hasDraft: isDraft ? true : false,
+            hasSubmitted: isDraft ? Boolean(member.hasSubmitted) : true,
+            wishUrl: selfUrl,
+            wishTitle: selfTitle,
+            wishImage: selfImage,
+            assignedPeers: assignedIds,
+            peerRecommendations
+          });
+
+          this.closeModal('modal-wish');
+          if (isDraft) {
+            showToast(`💾 已為 ${member.name} 暫存草稿！下次輸入相同 4 位數密碼即可繼續填寫`, 'info');
+          } else {
+            showToast(`✅ ${member.name} 的 4 份禮物清單已正式送出！`, 'success');
+          }
+        } catch (err) {
+          console.error(err);
+          showToast('儲存資料時發生錯誤，請稍後再試', 'error');
+        } finally {
+          if (btnSubmit) btnSubmit.disabled = false;
+          if (btnDraft) btnDraft.disabled = false;
+        }
+      },
+
+      requestHostAction(actionType) {
+        if (state.isHostUnlocked) {
+          this.runHostAction(actionType);
+        } else {
+          this.openHostAuthModal(actionType);
+        }
+      },
+
+      openHostAuthModal(actionType) {
+        state.pendingHostAction = actionType;
+        document.getElementById('host-auth-input').value = '';
+        document.getElementById('host-auth-desc').textContent = '請輸入設定者專屬密碼以繼續操作';
+        const modal = document.getElementById('modal-host-auth');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        setTimeout(() => document.getElementById('host-auth-input').focus(), 100);
+      },
+
+      async handleHostAuthSubmit(e) {
+        e.preventDefault();
+        if (!state.eventData) return;
+        const inputPin = document.getElementById('host-auth-input').value.trim();
+        const inputHash = await hashSecret(inputPin, 'sun_lab_xmas_host_master');
+
+        if (inputHash !== state.eventData.hostPinHash) {
+          showToast('密碼錯誤，無法進入！', 'error');
+          document.getElementById('host-auth-input').value = '';
+          return;
+        }
+
+        state.isHostUnlocked = true;
+        this.closeModal('modal-host-auth');
+        syncHostPrivilegeUI();
+        showToast('👑 已成功解鎖設定者權限！', 'success');
+
+        const action = state.pendingHostAction;
+        state.pendingHostAction = null;
+        if (action && action !== 'unlock_only') {
+          this.runHostAction(action);
+        }
+      },
+
+      runHostAction(actionType) {
+        if (actionType === 'open_curation') {
+          this.openHostCurationModal();
+        } else if (actionType === 'enter_stage') {
+          this.enterLiveRevealStage();
+        } else if (actionType === 'open_awards') {
+          this.openAwardsDirectly();
+        } else if (actionType === 'reset') {
+          const modal = document.getElementById('modal-reset-confirm');
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+        }
+      },
+
+      openHostCurationModal() {
+        const membersList = Object.values(state.membersMap).sort((a, b) => a.order - b.order);
+        const container = document.getElementById('grouped-by-master-list');
+        container.innerHTML = '';
+
+        membersList.forEach(master => {
+          const collected = [];
+          if (master.wishUrl) {
+            collected.push({ title: master.wishTitle || '神秘禮物', url: master.wishUrl });
+          }
+          membersList.forEach(other => {
+            if (other.id === master.id) return;
+            const rec = (other.peerRecommendations || {})[master.id];
+            if (rec && rec.url) {
+              collected.push({ title: rec.title || '夥伴推薦禮物', url: rec.url });
+            }
+          });
+
+          const displayOptions = shuffleArray(collected);
+          const card = document.createElement('div');
+          card.className = 'p-4 rounded-2xl bg-peacock-950 border border-vintageGold-400/35 space-y-2.5';
+          card.innerHTML = `
+            <div class="flex items-center justify-between border-b border-vintageGold-400/20 pb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-2xl">${master.avatar || '🎁'}</span>
+                <span class="text-base font-black text-cream-100">小主人：${escapeHtml(master.name)}</span>
+              </div>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-black ${displayOptions.length === 4 ? 'bg-vintageGold-400 text-peacock-950' : 'bg-orange-500/20 text-orange-300 border border-orange-400'}">
+                已集齊 ${displayOptions.length} / 4 個選項
+              </span>
+            </div>
+            <div class="space-y-1.5">
+              ${displayOptions.length > 0 ? displayOptions.map((opt, idx) => `
+                <div class="flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-peacock-900 border border-vintageGold-400/20 text-xs sm:text-sm">
+                  <div class="truncate">
+                    <span class="font-black text-vintageGold-300 mr-1.5">選項 ${idx + 1}.</span>
+                    <span class="text-cream-100 font-bold">${escapeHtml(opt.title)}</span>
+                  </div>
+                  <a href="${escapeAttr(opt.url)}" target="_blank" rel="noopener noreferrer" class="text-vintageGold-300 hover:underline shrink-0 text-xs">網址 ↗</a>
+                </div>
+              `).join('') : '<div class="text-xs text-cream-200/60 py-2">尚未收集到任何禮物選項</div>'}
+            </div>
+          `;
+          container.appendChild(card);
+        });
+
+        const modal = document.getElementById('modal-host-curation');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      },
+
+      async publishCuratedGame() {
+        const members = Object.values(state.membersMap).sort((a, b) => a.order - b.order);
+        if (members.length !== 8 || members.some(m => !m.hasSubmitted || !m.wishUrl)) {
+          showToast('尚有夥伴未正式完成 4 份禮物填寫，無法發佈！', 'error');
+          return;
+        }
+
+        try {
+          const cycleMap = buildSingleCyclePairs(members);
+          const updatePromises = members.map(angelGiver => {
+            const masterId = cycleMap[angelGiver.id];
+            const masterMember = state.membersMap[masterId];
+            const optionsForMaster = buildOptionsForMaster(masterMember, members);
+            return updateDoc(getMemberDocRef(angelGiver.id), {
+              targetMemberId: masterId,
+              quizOptions: optionsForMaster,
+              guessedOptionIndex: null,
+              revealedInStage: false,
+              revealedOrder: 0,
+              actualChosenIndex: null,
+              wasCorrect: null
+            });
+          });
+
+          await Promise.all(updatePromises);
+          await updateDoc(getEventDocRef(), {
+            status: 'drawn',
+            stageState: { step: 'idle' },
+            drawnAt: Date.now()
+          });
+
+          this.closeModal('modal-host-curation');
+          showToast('🚀 已確認發佈並完成單一閉環配對！進入階段二心理戰', 'success');
+        } catch (err) {
+          console.error(err);
+          showToast('發佈配對失敗，請稍後再試', 'error');
+        }
+      },
+
+      async enterLiveRevealStage() {
+        try {
+          await updateDoc(getEventDocRef(), {
+            status: 'stage',
+            stageState: { step: 'idle' }
+          });
+          showToast('🎙️ 已進入派對現場揭曉舞台！', 'success');
+        } catch (err) {
+          console.error(err);
+          showToast('進入舞台失敗', 'error');
+        }
+      },
+
+      async openAwardsDirectly() {
+        try {
+          await updateDoc(getEventDocRef(), {
+            status: 'stage',
+            stageState: { step: 'idle' }
+          });
+          const membersList = Object.values(state.membersMap).sort((a, b) => a.order - b.order);
+          document.getElementById('stage-step-idle').classList.add('hidden');
+          document.getElementById('stage-step-all-done').classList.remove('hidden');
+          renderAwardsCeremony(membersList);
+          triggerConfettiBurst();
+        } catch (err) {
+          console.error(err);
+        }
+      },
+
+      async drawNextMaster() {
+        if (!state.isHostUnlocked) return;
+        const membersList = Object.values(state.membersMap);
+        const unrevealedMasters = membersList.filter(m => !m.revealedInStage);
+        if (unrevealedMasters.length === 0) return;
+
+        const chosenMaster = unrevealedMasters[Math.floor(Math.random() * unrevealedMasters.length)];
+
+        try {
+          await updateDoc(getEventDocRef(), {
+            stageState: { step: 'rolling' }
+          });
+
+          setTimeout(async () => {
+            await updateDoc(getEventDocRef(), {
+              stageState: {
+                step: 'master_picked',
+                currentMasterId: chosenMaster.id
+              }
+            });
+          }, 1500);
+        } catch (err) {
+          console.error(err);
+        }
+      },
+
+      async revealCurrentAngel() {
+        if (!state.isHostUnlocked || !state.eventData || !state.eventData.stageState) return;
+        const masterId = state.eventData.stageState.currentMasterId;
+        if (!masterId) return;
+
+        try {
+          await updateDoc(getEventDocRef(), {
+            stageState: {
+              step: 'angel_revealed',
+              currentMasterId: masterId
+            }
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      },
+
+      async selectStageActualGift(optionIndex) {
+        if (!state.isHostUnlocked || !state.eventData || !state.eventData.stageState) return;
+        const masterId = state.eventData.stageState.currentMasterId;
+        const master = state.membersMap[masterId];
+        const angelGiver = master ? Object.values(state.membersMap).find(m => m.targetMemberId === master.id) : null;
+        if (!master || !angelGiver) return;
+
+        const chosenOpt = angelGiver.quizOptions[optionIndex];
+        const chosenUrl = typeof chosenOpt === 'string' ? chosenOpt : chosenOpt.url;
+        const isCorrect = chosenUrl === master.wishUrl;
+
+        const revealedCount = Object.values(state.membersMap).filter(m => m.revealedInStage).length;
+
+        try {
+          await updateDoc(getMemberDocRef(master.id), {
+            revealedInStage: true,
+            revealedOrder: revealedCount + 1
+          });
+
+          await updateDoc(getMemberDocRef(angelGiver.id), {
+            actualChosenIndex: optionIndex,
+            wasCorrect: isCorrect
+          });
+
+          await updateDoc(getEventDocRef(), {
+            stageState: {
+              step: 'verdict_shown',
+              currentMasterId: master.id,
+              chosenOptionIndex: optionIndex
+            }
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      },
+
+      reopenFullscreenVerdict() {
+        const st = state.eventData && state.eventData.stageState;
+        if (!st || !st.currentMasterId || typeof st.chosenOptionIndex !== 'number') return;
+        const master = state.membersMap[st.currentMasterId];
+        const angelGiver = master ? Object.values(state.membersMap).find(m => m.targetMemberId === master.id) : null;
+        if (!master || !angelGiver) return;
+
+        const chosenOpt = angelGiver.quizOptions[st.chosenOptionIndex];
+        const chosenUrl = typeof chosenOpt === 'string' ? chosenOpt : chosenOpt.url;
+        const isSuccess = chosenUrl === master.wishUrl;
+        if (isSuccess) triggerConfettiBurst();
+        showFullscreenVerdictOverlay(angelGiver, master, isSuccess);
+      },
+
+      closeFullscreenVerdict() {
+        const overlay = document.getElementById('fullscreen-verdict-overlay');
+        if (overlay) {
+          overlay.classList.add('hidden');
+          overlay.classList.remove('flex');
+        }
+      },
+
+      async finishCurrentRound() {
+        if (!state.isHostUnlocked) return;
+        const st = state.eventData && state.eventData.stageState;
+        const membersList = Object.values(state.membersMap);
+        const unrevealedMasters = membersList.filter(m => !m.revealedInStage);
+
+        try {
+          if (unrevealedMasters.length === 0) {
+            await updateDoc(getEventDocRef(), {
+              stageState: { step: 'idle' }
+            });
+            return;
+          }
+
+          let nextMaster = null;
+          if (st && st.currentMasterId) {
+            const currentAngel = membersList.find(m => m.targetMemberId === st.currentMasterId);
+            if (currentAngel && !currentAngel.revealedInStage) {
+              nextMaster = currentAngel;
+            }
+          }
+          if (!nextMaster) {
+            nextMaster = unrevealedMasters[0];
+          }
+
+          await updateDoc(getEventDocRef(), {
+            stageState: {
+              step: 'master_picked',
+              currentMasterId: nextMaster.id
+            }
+          });
+          showToast(`➡️ 接力交棒！下一輪收禮小主人為「${nextMaster.name}」`, 'info');
+        } catch (err) {
+          console.error(err);
+        }
+      },
+
+      celebrateAwards() {
+        triggerConfettiBurst();
+        showToast('🎊 恭喜所有神準讀心術小天使！聖誕快樂！', 'success');
+      },
+
+      openVerifyPinModal(memberId) {
+        const member = state.membersMap[memberId];
+        if (!member) return;
+
+        if (state.unlockedMemberId === memberId) {
+          document.getElementById('personal-mission-card').scrollIntoView({ behavior: 'smooth' });
+          return;
+        }
+
+        state.selectedMemberIdForModal = memberId;
+        document.getElementById('verify-member-name').textContent = member.name;
+        document.getElementById('verify-pin-input').value = '';
+
+        const modal = document.getElementById('modal-verify-pin');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        setTimeout(() => document.getElementById('verify-pin-input').focus(), 100);
+      },
+
+      async handleVerifyPin(e) {
+        e.preventDefault();
+        const memberId = state.selectedMemberIdForModal;
+        const member = state.membersMap[memberId];
+        if (!member) return;
+
+        const pin = document.getElementById('verify-pin-input').value.trim();
+        const inputHash = await hashSecret(pin, `sun_lab_${memberId}`);
+
+        if (inputHash !== member.pinHash) {
+          showToast('個人 PIN 碼錯誤！請重新輸入 4 位數字', 'error');
+          document.getElementById('verify-pin-input').value = '';
+          return;
+        }
+
+        state.unlockedMemberId = memberId;
+        this.closeModal('modal-verify-pin');
+        renderEventUI();
+        showToast(`🔓 歡迎小天使 ${member.name}，已解鎖你的送禮任務！`, 'success');
+        setTimeout(() => {
+          document.getElementById('personal-mission-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+      },
+
+      lockCurrentTask() {
+        state.unlockedMemberId = null;
+        renderEventUI();
+        showToast('🔒 已隱藏並鎖定你的任務畫面', 'info');
+      },
+
+      async selectGuessOption(optionIndex) {
+        if (!state.unlockedMemberId) return;
+        const member = state.membersMap[state.unlockedMemberId];
+        if (!member) return;
+
+        try {
+          await updateDoc(getMemberDocRef(member.id), {
+            guessedOptionIndex: optionIndex
+          });
+          const labels = ['A', 'B', 'C', 'D'];
+          showToast(`🎯 已標記你的猜測：選項 ${labels[optionIndex]}`, 'success');
+        } catch (err) {
+          console.error(err);
+        }
+      },
+
+      copyQuizUrl(optionIndex) {
+        if (!state.unlockedMemberId) return;
+        const member = state.membersMap[state.unlockedMemberId];
+        if (!member || !member.quizOptions) return;
+        const opt = member.quizOptions[optionIndex];
+        const url = typeof opt === 'string' ? opt : opt.url;
+        const labels = ['A', 'B', 'C', 'D'];
+        copyTextToClipboard(url, `已複製「選項 ${labels[optionIndex]}」的商品網址！`);
+      },
+
+      async confirmResetEvent() {
+        const btn = document.getElementById('btn-confirm-reset');
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = '⏳ 正在重置...';
+        }
+
+        try {
+          const memberIds = Object.keys(state.membersMap);
+          await Promise.all(memberIds.map(id => deleteDoc(getMemberDocRef(id))));
+          await deleteDoc(getEventDocRef());
+
+          const hostPinHash = await hashSecret(HARDCODED_CONFIG.hostPin, 'sun_lab_xmas_host_master');
+          const total = HARDCODED_CONFIG.participants.length;
+          const promises = HARDCODED_CONFIG.participants.map((name, idx) => {
+            const memberId = `member_${idx}`;
+            return setDoc(getMemberDocRef(memberId), {
+              name,
+              order: idx,
+              avatar: AVATAR_ICONS[idx % AVATAR_ICONS.length],
+              hasSubmitted: false,
+              hasDraft: false,
+              pinHash: '',
+              wishUrl: '',
+              wishTitle: '',
+              wishImage: '',
+              assignedPeers: getAssignedPeerIdsForMember(idx, total),
+              peerRecommendations: {},
+              targetMemberId: '',
+              quizOptions: [],
+              guessedOptionIndex: null,
+              revealedInStage: false,
+              revealedOrder: 0,
+              actualChosenIndex: null,
+              wasCorrect: null
+            });
+          });
+          await Promise.all(promises);
+
+          await setDoc(getEventDocRef(), {
+            title: HARDCODED_CONFIG.title,
+            budget: HARDCODED_CONFIG.budget,
+            hostPinHash,
+            status: 'collecting',
+            stageState: { step: 'idle' },
+            createdAt: Date.now()
+          });
+
+          state.unlockedMemberId = null;
+          state.isHostUnlocked = false;
+          this.closeModal('modal-reset-confirm');
+          showToast('🧹 活動已完全重置並恢復初始狀態！', 'success');
+        } catch (err) {
+          console.error(err);
+          showToast('重置失敗', 'error');
+        } finally {
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = '確認清空並重置';
+          }
+        }
+      }
+    };
+
+    async function bootstrap() {
+      initSnowflakes();
+
+      if (!firebaseConfig) {
+        showToast('環境尚未設定雲端資料庫組態', 'error');
+        return;
+      }
+
+      try {
+        const firebaseApp = initializeApp(firebaseConfig);
+        auth = getAuth(firebaseApp);
+        db = getFirestore(firebaseApp);
+
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+          currentUser = user;
+          if (user) {
+            await ensureHardcodedDataInitialized();
+            subscribeToEvent();
+          }
+        });
+      } catch (err) {
+        console.error("Firebase init error:", err);
+        showToast('初始化連線失敗', 'error');
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', bootstrap);
+  </script>
+</body>
+</html>
