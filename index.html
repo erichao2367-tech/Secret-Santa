@@ -535,6 +535,9 @@
           <button type="button" id="btn-reset-event" onclick="app.requestHostAction('reset')" class="btn-ghost px-3 py-2 rounded-xl text-xs hover:text-orange-400">
             重置活動
           </button>
+          <button type="button" id="btn-host-login" onclick="app.openHostAuthModal('unlock_only')" class="btn-primary px-4 py-2 rounded-xl text-xs font-black hidden">
+            👑 主持人登入
+          </button>
           <button type="button" onclick="app.openChangePin()" class="btn-secondary px-4 py-2 rounded-xl text-xs font-black">
             🔑 修改個人密碼
           </button>
@@ -1297,6 +1300,8 @@
       if (ev.status !== 'stage') hideProjection();
       const resetBtn = document.getElementById('btn-reset-event');
       if (resetBtn) resetBtn.classList.toggle('hidden', ev.status !== 'collecting');
+      const hostLoginBtn = document.getElementById('btn-host-login');
+      if (hostLoginBtn) hostLoginBtn.classList.toggle('hidden', state.isHostUnlocked || !isHostDevice());
       const curationBtn = document.getElementById('btn-open-curation');
       if (curationBtn) curationBtn.classList.toggle('hidden', ev.status !== 'collecting');
 
