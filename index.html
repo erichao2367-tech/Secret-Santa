@@ -7,16 +7,14 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- 引入復古襯線體 Fraunces、草寫體 Great Vibes 與繁體中文 Noto Sans TC / Noto Serif TC -->
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Great+Vibes&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
             sans: ['"Noto Sans TC"', 'sans-serif'],
-            serif: ['"Fraunces"', '"Noto Serif TC"', 'serif'],
-            script: ['"Great Vibes"', 'cursive'],
+            serif: ['"Noto Serif TC"', 'serif'],
           },
           colors: {
             peacock: {
@@ -146,6 +144,78 @@
     .animate-slot {
       animation: slotPulse 0.18s ease-in-out infinite;
     }
+    /* ===== 投影舞台（1920×1080 設計，自動縮放填滿螢幕） ===== */
+    #projection-root { position: fixed; inset: 0; z-index: 40; background: #071f20; overflow: hidden; display: none; }
+    #projection-root.on { display: block; }
+    #pj-stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform-origin: center; box-sizing: border-box; padding: 64px 96px 0; display: flex; flex-direction: column; gap: 40px; color: #fdf6ee; font-family: 'Noto Sans TC', sans-serif; }
+    .pj-top { display: flex; justify-content: space-between; align-items: center; }
+    .pj-event { font-family: 'Noto Serif TC', serif; font-size: 32px; font-weight: 900; color: #f0ce7d; letter-spacing: 0.06em; }
+    .pj-progress { padding: 8px 28px; border-radius: 999px; border: 2px solid rgba(226,176,74,0.55); font-size: 30px; font-weight: 900; }
+    .pj-panel { flex: 1; display: none; flex-direction: column; gap: 40px; }
+    .pj-panel.on { display: flex; }
+    .pj-center { align-items: center; justify-content: center; text-align: center; padding-bottom: 140px; }
+    .pj-hero { font-family: 'Noto Serif TC', serif; font-size: 120px; font-weight: 900; line-height: 1.15; }
+    .pj-sub { font-size: 42px; font-weight: 700; color: #ebdcc8; }
+    .pj-slot { display: inline-block; min-width: 760px; padding: 32px 80px; border-radius: 36px; border: 4px solid #e2b04a; background: #0c2b2c; font-family: 'Noto Serif TC', serif; font-size: 150px; font-weight: 900; line-height: 1.1; }
+    .pj-pair { display: flex; align-items: center; justify-content: center; gap: 64px; }
+    .pj-person { display: flex; align-items: center; gap: 28px; }
+    .pj-avatar { width: 132px; height: 132px; border-radius: 999px; background: #0f4243; border: 3px solid rgba(226,176,74,0.6); font-size: 76px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .pj-avatar.xl { width: 220px; height: 220px; font-size: 130px; }
+    .pj-role { display: block; font-size: 30px; font-weight: 700; letter-spacing: 0.2em; color: #ebdcc8; text-align: left; }
+    .pj-name { display: block; font-family: 'Noto Serif TC', serif; font-size: 104px; font-weight: 900; line-height: 1.05; text-align: left; }
+    .pj-name.gold { color: #f0ce7d; }
+    .pj-name.xl { font-size: 190px; }
+    .pj-result { display: flex; align-items: baseline; justify-content: center; gap: 24px; min-height: 76px; }
+    .pj-result-big { font-family: 'Noto Serif TC', serif; font-size: 62px; font-weight: 900; }
+    .pj-result-text { font-size: 38px; font-weight: 700; color: #ebdcc8; }
+    .pj-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; }
+    .pj-card { border-radius: 24px; overflow: hidden; background: #0c2b2c; border: 2px solid rgba(226,176,74,0.4); display: flex; flex-direction: column; transition: opacity .4s ease, transform .4s ease; }
+    .pj-card.dim { opacity: 0.42; }
+    .pj-card.wish { border: 5px solid #e2b04a; transform: translateY(-14px); box-shadow: 0 26px 50px rgba(0,0,0,0.4); }
+    .pj-card.sent { border: 5px dashed #f4a259; }
+    .pj-img { height: 280px; background: #0f3a3b; position: relative; display: flex; align-items: center; justify-content: center; font-size: 96px; overflow: hidden; }
+    .pj-img img { width: 100%; height: 100%; object-fit: cover; }
+    .pj-letter { position: absolute; top: 18px; left: 18px; width: 70px; height: 70px; border-radius: 18px; background: #0c2b2c; color: #fdf6ee; font-family: 'Noto Serif TC', serif; font-size: 42px; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.35); }
+    .pj-card.wish .pj-letter { background: #e2b04a; color: #071f20; }
+    .pj-body { padding: 22px 28px 28px; display: flex; flex-direction: column; gap: 14px; }
+    .pj-title { font-family: 'Noto Serif TC', serif; font-size: 36px; font-weight: 900; line-height: 1.28; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 92px; }
+    .pj-provider { align-self: flex-start; font-size: 28px; font-weight: 700; color: #ebdcc8; }
+    .pj-provider.true { color: #071f20; background: #e2b04a; padding: 4px 18px; border-radius: 999px; font-weight: 900; }
+    .pj-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+    .pj-tag { padding: 4px 16px; border-radius: 999px; font-size: 24px; font-weight: 900; border: 2px solid; }
+    .pj-tag.sent { color: #f4a259; border-color: #f4a259; }
+    .pj-tag.guess { color: #ebdcc8; border-color: rgba(235,220,200,0.55); }
+    .pj-overview { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+    .pj-ov { border-radius: 22px; background: #0c2b2c; border: 2px solid rgba(226,176,74,0.4); padding: 24px; display: flex; flex-direction: column; gap: 12px; }
+    .pj-ov.ok { border-color: #e2b04a; }
+    .pj-ov-pair { font-family: 'Noto Serif TC', serif; font-size: 34px; font-weight: 900; line-height: 1.3; }
+    .pj-ov-pair .to { color: #f0ce7d; }
+    .pj-ov-gift { font-size: 24px; color: #ebdcc8; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+    .pj-ov-badge { align-self: flex-start; font-size: 24px; font-weight: 900; padding: 2px 14px; border-radius: 999px; }
+    .pj-ov-badge.ok { background: #e2b04a; color: #071f20; }
+    .pj-ov-badge.miss { border: 2px solid #f4a259; color: #f4a259; }
+    .pj-overlay { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 36px; background: #061b1c; text-align: center; z-index: 5; }
+    .pj-overlay.on { display: flex; }
+    .pj-count { font-family: 'Noto Serif TC', serif; font-size: 440px; font-weight: 900; color: #f0ce7d; line-height: 1; animation: pjCount .85s ease-out both; }
+    .pj-ov-label { font-size: 48px; font-weight: 700; color: #ebdcc8; }
+    .pj-angel-avatar { font-size: 220px; line-height: 1; animation: pjPop .6s cubic-bezier(0.22,1,0.36,1) both; }
+    .pj-angel-name { font-family: 'Noto Serif TC', serif; font-size: 220px; font-weight: 900; color: #f0ce7d; line-height: 1.05; animation: pjPop .6s cubic-bezier(0.22,1,0.36,1) .1s both; }
+    .pj-verdict-card { display: flex; flex-direction: column; align-items: center; gap: 36px; }
+    .pj-v-big { font-family: 'Noto Serif TC', serif; font-size: 200px; font-weight: 900; line-height: 1.05; animation: pjPop .6s cubic-bezier(0.22,1,0.36,1) both; }
+    .pj-v-big.gold { color: #f0ce7d; }
+    .pj-v-big.orange { color: #f4a259; }
+    .pj-v-text { font-size: 50px; font-weight: 700; color: #fdf6ee; line-height: 1.5; }
+    .pj-v-text b { color: #f0ce7d; }
+    #pj-sound-btn { position: fixed; right: 18px; bottom: 18px; z-index: 41; padding: 12px 20px; border-radius: 14px; border: 1.5px solid rgba(226,176,74,0.6); background: #0c2b2c; color: #fdf6ee; font-weight: 800; font-size: 15px; cursor: pointer; font-family: inherit; }
+    #pj-sound-btn.enabled { opacity: 0.35; }
+    @keyframes pjCount { 0% { transform: scale(1.7); opacity: 0; } 35% { opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+    @keyframes pjPop { 0% { transform: scale(0.6); opacity: 0; } 70% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+    @keyframes pjShake { 0%,100% { transform: translateX(0); } 15% { transform: translateX(-30px) rotate(-1.5deg); } 30% { transform: translateX(26px) rotate(1.5deg); } 45% { transform: translateX(-18px); } 60% { transform: translateX(14px); } 75% { transform: translateX(-8px); } }
+    .pj-shake { animation: pjShake .75s ease; }
+    @media (prefers-reduced-motion: reduce) {
+      .pj-count, .pj-angel-avatar, .pj-angel-name, .pj-v-big, .pj-shake, .animate-verdict, .animate-alert-pop { animation: none !important; }
+      .snowflake { display: none; }
+    }
   </style>
 </head>
 <body class="antialiased selection:bg-vintageGold-400 selection:text-peacock-950 relative overflow-x-hidden text-base">
@@ -156,7 +226,7 @@
   <div id="confetti-container" class="fixed inset-0 pointer-events-none z-[85] overflow-hidden" aria-hidden="true"></div>
 
   <!-- 頂部置頂活動資訊橫幅（移除匿名題庫與煙霧彈字眼，按鈕全面放大） -->
-  <header class="relative z-20 border-b border-vintageGold-400/25 bg-peacock-950/95 backdrop-blur-md sticky top-0">
+  <header class="relative z-20 border-b border-vintageGold-400/25 bg-peacock-950/95 backdrop-blur-md sm:sticky sm:top-0">
     <div class="max-w-7xl mx-auto px-4 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div class="space-y-1">
         <div class="flex flex-wrap items-center gap-2">
@@ -170,7 +240,7 @@
             👑 主持人已解鎖
           </span>
         </div>
-        <h1 id="event-title-display" class="text-xl sm:text-2xl font-black text-cream-100 tracking-wide">
+        <h1 id="event-title-display" class="font-serif text-xl sm:text-2xl font-black text-cream-100 tracking-wide">
           2026 太陽實驗室之聖誕大亂鬥
         </h1>
       </div>
@@ -186,18 +256,39 @@
   <!-- 全域明顯跳出提示 Toast -->
   <div id="toast-container" class="fixed top-24 left-1/2 -translate-x-1/2 z-[90] flex flex-col items-center gap-2.5 w-11/12 max-w-lg pointer-events-none"></div>
 
-  <!-- 滿版「誰是小天使」公布名字震撼覆蓋層（停頓 1.8 秒） -->
-  <div id="fullscreen-angel-reveal-overlay" class="fixed inset-0 z-[75] hidden items-center justify-center p-4 bg-peacock-950/95 backdrop-blur-lg">
-    <div id="fullscreen-angel-reveal-card" class="w-full max-w-3xl rounded-3xl p-8 sm:p-14 text-center space-y-6 animate-verdict border-4 border-vintageGold-400 bg-peacock-900 shadow-2xl">
-      <!-- 由 JS 動態填入滿版小天使名字 -->
+  <!-- 投影舞台：投影電腦不要登入主持人，進入階段三後自動顯示，畫面跟著主持人手機操作切換 -->
+  <div id="projection-root">
+    <div id="pj-stage">
+      <div class="pj-top">
+        <span class="pj-event" id="pj-event-title">2026 太陽實驗室之聖誕大亂鬥</span>
+        <span class="pj-progress" id="pj-progress">已揭曉 0 / 8 組</span>
+      </div>
+      <div class="pj-panel pj-center" id="pj-idle">
+        <div class="pj-hero" id="pj-idle-title">準備抽出第一位小主人</div>
+        <div class="pj-sub" id="pj-idle-sub">還有 8 位小主人等著收禮</div>
+      </div>
+      <div class="pj-panel pj-center" id="pj-rolling">
+        <div class="pj-sub">抽出這一輪的小主人</div>
+        <div class="pj-slot" id="pj-rolling-name">？？？</div>
+      </div>
+      <div class="pj-panel pj-center" id="pj-master">
+        <div class="pj-sub">這一輪的小主人</div>
+        <div class="pj-person"><span class="pj-avatar xl" id="pj-master-avatar">👑</span><span class="pj-name gold xl" id="pj-master-name"></span></div>
+        <div class="pj-sub" id="pj-master-q"></div>
+      </div>
+      <div class="pj-panel" id="pj-gifts">
+        <div class="pj-pair" id="pj-pair"></div>
+        <div class="pj-result" id="pj-result"></div>
+        <div class="pj-cards" id="pj-cards"></div>
+      </div>
+      <div class="pj-panel" id="pj-done">
+        <div class="pj-hero" style="font-size: 92px; text-align: center;">聖誕快樂！全部配對揭曉</div>
+        <div class="pj-overview" id="pj-overview"></div>
+      </div>
+      <div class="pj-overlay" id="pj-angel-overlay"><div id="pj-angel-inner" class="pj-verdict-card"></div></div>
+      <div class="pj-overlay" id="pj-verdict-overlay"><div id="pj-verdict-inner" class="pj-verdict-card"></div></div>
     </div>
-  </div>
-
-  <!-- 滿版揭曉結果全螢幕震撼特效覆蓋層（成功送禮 / 可惜不是你） -->
-  <div id="fullscreen-verdict-overlay" class="fixed inset-0 z-[70] hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-    <div id="fullscreen-verdict-card" class="w-full max-w-2xl rounded-3xl p-7 sm:p-11 text-center space-y-5 animate-verdict border-4 shadow-2xl relative">
-      <!-- 由 JS 動態填入滿版結果 -->
-    </div>
+    <button type="button" id="pj-sound-btn" onclick="app.toggleSound()">🔊 啟用音效</button>
   </div>
 
   <!-- 主內容區塊 -->
@@ -273,10 +364,10 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <h3 class="text-lg sm:text-xl font-black text-cream-100">
-                  🕵️ 階段二：小天使四選一心理戰（從左到右四選一）
+                  🕵️ 階段二：小天使四選一心理戰
                 </h3>
                 <p class="text-xs sm:text-sm text-cream-200/80 mt-0.5">
-                  點擊自己的名字並輸入 <strong class="text-vintageGold-300">4 位數 PIN 碼</strong>，查看你的收禮小主人並從橫向四張卡片中猜出他本人許願的禮物！
+                  點擊自己的名字並輸入 <strong class="text-vintageGold-300">4 位數 PIN 碼</strong>，查看你的收禮小主人，從四份禮物中猜出他本人想要的那一份！
                 </p>
               </div>
               <div id="unlocked-user-controls" class="hidden">
@@ -317,8 +408,8 @@
             </div>
 
             <!-- 四選一橫向單排卡片列表（從左到右四個） -->
-            <div class="p-4 sm:p-5 overflow-x-auto">
-              <div id="quiz-options-grid" class="grid grid-cols-4 gap-3 min-w-[760px]">
+            <div class="p-4 sm:p-5">
+              <div id="quiz-options-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <!-- 由 JS 動態渲染選項 A, B, C, D -->
               </div>
             </div>
@@ -331,7 +422,7 @@
                 🎊 派對現場準備好「抽取小主人（收禮人）並揭曉誰是小天使（送禮人）」了嗎？
               </h4>
               <p class="text-xs sm:text-sm text-cream-200/80">
-                進入現場舞台後，每次隨機抽出一位收禮「小主人」，按下「誰是小天使」將滿版震撼公布送禮人，並進行滿版結果揭曉與最後頒獎！
+                進入後，投影電腦會自動切到揭曉畫面，你用這支手機的控制台操作每一步。
               </p>
             </div>
             <button onclick="app.requestHostAction('enter_stage')" class="btn-primary w-full sm:w-auto whitespace-nowrap px-6 py-3.5 rounded-xl text-sm sm:text-base shadow-lg">
@@ -341,177 +432,31 @@
 
         </div>
 
-        <!-- 階段三：派對現場「抽小主人 → 滿版公布誰是小天使 → 滿版結果 → 頒獎典禮」 (status === 'stage') -->
+        <!-- 階段三：派對現場揭曉 (status === 'stage') -->
+        <!-- 主持人手機看到控制台；投影電腦（未登入主持人、寬螢幕）顯示 #projection-root；其他人的手機顯示簡易畫面 -->
         <div id="stage-live-reveal" class="hidden space-y-4">
-          
-          <!-- 主持人控制台狀態列 -->
-          <div class="festive-card rounded-2xl px-5 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div class="flex items-center gap-3">
-              <span class="text-2xl">🎙️</span>
+
+          <div id="stage-audience-fallback" class="hidden festive-card rounded-2xl p-6 text-center space-y-3">
+            <div class="text-sm font-bold text-vintageGold-300">派對現場揭曉中，請看大螢幕</div>
+            <div id="fallback-text" class="text-2xl font-black font-serif text-cream-100">準備抽出小主人</div>
+            <div id="fallback-progress" class="text-sm text-cream-200/80"></div>
+            <button type="button" onclick="app.openHostAuthModal('unlock_only')" class="btn-ghost px-5 py-3 rounded-xl text-sm">主持人登入</button>
+          </div>
+
+          <div id="host-console" class="hidden space-y-4">
+            <div class="festive-card rounded-2xl p-4 flex items-center justify-between gap-3">
               <div>
-                <div class="flex items-center gap-2">
-                  <h3 class="text-base sm:text-lg font-black text-vintageGold-300">派對現場揭曉舞台（抽小主人 ➔ 誰是小天使）</h3>
-                  <span id="stage-progress-badge" class="px-2.5 py-0.5 rounded-full bg-peacock-800 border border-vintageGold-400/35 text-cream-100 text-xs font-bold">
-                    已揭曉 0 / 8 組
-                  </span>
-                </div>
-                <p id="stage-role-subtitle" class="text-xs sm:text-sm text-cream-200/80">
-                  目前為「現場觀眾同步觀看模式」，畫面會即時跟著主持人操作更新！
-                </p>
+                <div class="text-xs font-bold text-vintageGold-300">主持人控制台</div>
+                <div id="hc-progress" class="text-lg font-black text-cream-100">已揭曉 0 / 8 組</div>
               </div>
+              <button type="button" onclick="app.hostLogout()" class="btn-ghost px-3 py-2.5 rounded-xl text-xs">登出主持人</button>
             </div>
-
-            <div class="flex items-center gap-2.5">
-              <button type="button" onclick="app.requestHostAction('open_awards')" class="btn-secondary px-4 py-2.5 rounded-xl text-xs sm:text-sm">
-                🏆 查看猜對頒獎台
-              </button>
-              <div id="host-unlock-btn-wrap">
-                <button onclick="app.openHostAuthModal('unlock_only')" class="btn-primary px-4 py-2.5 rounded-xl text-xs sm:text-sm">
-                  👑 主持人解鎖控制
-                </button>
-              </div>
+            <div class="festive-card rounded-2xl p-5 space-y-4 border border-vintageGold-400/50">
+              <div id="hc-step-label" class="text-sm font-bold text-vintageGold-300"></div>
+              <div id="hc-step-main" class="space-y-3"></div>
+              <div id="hc-actions" class="flex flex-col gap-2.5"></div>
             </div>
-          </div>
-
-          <!-- 主舞台中央互動卡片 -->
-          <div class="festive-card rounded-2xl p-5 sm:p-7 border border-vintageGold-400/50 space-y-4 relative overflow-hidden">
-            
-            <!-- 狀態 A：等待主持人隨機抽取第一位「小主人（收到禮物的人）」 -->
-            <div id="stage-step-idle" class="text-center py-6 space-y-5">
-              <div class="text-6xl">👑🎁</div>
-              <div class="space-y-2">
-                <h4 id="stage-idle-title" class="text-2xl sm:text-3xl font-black text-cream-100">
-                  準備抽取第一位「小主人（收禮幸運兒）」！
-                </h4>
-                <p id="stage-idle-desc" class="text-sm sm:text-base text-cream-200/85 max-w-md mx-auto">
-                  抽出第一位小主人後，每一輪揭曉的小天使將自動接棒成為下一輪的小主人，串成完美一圈！（剩餘 <span id="stage-remaining-count" class="text-vintageGold-300 font-black">8</span> 位）
-                </p>
-              </div>
-
-              <!-- 僅主持人可見的操作按鈕 -->
-              <div class="host-only-control hidden pt-1">
-                <button onclick="app.drawNextMaster()" id="btn-draw-next-presenter" class="btn-primary px-8 py-4 rounded-2xl text-base sm:text-lg shadow-xl">
-                  🎲 隨機抽取第一位小主人（收禮人）
-                </button>
-              </div>
-            </div>
-
-            <!-- 狀態 B：輪盤滾動抽「小主人」動畫中 -->
-            <div id="stage-step-rolling" class="hidden text-center py-8 space-y-4">
-              <div class="text-5xl animate-spin inline-block">🎄</div>
-              <p class="text-sm sm:text-base font-bold text-vintageGold-300 tracking-widest uppercase">正在隨機抽選下一位收禮的小主人...</p>
-              <div class="inline-block px-10 py-4 rounded-2xl bg-peacock-950 border-2 border-vintageGold-400 animate-slot">
-                <span id="stage-rolling-name" class="text-3xl sm:text-5xl font-black text-cream-100">？？？</span>
-              </div>
-            </div>
-
-            <!-- 狀態 C：已抽出「小主人（收禮者）」，等待現場點擊「誰是小天使」 -->
-            <div id="stage-step-master-picked" class="hidden text-center py-5 space-y-5">
-              <div class="inline-block px-5 py-1.5 rounded-full bg-peacock-950 border border-vintageGold-400/50 text-vintageGold-300 text-xs sm:text-sm font-black tracking-wider">
-                ✨ 本輪收禮「小主人」 ✨
-              </div>
-              <div class="flex items-center justify-center gap-3.5">
-                <span id="stage-current-master-avatar" class="text-5xl sm:text-6xl">👑</span>
-                <div id="stage-current-master-big" class="text-4xl sm:text-6xl font-black text-cream-100 tracking-wide">
-                  Coco
-                </div>
-              </div>
-
-              <div class="p-5 rounded-2xl bg-peacock-950 border border-vintageGold-400/35 max-w-xl mx-auto">
-                <div class="text-2xl sm:text-3xl font-black text-vintageGold-300 tracking-wider flex items-center justify-center gap-3 flex-wrap">
-                  <span>小天使</span>
-                  <span class="px-4 py-1 rounded-xl bg-peacock-800 border border-vintageGold-400/50 text-cream-100">？？？</span>
-                  <span>送給</span>
-                  <span class="stage-master-inline text-vintageGold-300">Coco</span>
-                </div>
-              </div>
-
-              <!-- 僅主持人可見的操作按鈕：按下後滿版公布名字並停 1.8 秒 -->
-              <div class="host-only-control hidden pt-2">
-                <button onclick="app.revealCurrentAngel()" class="btn-primary px-9 py-4 rounded-2xl text-base sm:text-xl shadow-xl">
-                  👼 誰是小天使？（滿版揭曉）
-                </button>
-              </div>
-            </div>
-
-            <!-- 狀態 D：已公布「小天使 A 送給 小主人 B」，橫排四張卡片等待主持人點選實際送出的禮物 -->
-            <div id="stage-step-verdict" class="hidden space-y-4">
-              
-              <!-- 頂部關係橫幅 -->
-              <div class="text-center p-4 rounded-2xl bg-peacock-950 border border-vintageGold-400/45 space-y-1.5">
-                <div class="text-xs font-bold text-vintageGold-300 tracking-widest uppercase">本輪小天使 ➔ 小主人配對揭曉</div>
-                <div class="text-2xl sm:text-4xl font-black text-cream-100 flex flex-wrap items-center justify-center gap-3">
-                  <span class="text-xs sm:text-sm px-2.5 py-1 rounded bg-peacock-800 text-vintageGold-300 border border-vintageGold-400/35">小天使</span>
-                  <span id="stage-pair-giver" class="text-cream-100">Jackson</span>
-                  <span class="px-3.5 py-1 rounded-xl bg-vintageGold-400 text-peacock-950 text-base sm:text-xl font-black">送給</span>
-                  <span class="text-xs sm:text-sm px-2.5 py-1 rounded bg-peacock-800 text-vintageGold-300 border border-vintageGold-400/35">小主人</span>
-                  <span id="stage-pair-target" class="text-vintageGold-300">Coco</span>
-                </div>
-                <p id="stage-verdict-instruction" class="text-xs sm:text-sm text-cream-200/85 pt-0.5">
-                  以下為給小天使 <span class="font-bold text-white stage-giver-inline">Jackson</span> 挑選的四個禮物選項，請點選他<strong class="text-vintageGold-300">現場實際買來的禮物</strong>：
-                </p>
-              </div>
-
-              <!-- 揭曉完畢後可重新開啟滿版特效或直接交棒給下一輪小主人 -->
-              <div id="stage-verdict-summary-bar" class="hidden flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-peacock-950 border border-vintageGold-400/60">
-                <div id="stage-verdict-mini-text" class="text-base sm:text-lg font-black text-vintageGold-300">
-                  🎉 成功送禮！
-                </div>
-                <div class="flex items-center gap-2.5">
-                  <button type="button" onclick="app.reopenFullscreenVerdict()" class="btn-secondary px-4 py-2.5 rounded-xl text-sm">
-                    ✨ 再次播放滿版特效
-                  </button>
-                  <button type="button" id="btn-next-relay-round" onclick="app.finishCurrentRound()" class="btn-primary host-only-control px-6 py-2.5 rounded-xl text-sm sm:text-base">
-                    ➡️ 收錄戰績並交棒給下一位小主人
-                  </button>
-                </div>
-              </div>
-
-              <!-- 橫向一排四張禮物圖文卡片（強制 grid-cols-4 從左到右排列） -->
-              <div class="overflow-x-auto">
-                <div id="stage-quiz-cards-grid" class="grid grid-cols-4 gap-3 min-w-[760px]">
-                  <!-- 由 JS 動態渲染 -->
-                </div>
-              </div>
-            </div>
-
-            <!-- 狀態 E：8 位全部揭曉完畢 ➔ 直接進入「最終頒獎典禮舞台」 -->
-            <div id="stage-step-all-done" class="hidden text-center py-5 space-y-5">
-              <div class="space-y-2">
-                <div class="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-peacock-950 border border-vintageGold-400 text-vintageGold-300 text-xs sm:text-sm font-black">
-                  🏆 2026 太陽實驗室聖誕交換禮物・榮譽頒獎典禮 🏆
-                </div>
-                <h4 class="text-2xl sm:text-4xl font-black text-cream-100">
-                  恭喜以下「神準讀心術小天使」獲獎！
-                </h4>
-                <p class="text-sm text-cream-200/85 max-w-xl mx-auto">
-                  只要在心理戰階段有猜對小主人本人許願禮物的夥伴，都將登上榮譽頒獎台接受全場掌聲！
-                </p>
-              </div>
-
-              <!-- 頒獎典禮得獎名單舞台（置中排列，就算只有一人也在正中央） -->
-              <div id="awards-podium-grid" class="flex flex-wrap justify-center items-stretch gap-4 max-w-6xl mx-auto pt-1">
-                <!-- 由 JS 動態填入所有猜對的夥伴獎盃卡 -->
-              </div>
-
-              <div class="pt-2">
-                <button type="button" onclick="app.celebrateAwards()" class="btn-primary px-8 py-4 rounded-2xl text-base shadow-xl">
-                  🎊 全場噴發豪華彩帶祝賀得獎者！
-                </button>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- 已揭曉戰績牆 -->
-          <div id="revealed-history-section" class="hidden space-y-3">
-            <div class="flex items-center justify-between px-1">
-              <h4 class="text-sm sm:text-base font-black text-vintageGold-300">📜 已揭曉配對戰績牆（小天使 ➔ 小主人）</h4>
-              <span id="history-count-text" class="text-xs sm:text-sm text-cream-200/75">0 / 8 組</span>
-            </div>
-            <div id="revealed-history-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              <!-- 由 JS 動態渲染 -->
-            </div>
+            <p class="text-xs text-cream-200/70 px-1 leading-relaxed">投影那台電腦不要登入主持人，畫面會跟著你的操作自動切換。音效從投影電腦播放，開場前記得在投影畫面右下角按一次「啟用音效」。</p>
           </div>
 
         </div>
@@ -521,7 +466,7 @@
       <footer class="mt-8 px-4 py-4 rounded-2xl bg-peacock-950 border border-vintageGold-400/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-cream-200/75">
         <div>🎄 2026 太陽實驗室之聖誕大亂鬥・MERRY CHRISTMAS &amp; HAPPY NEW YEAR</div>
         <div class="flex flex-wrap items-center justify-center gap-2">
-          <button type="button" onclick="app.requestHostAction('reset')" class="btn-ghost px-3 py-2 rounded-xl text-xs hover:text-orange-400">
+          <button type="button" id="btn-reset-event" onclick="app.requestHostAction('reset')" class="btn-ghost px-3 py-2 rounded-xl text-xs hover:text-orange-400">
             重置活動
           </button>
           <button type="button" onclick="app.requestHostAction('open_curation')" class="btn-secondary px-4 py-2 rounded-xl text-xs font-black">
@@ -786,8 +731,10 @@
       isHostUnlocked: false,
       pendingHostAction: null,
       urlFetchTimers: {},
-      rollingInterval: null
+      rollingInterval: null,
+      hostPickIndex: null
     };
+    const HOST_SESSION_KEY = 'sun_lab_xmas_host_session';
 
     function initSnowflakes() {
       const container = document.getElementById('snow-container');
@@ -857,13 +804,25 @@
       return offsets.map(offset => `member_${(memberOrder + offset) % totalCount}`);
     }
 
+    // 配對：單一閉環，並避開「小天使抽到自己推薦過禮物的人」
     function buildSingleCyclePairs(members) {
-      const shuffled = shuffleArray(members);
-      const n = shuffled.length;
-      const map = {};
-      for (let i = 0; i < n; i++) {
-        map[shuffled[i].id] = shuffled[(i + 1) % n].id;
+      const n = members.length;
+      const isValid = (giver, target) => target.id !== giver.id && !(giver.assignedPeers || []).includes(target.id);
+      for (let attempt = 0; attempt < 20000; attempt++) {
+        const shuffled = shuffleArray(members);
+        let ok = true;
+        for (let i = 0; i < n; i++) {
+          if (!isValid(shuffled[i], shuffled[(i + 1) % n])) { ok = false; break; }
+        }
+        if (ok) {
+          const map = {};
+          for (let i = 0; i < n; i++) map[shuffled[i].id] = shuffled[(i + 1) % n].id;
+          return map;
+        }
       }
+      const shuffled = shuffleArray(members);
+      const map = {};
+      for (let i = 0; i < n; i++) map[shuffled[i].id] = shuffled[(i + 1) % n].id;
       return map;
     }
 
@@ -934,80 +893,72 @@
       }, 3600);
     }
 
-    function showFullscreenAngelRevealOverlay(angelGiver, masterTarget, onDoneCallback) {
-      const overlay = document.getElementById('fullscreen-angel-reveal-overlay');
-      const card = document.getElementById('fullscreen-angel-reveal-card');
-      if (!overlay || !card || !angelGiver || !masterTarget) {
-        if (onDoneCallback) onDoneCallback();
-        return;
+    // ===== 音效（瀏覽器即時合成，不需要音檔）=====
+    const sfx = {
+      ctx: null,
+      on: false,
+      enable() {
+        try {
+          this.ctx = this.ctx || new (window.AudioContext || window.webkitAudioContext)();
+          this.ctx.resume();
+          this.on = true;
+        } catch (e) { console.warn('音效無法啟用', e); }
+      },
+      tone(freq, dur, type = 'sine', vol = 0.2, when = 0, slideTo = null) {
+        if (!this.on || !this.ctx) return;
+        const c = this.ctx, t = c.currentTime + when;
+        const o = c.createOscillator(), g = c.createGain();
+        o.type = type;
+        o.frequency.setValueAtTime(freq, t);
+        if (slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, t + dur);
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(vol, t + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+        let node = o;
+        if (type === 'sawtooth') {
+          const f = c.createBiquadFilter();
+          f.type = 'lowpass'; f.frequency.value = 900;
+          o.connect(f); node = f;
+        }
+        node.connect(g).connect(c.destination);
+        o.start(t); o.stop(t + dur + 0.05);
+      },
+      noise(dur, vol = 0.3) {
+        if (!this.on || !this.ctx) return;
+        const c = this.ctx, len = Math.floor(c.sampleRate * dur);
+        const buf = c.createBuffer(1, len, c.sampleRate), d = buf.getChannelData(0);
+        for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+        const s = c.createBufferSource(), g = c.createGain(), f = c.createBiquadFilter();
+        f.type = 'bandpass'; f.frequency.value = 180;
+        s.buffer = buf; g.gain.value = vol;
+        s.connect(f).connect(g).connect(c.destination);
+        s.start();
+      },
+      tick() { this.tone(1400, 0.04, 'square', 0.05); },
+      drum() { this.noise(0.25, 0.9); this.tone(120, 0.25, 'sine', 0.45, 0, 50); },
+      ding() { [880, 1320].forEach((f, i) => this.tone(f, 0.7, 'triangle', 0.18, i * 0.09)); },
+      fanfare() { [523, 659, 784, 1047].forEach((f, i) => this.tone(f, i === 3 ? 1.1 : 0.24, 'triangle', 0.22, i * 0.15)); },
+      wahwah() { [[392, 370], [370, 349], [349, 330], [330, 233]].forEach(([a, b], i) => this.tone(a, i === 3 ? 1.3 : 0.45, 'sawtooth', 0.22, i * 0.5, b)); }
+    };
+
+    // 失敗特效：灰色小雪花飄落
+    function triggerGraySnow() {
+      const container = document.getElementById('confetti-container');
+      if (!container) return;
+      container.innerHTML = '';
+      for (let i = 0; i < 70; i++) {
+        const f = document.createElement('div');
+        f.textContent = '❄';
+        const dur = Math.random() * 2.5 + 3;
+        const delay = Math.random() * 1.2;
+        f.style.cssText = `position:absolute;left:${Math.random() * 100}vw;top:${-40 - Math.random() * 200}px;font-size:${Math.random() * 22 + 18}px;color:rgba(205,210,210,${(Math.random() * 0.4 + 0.45).toFixed(2)});transition:top ${dur}s linear ${delay}s, transform ${dur}s linear ${delay}s, opacity 1s ease ${dur + delay - 0.8}s;`;
+        container.appendChild(f);
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          f.style.top = '110vh';
+          f.style.transform = `translateX(${(Math.random() - 0.5) * 140}px) rotate(${Math.random() * 360}deg)`;
+          f.style.opacity = '0';
+        }));
       }
-
-      card.innerHTML = `
-        <div class="inline-block px-5 py-1.5 rounded-full bg-peacock-950 border border-vintageGold-400 text-vintageGold-300 text-sm sm:text-base font-black tracking-widest">
-          ✨ 誰是小天使（送禮人）揭曉 ✨
-        </div>
-        <div class="py-2 space-y-3">
-          <div class="text-7xl sm:text-8xl animate-bounce">${angelGiver.avatar || '🎅'}</div>
-          <div class="text-5xl sm:text-7xl font-black text-vintageGold-300 tracking-wider drop-shadow">
-            ${escapeHtml(angelGiver.name)}
-          </div>
-        </div>
-        <div class="text-xl sm:text-3xl font-black text-cream-100">
-          準備了神秘聖誕禮物要送給小主人 <span class="text-vintageGold-300 underline">${escapeHtml(masterTarget.name)}</span>！
-        </div>
-      `;
-
-      overlay.classList.remove('hidden');
-      overlay.classList.add('flex');
-
-      setTimeout(() => {
-        overlay.classList.add('hidden');
-        overlay.classList.remove('flex');
-        if (onDoneCallback) onDoneCallback();
-      }, 1800);
-    }
-
-    function showFullscreenVerdictOverlay(angelGiver, masterTarget, isSuccess) {
-      const overlay = document.getElementById('fullscreen-verdict-overlay');
-      const card = document.getElementById('fullscreen-verdict-card');
-      if (!overlay || !card) return;
-
-      if (isSuccess) {
-        card.className = 'w-full max-w-2xl rounded-3xl p-7 sm:p-11 text-center space-y-5 animate-verdict border-4 border-vintageGold-400 bg-peacock-950 shadow-2xl relative';
-        card.innerHTML = `
-          <div class="text-6xl sm:text-7xl">🎉🎁✨</div>
-          <div class="text-4xl sm:text-6xl font-black text-vintageGold-300 tracking-wider">
-            成功送禮！
-          </div>
-          <p class="text-base sm:text-xl text-cream-100 font-bold leading-relaxed">
-            太神啦！小天使 <span class="text-vintageGold-300 font-black">${escapeHtml(angelGiver.name)}</span> 精準猜中小主人 <span class="text-vintageGold-300 font-black">${escapeHtml(masterTarget.name)}</span> 本人許願的禮物！
-          </p>
-          <div class="pt-2">
-            <button type="button" onclick="app.closeFullscreenVerdict()" class="btn-primary px-8 py-3.5 rounded-2xl text-base shadow-lg">
-              查看四選項明細 ➔
-            </button>
-          </div>
-        `;
-      } else {
-        card.className = 'w-full max-w-2xl rounded-3xl p-7 sm:p-11 text-center space-y-5 animate-verdict border-4 border-orange-500 bg-peacock-950 shadow-2xl relative';
-        card.innerHTML = `
-          <div class="text-6xl sm:text-7xl">🧡🎁✨</div>
-          <div class="text-4xl sm:text-6xl font-black text-orange-400 tracking-wider">
-            可惜不是你！
-          </div>
-          <p class="text-base sm:text-xl text-cream-100 font-bold leading-relaxed">
-            小天使 <span class="text-vintageGold-300 font-black">${escapeHtml(angelGiver.name)}</span> 挑中了夥伴推薦的驚喜禮物！小主人 <span class="text-vintageGold-300 font-black">${escapeHtml(masterTarget.name)}</span> 依然收到大家為他精選的好禮！
-          </p>
-          <div class="pt-2">
-            <button type="button" onclick="app.closeFullscreenVerdict()" class="px-8 py-3.5 rounded-2xl bg-orange-500 hover:bg-orange-400 text-peacock-950 font-black text-base shadow-lg transition">
-              查看本人許願對照 ➔
-            </button>
-          </div>
-        `;
-      }
-
-      overlay.classList.remove('hidden');
-      overlay.classList.add('flex');
     }
 
     function copyTextToClipboard(text, successMsg) {
@@ -1177,6 +1128,9 @@
       stageCollecting.classList.add('hidden');
       stageDrawn.classList.add('hidden');
       stageLiveReveal.classList.add('hidden');
+      if (ev.status !== 'stage') hideProjection();
+      const resetBtn = document.getElementById('btn-reset-event');
+      if (resetBtn) resetBtn.classList.toggle('hidden', ev.status !== 'collecting');
 
       if (ev.status === 'collecting') {
         statusPill.textContent = '🎁 階段一：秘密許願與推薦中';
@@ -1276,9 +1230,9 @@
         renderPersonalMissionCard();
 
       } else if (ev.status === 'stage') {
-        statusPill.textContent = '🎊 階段三：派對現場揭曉與頒獎';
+        statusPill.textContent = '🎊 階段三：派對現場揭曉';
         stageLiveReveal.classList.remove('hidden');
-        renderLiveRevealStage(membersList);
+        renderStage(membersList);
       }
     }
 
@@ -1349,22 +1303,10 @@
             </div>
           </div>
 
-          <div class="p-3 pt-1.5 space-y-2">
-            <div class="flex items-center gap-1.5">
-              <a href="${escapeAttr(url)}" target="_blank" rel="noopener noreferrer" class="btn-secondary flex-1 py-2 px-2 rounded-lg text-xs text-center">
-                查看網頁 ↗
-              </a>
-              <button type="button" onclick="app.copyQuizUrl(${idx})" class="btn-ghost py-2 px-2.5 rounded-lg text-xs" title="複製網址">
-                📋
-              </button>
-            </div>
-
-            <button type="button" onclick="app.selectGuessOption(${idx})" class="w-full py-2.5 px-3 rounded-lg font-black text-xs transition ${
-              isGuessed
-                ? 'btn-primary'
-                : 'btn-secondary'
-            }">
-              ${isGuessed ? '✅ 已標記猜測' : '🤔 標記我的猜測'}
+          <div class="p-3 pt-1.5 grid grid-cols-2 gap-1.5">
+            <a href="${escapeAttr(url)}" target="_blank" rel="noopener noreferrer" class="btn-secondary min-h-[44px] flex items-center justify-center rounded-lg text-xs text-center">看網頁</a>
+            <button type="button" onclick="app.selectGuessOption(${idx})" class="min-h-[44px] rounded-lg font-black text-xs transition ${isGuessed ? 'btn-primary' : 'btn-secondary'}">
+              ${isGuessed ? '已標記' : '猜這個'}
             </button>
           </div>
         `;
@@ -1379,262 +1321,351 @@
       }
     }
 
-    function renderLiveRevealStage(membersList) {
-      const revealedList = membersList.filter(m => m.revealedInStage);
-      const unrevealedList = membersList.filter(m => !m.revealedInStage);
+    // ===== 階段三：投影舞台與主持人控制台 =====
+    const pj = { lastStepKey: '', rollTimer: null, countdownTimers: [], lastReplay: 0, hcStepKey: '' };
+    const OPTION_LABELS = ['A', 'B', 'C', 'D'];
 
-      document.getElementById('stage-progress-badge').textContent = `已揭曉 ${revealedList.length} / ${membersList.length} 組`;
+    function optUrl(o) { return typeof o === 'string' ? o : (o && o.url) || ''; }
+    function optTitle(o, idx) { return (o && typeof o === 'object' && o.title) ? o.title : `精選禮物 ${OPTION_LABELS[idx]}`; }
+    function optImage(o) { return (o && typeof o === 'object' && o.image) ? o.image : ''; }
+    function getAngelOf(masterId, list) { return list.find(m => m.targetMemberId === masterId) || null; }
+    function getProvider(opt, master, list) {
+      const url = optUrl(opt);
+      if (url && url === master.wishUrl) return { name: master.name, isTrue: true };
+      const r = list.find(m => m.id !== master.id && ((m.peerRecommendations || {})[master.id] || {}).url === url);
+      return { name: r ? r.name : '夥伴', isTrue: false };
+    }
+    function avatarOf(m) { return (m && m.avatar) || AVATAR_ICONS[(m && m.order || 0) % AVATAR_ICONS.length]; }
 
-      const stepIdle = document.getElementById('stage-step-idle');
-      const stepRolling = document.getElementById('stage-step-rolling');
-      const stepMasterPicked = document.getElementById('stage-step-master-picked');
-      const stepVerdict = document.getElementById('stage-step-verdict');
-      const stepAllDone = document.getElementById('stage-step-all-done');
+    function shouldShowProjection() {
+      return Boolean(state.eventData && state.eventData.status === 'stage' && !state.isHostUnlocked && window.innerWidth >= 900);
+    }
+    function fitProjection() {
+      const st = document.getElementById('pj-stage');
+      const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+      st.style.transform = `translate(-50%, -50%) scale(${s})`;
+    }
 
-      [stepIdle, stepRolling, stepMasterPicked, stepVerdict, stepAllDone].forEach(el => el.classList.add('hidden'));
+    function renderStage(list) {
+      const showPj = shouldShowProjection();
+      document.getElementById('projection-root').classList.toggle('on', showPj);
+      document.getElementById('host-console').classList.toggle('hidden', !state.isHostUnlocked);
+      document.getElementById('stage-audience-fallback').classList.toggle('hidden', state.isHostUnlocked || showPj);
+      if (showPj) {
+        fitProjection();
+        renderProjection(list);
+      } else {
+        stopRolling();
+        clearCountdown();
+        pj.lastStepKey = '';
+      }
+      if (state.isHostUnlocked) renderHostConsole(list);
+      else if (!showPj) renderAudienceFallback(list);
+    }
 
+    function hideProjection() {
+      document.getElementById('projection-root').classList.remove('on');
+      stopRolling();
+      clearCountdown();
+      pj.lastStepKey = '';
+    }
+
+    function startRolling(cands) {
+      stopRolling();
+      const el = document.getElementById('pj-rolling-name');
+      if (!cands.length) return;
+      let delay = 55;
+      const step = () => {
+        el.textContent = cands[Math.floor(Math.random() * cands.length)].name;
+        sfx.tick();
+        delay = Math.min(delay * 1.1, 380);
+        pj.rollTimer = setTimeout(step, delay);
+      };
+      step();
+    }
+    function stopRolling() {
+      if (pj.rollTimer) { clearTimeout(pj.rollTimer); pj.rollTimer = null; }
+    }
+    function clearCountdown() {
+      pj.countdownTimers.forEach(t => clearTimeout(t));
+      pj.countdownTimers = [];
+    }
+
+    function runAngelCountdown(angel, master) {
+      clearCountdown();
+      const inner = document.getElementById('pj-angel-inner');
+      const showNum = (n) => { inner.innerHTML = `<div class="pj-ov-label">送禮給 ${escapeHtml(master.name)} 的小天使是…</div><div class="pj-count">${n}</div>`; sfx.drum(); };
+      showNum(3);
+      pj.countdownTimers.push(setTimeout(() => showNum(2), 950));
+      pj.countdownTimers.push(setTimeout(() => showNum(1), 1900));
+      pj.countdownTimers.push(setTimeout(() => {
+        inner.innerHTML = `
+          <div class="pj-ov-label">送禮給 ${escapeHtml(master.name)} 的小天使是</div>
+          <div class="pj-angel-avatar">${avatarOf(angel)}</div>
+          <div class="pj-angel-name">${escapeHtml(angel.name)}</div>`;
+        sfx.fanfare();
+      }, 2850));
+    }
+
+    function pjShow(panelId) {
+      ['pj-idle', 'pj-rolling', 'pj-master', 'pj-gifts', 'pj-done'].forEach(id => {
+        document.getElementById(id).classList.toggle('on', id === panelId);
+      });
+    }
+
+    function pjPersonHtml(role, m, gold) {
+      return `<div class="pj-person">
+          <span class="pj-avatar">${avatarOf(m)}</span>
+          <span><span class="pj-role">${role}</span><span class="pj-name ${gold ? 'gold' : ''}">${escapeHtml(m.name)}</span></span>
+        </div>`;
+    }
+
+    function renderPjGifts(angel, master, list, chosenIdx) {
+      const arrow = `<svg aria-hidden="true" width="120" height="48" viewBox="0 0 120 48" fill="none" stroke="#e2b04a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 24h108"></path><path d="M92 6l20 18-20 18"></path></svg>`;
+      document.getElementById('pj-pair').innerHTML = pjPersonHtml('小天使', angel, false) + arrow + pjPersonHtml('小主人', master, true);
+
+      const detail = typeof chosenIdx === 'number';
+      const opts = angel.quizOptions || [];
+      const resultEl = document.getElementById('pj-result');
+      if (!detail) {
+        resultEl.innerHTML = `<span class="pj-result-text">${escapeHtml(angel.name)} 帶來的是哪一份禮物？主持人確認中…</span>`;
+      } else {
+        const chosen = opts[chosenIdx];
+        const prov = getProvider(chosen, master, list);
+        resultEl.innerHTML = prov.isTrue
+          ? `<span class="pj-result-big" style="color:#f0ce7d">成功送禮！</span><span class="pj-result-text">${escapeHtml(angel.name)} 猜中了 ${escapeHtml(master.name)} 本人想要的禮物</span>`
+          : `<span class="pj-result-big" style="color:#f4a259">就差一點！</span><span class="pj-result-text">${escapeHtml(angel.name)} 送出的是 ${escapeHtml(prov.name)} 推薦的禮物</span>`;
+      }
+
+      document.getElementById('pj-cards').innerHTML = opts.map((o, idx) => {
+        const title = optTitle(o, idx);
+        const image = optImage(o);
+        let cls = '', bottom = '';
+        if (detail) {
+          const prov = getProvider(o, master, list);
+          const isChosen = chosenIdx === idx;
+          cls = prov.isTrue ? 'wish' : (isChosen ? 'sent' : 'dim');
+          const tags = [];
+          if (isChosen) tags.push('<span class="pj-tag sent">實際送出</span>');
+          if (angel.guessedOptionIndex === idx) tags.push('<span class="pj-tag guess">原本猜這</span>');
+          bottom = `<span class="pj-provider ${prov.isTrue ? 'true' : ''}">${prov.isTrue ? `${escapeHtml(prov.name)} 本人許願` : `${escapeHtml(prov.name)} 推薦`}</span>
+                    <div class="pj-tags">${tags.join('')}</div>`;
+        }
+        const img = image
+          ? `<img src="${escapeAttr(image)}" alt="" onerror="this.remove()" /><span style="position:absolute;z-index:-1">🎁</span>`
+          : '🎁';
+        return `<div class="pj-card ${cls}">
+            <div class="pj-img">${img}<span class="pj-letter">${OPTION_LABELS[idx]}</span></div>
+            <div class="pj-body"><div class="pj-title">${escapeHtml(title)}</div>${bottom}</div>
+          </div>`;
+      }).join('');
+    }
+
+    function renderPjOverview(list) {
+      const masters = [...list].sort((a, b) => (a.revealedOrder || 99) - (b.revealedOrder || 99));
+      document.getElementById('pj-overview').innerHTML = masters.map(master => {
+        const angel = getAngelOf(master.id, list);
+        if (!angel) return '';
+        const ok = angel.wasCorrect === true;
+        const chosen = typeof angel.actualChosenIndex === 'number' ? (angel.quizOptions || [])[angel.actualChosenIndex] : null;
+        return `<div class="pj-ov ${ok ? 'ok' : ''}">
+            <div class="pj-ov-pair">${avatarOf(angel)} ${escapeHtml(angel.name)}<br><span class="to">➜ ${avatarOf(master)} ${escapeHtml(master.name)}</span></div>
+            ${chosen ? `<div class="pj-ov-gift">${escapeHtml(optTitle(chosen, angel.actualChosenIndex))}</div>` : ''}
+            ${angel.revealedInStage || master.revealedInStage ? `<span class="pj-ov-badge ${ok ? 'ok' : 'miss'}">${ok ? '成功送禮' : '就差一點'}</span>` : ''}
+          </div>`;
+      }).join('');
+    }
+
+    function renderProjection(list) {
       const st = state.eventData.stageState || { step: 'idle' };
+      const revealed = list.filter(m => m.revealedInStage).length;
+      document.getElementById('pj-event-title').textContent = state.eventData.title || '';
+      document.getElementById('pj-progress').textContent = `已揭曉 ${revealed} / ${list.length} 組`;
+
+      const master = st.currentMasterId ? state.membersMap[st.currentMasterId] : null;
+      const angel = master ? getAngelOf(master.id, list) : null;
+      const angelOv = document.getElementById('pj-angel-overlay');
+      const verdictOv = document.getElementById('pj-verdict-overlay');
+
+      const stepKey = `${st.step}_${st.currentMasterId || ''}`;
+      const isNewStep = stepKey !== pj.lastStepKey;
+      pj.lastStepKey = stepKey;
+
+      if (st.step !== 'rolling') stopRolling();
+      if (st.step !== 'angel_revealed') { angelOv.classList.remove('on'); clearCountdown(); }
+      if (st.step !== 'verdict_shown') verdictOv.classList.remove('on');
+
+      const needsPair = ['master_picked', 'angel_revealed', 'choosing', 'verdict_shown', 'verdict_detail'].includes(st.step);
+      if (needsPair && (!master || (st.step !== 'master_picked' && !angel))) { pjShow('pj-idle'); return; }
 
       if (st.step === 'rolling') {
-        stepRolling.classList.remove('hidden');
-        startLocalRollingVisual(unrevealedList.length > 0 ? unrevealedList : membersList);
-      } else {
-        stopLocalRollingVisual();
-      }
-
-      if (st.step === 'idle') {
-        if (unrevealedList.length === 0) {
-          stepAllDone.classList.remove('hidden');
-          renderAwardsCeremony(membersList);
-        } else {
-          stepIdle.classList.remove('hidden');
-          document.getElementById('stage-remaining-count').textContent = unrevealedList.length;
-        }
-      } else if (st.step === 'master_picked' && st.currentMasterId) {
-        const master = state.membersMap[st.currentMasterId];
-        if (master) {
-          stepMasterPicked.classList.remove('hidden');
-          document.getElementById('stage-current-master-avatar').textContent = master.avatar || '👑';
-          document.getElementById('stage-current-master-big').textContent = master.name;
-          document.querySelectorAll('.stage-master-inline').forEach(el => el.textContent = master.name);
-        }
-      } else if ((st.step === 'angel_revealed' || st.step === 'verdict_shown') && st.currentMasterId) {
-        const master = state.membersMap[st.currentMasterId];
-        const angelGiver = master ? membersList.find(m => m.targetMemberId === master.id) : null;
-
-        if (angelGiver && master) {
-          // 若剛進入 angel_revealed 階段，觸發滿版「誰是小天使」名字震撼停留 1.8 秒
-          const angelRevealKey = `${master.id}_${angelGiver.id}`;
-          if (st.step === 'angel_revealed' && lastShownAngelRevealKey !== angelRevealKey) {
-            lastShownAngelRevealKey = angelRevealKey;
-            showFullscreenAngelRevealOverlay(angelGiver, master);
-          }
-
-          stepVerdict.classList.remove('hidden');
-          document.getElementById('stage-pair-giver').textContent = angelGiver.name;
-          document.getElementById('stage-pair-target').textContent = master.name;
-          document.querySelectorAll('.stage-giver-inline').forEach(el => el.textContent = angelGiver.name);
-
-          const summaryBar = document.getElementById('stage-verdict-summary-bar');
-          const miniText = document.getElementById('stage-verdict-mini-text');
-          const instructionEl = document.getElementById('stage-verdict-instruction');
-          const cardsGrid = document.getElementById('stage-quiz-cards-grid');
-          cardsGrid.innerHTML = '';
-
-          const labels = ['A', 'B', 'C', 'D'];
-          const hasVerdict = st.step === 'verdict_shown' && typeof st.chosenOptionIndex === 'number';
-
-          if (hasVerdict) {
-            const chosenOpt = angelGiver.quizOptions[st.chosenOptionIndex];
-            const chosenUrl = typeof chosenOpt === 'string' ? chosenOpt : chosenOpt.url;
-            const isSuccess = chosenUrl === master.wishUrl;
-
-            summaryBar.classList.remove('hidden');
-            instructionEl.innerHTML = `現場揭曉結果出爐！以下為小主人 <span class="font-bold text-vintageGold-300">${escapeHtml(master.name)}</span> 的本人許願對照：`;
-
-            if (isSuccess) {
-              miniText.innerHTML = `<span class="text-vintageGold-300 font-black">🎉 成功送禮！</span> 小天使 ${escapeHtml(angelGiver.name)} 精準命中 ${escapeHtml(master.name)} 的願望！`;
-            } else {
-              miniText.innerHTML = `<span class="text-orange-400 font-black">🧡 可惜不是你！</span> 小天使 ${escapeHtml(angelGiver.name)} 買到了夥伴推薦的驚喜禮物！`;
-            }
-
-            const celebrationKey = `${master.id}_${st.chosenOptionIndex}`;
-            if (lastCelebratedVerdictKey !== celebrationKey) {
-              lastCelebratedVerdictKey = celebrationKey;
-              if (isSuccess) triggerConfettiBurst();
-              showFullscreenVerdictOverlay(angelGiver, master, isSuccess);
-            }
+        pjShow('pj-rolling');
+        if (isNewStep) startRolling(list.filter(m => !m.revealedInStage));
+      } else if (st.step === 'master_picked') {
+        pjShow('pj-master');
+        document.getElementById('pj-master-avatar').textContent = avatarOf(master);
+        document.getElementById('pj-master-name').textContent = master.name;
+        document.getElementById('pj-master-q').textContent = `誰是送禮給 ${master.name} 的小天使？`;
+        if (isNewStep) sfx.ding();
+      } else if (st.step === 'angel_revealed') {
+        pjShow('pj-master');
+        angelOv.classList.add('on');
+        if (isNewStep) runAngelCountdown(angel, master);
+      } else if (st.step === 'choosing') {
+        pjShow('pj-gifts');
+        renderPjGifts(angel, master, list, null);
+      } else if (st.step === 'verdict_shown') {
+        pjShow('pj-gifts');
+        renderPjGifts(angel, master, list, null);
+        const chosen = (angel.quizOptions || [])[st.chosenOptionIndex];
+        const prov = getProvider(chosen, master, list);
+        const inner = document.getElementById('pj-verdict-inner');
+        const replayAt = st.replayAt || 0;
+        if (isNewStep || replayAt !== pj.lastReplay) {
+          pj.lastReplay = replayAt;
+          inner.innerHTML = prov.isTrue
+            ? `<div class="pj-v-big gold">成功送禮！</div>
+               <div class="pj-v-text"><b>${escapeHtml(angel.name)}</b> 猜中了 <b>${escapeHtml(master.name)}</b> 本人想要的禮物</div>`
+            : `<div class="pj-v-big orange">就差一點！</div>
+               <div class="pj-v-text"><b>${escapeHtml(angel.name)}</b> 送出的是 <b>${escapeHtml(prov.name)}</b> 推薦的禮物<br>${escapeHtml(master.name)} 一樣收到一份用心挑選的好禮</div>`;
+          verdictOv.classList.add('on');
+          inner.classList.remove('pj-shake');
+          if (prov.isTrue) {
+            triggerConfettiBurst();
+            sfx.fanfare();
           } else {
-            summaryBar.classList.add('hidden');
-            instructionEl.innerHTML = state.isHostUnlocked
-              ? `👑 <strong>主持人請點選</strong>：根據小天使 <span class="text-white font-bold">${escapeHtml(angelGiver.name)}</span> 現場拿出的禮物點擊下方對應卡片！`
-              : `等待主持人點選小天使 <span class="font-bold text-white">${escapeHtml(angelGiver.name)}</span> 現場實際送出的禮物...`;
+            void inner.offsetWidth;
+            inner.classList.add('pj-shake');
+            triggerGraySnow();
+            sfx.wahwah();
           }
-
-          angelGiver.quizOptions.forEach((optItem, idx) => {
-            const url = typeof optItem === 'string' ? optItem : optItem.url;
-            const title = (typeof optItem === 'object' && optItem.title) ? optItem.title : `精選禮物 ${labels[idx]}`;
-            const image = (typeof optItem === 'object' && optItem.image) ? optItem.image : '';
-            const isTrueWish = url === master.wishUrl;
-            const isChosen = hasVerdict && st.chosenOptionIndex === idx;
-            const wasPreGuessed = angelGiver.guessedOptionIndex === idx;
-
-            let borderStyle = 'border-vintageGold-400/25 bg-peacock-950';
-            if (hasVerdict) {
-              if (isTrueWish) {
-                borderStyle = 'border-2 border-vintageGold-400 bg-peacock-800';
-              } else if (isChosen) {
-                borderStyle = 'border-2 border-orange-500 bg-orange-950/50';
-              } else {
-                borderStyle = 'border-vintageGold-400/15 bg-peacock-950/60 opacity-60';
-              }
-            }
-
-            const cardEl = document.createElement('div');
-            cardEl.className = `rounded-xl overflow-hidden transition flex flex-col justify-between ${borderStyle}`;
-            cardEl.innerHTML = `
-              <div>
-                <div class="relative h-28 bg-peacock-900 border-b border-vintageGold-400/20 flex items-center justify-center overflow-hidden">
-                  ${image 
-                    ? `<img src="${escapeAttr(image)}" alt="${escapeHtml(title)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" class="w-full h-full object-cover" />
-                       <div style="display:none;" class="w-full h-full flex-col items-center justify-center text-cream-200/50"><span class="text-3xl">🎁</span></div>`
-                    : `<div class="w-full h-full flex flex-col items-center justify-center text-cream-200/50"><span class="text-3xl">🎁</span></div>`
-                  }
-                  <span class="absolute top-2 left-2 w-7 h-7 rounded-lg bg-peacock-950/90 text-vintageGold-300 border border-vintageGold-400/40 font-black flex items-center justify-center text-xs">
-                    ${labels[idx]}
-                  </span>
-                  ${hasVerdict && isTrueWish ? `<span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-vintageGold-400 text-peacock-950 text-[11px] font-black">⭐ 本人許願</span>` : ''}
-                  ${hasVerdict && isChosen && !isTrueWish ? `<span class="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-orange-500 text-peacock-950 text-[11px] font-black">📦 實際送出</span>` : ''}
-                  ${wasPreGuessed ? `<span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-peacock-950/90 border border-vintageGold-400/40 text-vintageGold-300 text-[10px] font-bold">🤔 原本猜這</span>` : ''}
-                </div>
-
-                <div class="p-3 pb-1.5">
-                  <h5 class="font-black text-cream-100 text-sm leading-snug line-clamp-2 min-h-[2.4rem]">${escapeHtml(title)}</h5>
-                </div>
-              </div>
-
-              <div class="p-3 pt-1.5 space-y-1.5">
-                <a href="${escapeAttr(url)}" target="_blank" rel="noopener noreferrer" class="btn-secondary block w-full py-2 px-2 rounded-lg text-xs text-center">
-                  查看網頁 ↗
-                </a>
-                ${(!hasVerdict && state.isHostUnlocked) ? `
-                  <button type="button" onclick="app.selectStageActualGift(${idx})" class="btn-primary w-full py-2.5 px-2 rounded-lg text-xs shadow">
-                    👑 送這個！滿版揭曉
-                  </button>
-                ` : ''}
-              </div>
-            `;
-            cardsGrid.appendChild(cardEl);
-          });
+        } else {
+          verdictOv.classList.add('on');
         }
-      }
-
-      const historySection = document.getElementById('revealed-history-section');
-      const historyGrid = document.getElementById('revealed-history-grid');
-      if (revealedList.length > 0) {
-        historySection.classList.remove('hidden');
-        document.getElementById('history-count-text').textContent = `${revealedList.length} / ${membersList.length} 組`;
-        historyGrid.innerHTML = '';
-
-        const sortedHistory = [...revealedList].sort((a, b) => (a.revealedOrder || 0) - (b.revealedOrder || 0));
-        sortedHistory.forEach(master => {
-          const angelGiver = membersList.find(m => m.targetMemberId === master.id);
-          if (!angelGiver) return;
-          const isSuccess = angelGiver.wasCorrect === true;
-          const card = document.createElement('div');
-          card.className = `p-3.5 rounded-xl border flex items-center justify-between gap-2 ${
-            isSuccess
-              ? 'bg-peacock-800 border-vintageGold-400/60'
-              : 'bg-peacock-950 border-orange-500/50'
-          }`;
-          card.innerHTML = `
-            <div class="min-w-0">
-              <div class="text-sm font-black text-cream-100 flex items-center gap-1.5 truncate">
-                <span>${angelGiver.avatar || '🎅'} ${escapeHtml(angelGiver.name)}</span>
-                <span class="text-vintageGold-300 text-xs">➔</span>
-                <span class="text-vintageGold-300">${master.avatar || '👑'} ${escapeHtml(master.name)}</span>
-              </div>
-              <div class="text-xs text-cream-200/75 truncate mt-0.5">
-                願望：<a href="${escapeAttr(master.wishUrl)}" target="_blank" rel="noopener noreferrer" class="underline text-vintageGold-300">${escapeHtml(master.wishTitle || '商品')} ↗</a>
-              </div>
-            </div>
-            <span class="shrink-0 px-2.5 py-1 rounded-lg text-xs font-black ${
-              isSuccess
-                ? 'bg-vintageGold-400 text-peacock-950'
-                : 'bg-orange-500/20 border border-orange-400 text-orange-300'
-            }">
-              ${isSuccess ? '🎉 成功送禮' : '🧡 可惜不是你'}
-            </span>
-          `;
-          historyGrid.appendChild(card);
-        });
+      } else if (st.step === 'verdict_detail') {
+        pjShow('pj-gifts');
+        renderPjGifts(angel, master, list, st.chosenOptionIndex);
+      } else if (st.step === 'done') {
+        pjShow('pj-done');
+        renderPjOverview(list);
+        if (isNewStep) { triggerConfettiBurst(); sfx.fanfare(); }
       } else {
-        historySection.classList.add('hidden');
+        pjShow('pj-idle');
+        const remaining = list.length - revealed;
+        const title = document.getElementById('pj-idle-title');
+        const sub = document.getElementById('pj-idle-sub');
+        if (remaining === 0) { title.textContent = '全部揭曉完畢'; sub.textContent = '謝謝大家，聖誕快樂！'; }
+        else if (st.circleEnded) { title.textContent = '這一圈結束了！'; sub.textContent = `再抽下一位小主人，還有 ${remaining} 位`; }
+        else { title.textContent = '準備抽出第一位小主人'; sub.textContent = `還有 ${remaining} 位小主人等著收禮`; }
       }
     }
 
-    function renderAwardsCeremony(membersList) {
-      const grid = document.getElementById('awards-podium-grid');
-      if (!grid) return;
-      grid.innerHTML = '';
-
-      const winners = membersList.filter(angel => {
-        const master = state.membersMap[angel.targetMemberId];
-        if (!master || !angel.quizOptions) return false;
-        const guessedCorrect = typeof angel.guessedOptionIndex === 'number' && (() => {
-          const opt = angel.quizOptions[angel.guessedOptionIndex];
-          const url = typeof opt === 'string' ? opt : opt.url;
-          return url === master.wishUrl;
-        })();
-        return guessedCorrect || angel.wasCorrect === true;
-      });
-
-      if (winners.length === 0) {
-        grid.innerHTML = `
-          <div class="w-full max-w-xl p-6 rounded-2xl bg-peacock-950 border border-vintageGold-400/35 text-center space-y-2">
-            <div class="text-4xl">🎄</div>
-            <div class="text-lg font-black text-vintageGold-300">全員獲得「最佳聖誕驚喜參與獎」！</div>
-            <p class="text-sm text-cream-200/80">大家的推薦禮物都太有創意了，成功製造完美心理戰迷霧！</p>
-          </div>
-        `;
-        return;
-      }
-
-      winners.forEach((winner, idx) => {
-        const master = state.membersMap[winner.targetMemberId];
-        const card = document.createElement('div');
-        card.className = 'w-full max-w-[260px] p-5 rounded-2xl bg-peacock-950 border-2 border-vintageGold-400 text-center space-y-2 shadow-xl';
-        card.innerHTML = `
-          <div class="inline-block px-3 py-0.5 rounded-full bg-vintageGold-400 text-peacock-950 text-xs font-black">
-            🏅 神準讀心獎 #${idx + 1}
-          </div>
-          <div class="text-5xl pt-1">${winner.avatar || '🎅'}</div>
-          <div class="text-xl font-black text-cream-100">${escapeHtml(winner.name)}</div>
-          <div class="text-xs text-vintageGold-300 font-bold">
-            成功猜中小主人「${master ? escapeHtml(master.name) : ''}」的心願！
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    function startLocalRollingVisual(candidates) {
-      if (state.rollingInterval) return;
-      const nameEl = document.getElementById('stage-rolling-name');
-      let idx = 0;
-      state.rollingInterval = setInterval(() => {
-        if (candidates.length > 0 && nameEl) {
-          nameEl.textContent = candidates[idx % candidates.length].name;
-          idx++;
+    function hostCardsHtml(angel, master, list, detail, chosenIdx) {
+      const opts = angel.quizOptions || [];
+      return `<div class="grid grid-cols-2 gap-2.5">${opts.map((o, idx) => {
+        const title = escapeHtml(optTitle(o, idx));
+        const image = optImage(o);
+        const img = image
+          ? `<img src="${escapeAttr(image)}" alt="" onerror="this.style.display='none'" class="w-full h-full object-cover" />`
+          : '<span class="text-3xl">🎁</span>';
+        if (!detail) {
+          const picked = state.hostPickIndex === idx;
+          return `<button type="button" onclick="app.pickGift(${idx})" aria-pressed="${picked}" class="text-left rounded-xl overflow-hidden border-2 transition ${picked ? 'border-vintageGold-400 bg-peacock-800' : 'border-vintageGold-400/25 bg-peacock-950'}">
+              <div class="relative h-20 bg-peacock-900 flex items-center justify-center overflow-hidden">${img}
+                <span class="absolute top-1.5 left-1.5 w-7 h-7 rounded-lg ${picked ? 'bg-vintageGold-400 text-peacock-950' : 'bg-peacock-950/90 text-vintageGold-300'} font-black text-sm flex items-center justify-center">${OPTION_LABELS[idx]}</span>
+                ${picked ? '<span class="absolute top-1.5 right-1.5 px-2 py-0.5 rounded-full bg-vintageGold-400 text-peacock-950 text-[11px] font-black">已選</span>' : ''}
+              </div>
+              <div class="p-2.5 text-sm font-black text-cream-100 leading-snug line-clamp-2 min-h-[2.8rem]">${title}</div>
+            </button>`;
         }
-      }, 85);
+        const prov = getProvider(o, master, list);
+        const isChosen = chosenIdx === idx;
+        return `<div class="rounded-xl overflow-hidden border-2 ${prov.isTrue ? 'border-vintageGold-400 bg-peacock-800' : isChosen ? 'border-dashed border-orange-400 bg-peacock-950' : 'border-vintageGold-400/20 bg-peacock-950 opacity-60'}">
+            <div class="p-2.5 space-y-1">
+              <div class="text-sm font-black text-cream-100 leading-snug line-clamp-2">${OPTION_LABELS[idx]}. ${title}</div>
+              <div class="text-xs font-bold ${prov.isTrue ? 'text-vintageGold-300' : 'text-cream-200/80'}">${prov.isTrue ? `${escapeHtml(prov.name)} 本人許願` : `${escapeHtml(prov.name)} 推薦`}</div>
+              ${isChosen ? '<div class="text-xs font-black text-orange-300">實際送出</div>' : ''}
+            </div>
+          </div>`;
+      }).join('')}</div>`;
     }
 
-    function stopLocalRollingVisual() {
-      if (state.rollingInterval) {
-        clearInterval(state.rollingInterval);
-        state.rollingInterval = null;
+    function renderHostConsole(list) {
+      const st = state.eventData.stageState || { step: 'idle' };
+      const revealed = list.filter(m => m.revealedInStage).length;
+      const unrevealed = list.filter(m => !m.revealedInStage);
+      document.getElementById('hc-progress').textContent = `已揭曉 ${revealed} / ${list.length} 組`;
+
+      const stepKey = `${st.step}_${st.currentMasterId || ''}`;
+      if (stepKey !== pj.hcStepKey) { pj.hcStepKey = stepKey; state.hostPickIndex = null; }
+
+      const master = st.currentMasterId ? state.membersMap[st.currentMasterId] : null;
+      const angel = master ? getAngelOf(master.id, list) : null;
+      const btn = (txt, fn, primary = true, disabled = false) =>
+        `<button type="button" onclick="${fn}" ${disabled ? 'disabled' : ''} class="${primary ? 'btn-primary' : 'btn-secondary'} w-full py-4 rounded-2xl text-base ${disabled ? 'opacity-40 cursor-not-allowed' : ''}">${txt}</button>`;
+      const pairLine = (showAngel) => master ? `<div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-2xl font-black font-serif text-cream-100 leading-snug">
+          <span>${showAngel && angel ? `${avatarOf(angel)} ${escapeHtml(angel.name)}` : '<span class="text-cream-200/60">？？？</span>'}</span>
+          <span class="text-vintageGold-300 text-base font-sans">送給</span>
+          <span class="text-vintageGold-300">${avatarOf(master)} ${escapeHtml(master.name)}</span></div>` : '';
+
+      let label = '', main = '', actions = '';
+      if (st.step === 'rolling') {
+        label = '轉盤轉動中';
+        main = '<div class="text-xl font-black text-cream-100">正在抽出小主人…</div>';
+      } else if (st.step === 'master_picked' && master) {
+        label = '第二步：揭曉小天使';
+        main = pairLine(false);
+        actions = btn('揭曉小天使（3 秒倒數）', 'app.revealCurrentAngel()');
+      } else if (st.step === 'angel_revealed' && angel) {
+        label = '第三步：顯示四份禮物';
+        main = pairLine(true);
+        actions = btn('顯示四份禮物', 'app.showGiftOptions()');
+      } else if (st.step === 'choosing' && angel) {
+        label = '第四步：點選現場送出的禮物';
+        main = pairLine(true) + hostCardsHtml(angel, master, list, false) + '<p class="text-xs text-cream-200/70">點選只會在你的手機上標記，按下「公布答案」投影才會顯示結果。</p>';
+        actions = btn('公布答案', 'app.publishAnswer()', true, state.hostPickIndex === null);
+      } else if (st.step === 'verdict_shown' && angel) {
+        const prov = getProvider((angel.quizOptions || [])[st.chosenOptionIndex], master, list);
+        label = '結果已公布';
+        main = pairLine(true) + `<div class="text-xl font-black ${prov.isTrue ? 'text-vintageGold-300' : 'text-orange-300'}">${prov.isTrue ? '成功送禮！' : '就差一點！'}</div>`;
+        actions = btn('顯示每份禮物是誰提供的', 'app.showGiftDetail()') + btn('再播一次特效', 'app.replayEffects()', false);
+      } else if (st.step === 'verdict_detail' && angel) {
+        label = '這一輪結束';
+        main = pairLine(true) + hostCardsHtml(angel, master, list, true, st.chosenOptionIndex);
+        let nextLabel = '這一圈結束，重新抽小主人';
+        if (unrevealed.length === 0) nextLabel = '顯示全部配對總覽';
+        else if (!angel.revealedInStage) nextLabel = `下一輪：換 ${escapeHtml(angel.name)} 當小主人`;
+        actions = btn(nextLabel, 'app.nextRound()');
+      } else if (st.step === 'done') {
+        label = '全部揭曉完畢';
+        main = '<div class="text-lg font-bold text-cream-100">投影正在顯示全部配對總覽，聖誕快樂！</div>';
+      } else {
+        if (unrevealed.length === 0) {
+          label = '全部揭曉完畢';
+          actions = btn('顯示全部配對總覽', 'app.showOverview()');
+        } else {
+          label = st.circleEnded ? '這一圈結束了' : '第一步：抽小主人';
+          main = `<div class="text-lg font-bold text-cream-100">還有 ${unrevealed.length} 位小主人</div>`;
+          actions = btn('抽出小主人', 'app.drawNextMaster()');
+        }
       }
+      document.getElementById('hc-step-label').textContent = label;
+      document.getElementById('hc-step-main').innerHTML = main;
+      document.getElementById('hc-actions').innerHTML = actions;
+    }
+
+    function renderAudienceFallback(list) {
+      const st = state.eventData.stageState || { step: 'idle' };
+      const revealed = list.filter(m => m.revealedInStage).length;
+      const master = st.currentMasterId ? state.membersMap[st.currentMasterId] : null;
+      const angel = master ? getAngelOf(master.id, list) : null;
+      let text = '準備抽出小主人';
+      if (st.step === 'rolling') text = '正在抽出小主人…';
+      else if (st.step === 'master_picked' && master) text = `小主人：${master.name}`;
+      else if (['angel_revealed', 'choosing', 'verdict_shown', 'verdict_detail'].includes(st.step) && angel && master) text = `${angel.name} 送給 ${master.name}`;
+      else if (st.step === 'done') text = '全部揭曉完畢，聖誕快樂！';
+      document.getElementById('fallback-text').textContent = text;
+      document.getElementById('fallback-progress').textContent = `已揭曉 ${revealed} / ${list.length} 組`;
     }
 
     function escapeHtml(str) {
@@ -2051,8 +2082,10 @@
         }
 
         state.isHostUnlocked = true;
+        try { sessionStorage.setItem(HOST_SESSION_KEY, '1'); } catch (e) {}
         this.closeModal('modal-host-auth');
         syncHostPrivilegeUI();
+        renderEventUI();
         showToast('👑 已成功解鎖設定者權限！', 'success');
 
         const action = state.pendingHostAction;
@@ -2067,8 +2100,6 @@
           this.openHostCurationModal();
         } else if (actionType === 'enter_stage') {
           this.enterLiveRevealStage();
-        } else if (actionType === 'open_awards') {
-          this.openAwardsDirectly();
         } else if (actionType === 'reset') {
           const modal = document.getElementById('modal-reset-confirm');
           modal.classList.remove('hidden');
@@ -2179,63 +2210,46 @@
         }
       },
 
-      async openAwardsDirectly() {
+      async setStage(stageState) {
         try {
-          await updateDoc(getEventDocRef(), {
-            status: 'stage',
-            stageState: { step: 'idle' }
-          });
-          const membersList = Object.values(state.membersMap).sort((a, b) => a.order - b.order);
-          document.getElementById('stage-step-idle').classList.add('hidden');
-          document.getElementById('stage-step-all-done').classList.remove('hidden');
-          renderAwardsCeremony(membersList);
-          triggerConfettiBurst();
+          await updateDoc(getEventDocRef(), { stageState });
         } catch (err) {
           console.error(err);
+          showToast('操作失敗，請再按一次', 'error');
         }
       },
 
       async drawNextMaster() {
         if (!state.isHostUnlocked) return;
-        const membersList = Object.values(state.membersMap);
-        const unrevealedMasters = membersList.filter(m => !m.revealedInStage);
-        if (unrevealedMasters.length === 0) return;
-
-        const chosenMaster = unrevealedMasters[Math.floor(Math.random() * unrevealedMasters.length)];
-
-        try {
-          await updateDoc(getEventDocRef(), {
-            stageState: { step: 'rolling' }
-          });
-
-          setTimeout(async () => {
-            await updateDoc(getEventDocRef(), {
-              stageState: {
-                step: 'master_picked',
-                currentMasterId: chosenMaster.id
-              }
-            });
-          }, 1500);
-        } catch (err) {
-          console.error(err);
-        }
+        const unrevealed = Object.values(state.membersMap).filter(m => !m.revealedInStage);
+        if (unrevealed.length === 0) return;
+        const chosenMaster = unrevealed[Math.floor(Math.random() * unrevealed.length)];
+        await this.setStage({ step: 'rolling' });
+        setTimeout(() => {
+          this.setStage({ step: 'master_picked', currentMasterId: chosenMaster.id });
+        }, 4200);
       },
 
-      async revealCurrentAngel() {
-        if (!state.isHostUnlocked || !state.eventData || !state.eventData.stageState) return;
-        const masterId = state.eventData.stageState.currentMasterId;
-        if (!masterId) return;
+      revealCurrentAngel() {
+        const st = state.eventData && state.eventData.stageState;
+        if (!state.isHostUnlocked || !st || !st.currentMasterId) return;
+        this.setStage({ step: 'angel_revealed', currentMasterId: st.currentMasterId });
+      },
 
-        try {
-          await updateDoc(getEventDocRef(), {
-            stageState: {
-              step: 'angel_revealed',
-              currentMasterId: masterId
-            }
-          });
-        } catch (err) {
-          console.error(err);
-        }
+      showGiftOptions() {
+        const st = state.eventData && state.eventData.stageState;
+        if (!state.isHostUnlocked || !st || !st.currentMasterId) return;
+        this.setStage({ step: 'choosing', currentMasterId: st.currentMasterId });
+      },
+
+      pickGift(idx) {
+        state.hostPickIndex = idx;
+        renderEventUI();
+      },
+
+      async publishAnswer() {
+        if (state.hostPickIndex === null) return;
+        await this.selectStageActualGift(state.hostPickIndex);
       },
 
       async selectStageActualGift(optionIndex) {
@@ -2245,97 +2259,63 @@
         const angelGiver = master ? Object.values(state.membersMap).find(m => m.targetMemberId === master.id) : null;
         if (!master || !angelGiver) return;
 
-        const chosenOpt = angelGiver.quizOptions[optionIndex];
-        const chosenUrl = typeof chosenOpt === 'string' ? chosenOpt : chosenOpt.url;
+        const chosenUrl = optUrl(angelGiver.quizOptions[optionIndex]);
         const isCorrect = chosenUrl === master.wishUrl;
-
         const revealedCount = Object.values(state.membersMap).filter(m => m.revealedInStage).length;
 
         try {
-          await updateDoc(getMemberDocRef(master.id), {
-            revealedInStage: true,
-            revealedOrder: revealedCount + 1
-          });
-
-          await updateDoc(getMemberDocRef(angelGiver.id), {
-            actualChosenIndex: optionIndex,
-            wasCorrect: isCorrect
-          });
-
+          if (!master.revealedInStage) {
+            await updateDoc(getMemberDocRef(master.id), { revealedInStage: true, revealedOrder: revealedCount + 1 });
+          }
+          await updateDoc(getMemberDocRef(angelGiver.id), { actualChosenIndex: optionIndex, wasCorrect: isCorrect });
           await updateDoc(getEventDocRef(), {
-            stageState: {
-              step: 'verdict_shown',
-              currentMasterId: master.id,
-              chosenOptionIndex: optionIndex
-            }
+            stageState: { step: 'verdict_shown', currentMasterId: master.id, chosenOptionIndex: optionIndex, replayAt: Date.now() }
           });
         } catch (err) {
           console.error(err);
+          showToast('公布失敗，請再按一次', 'error');
         }
       },
 
-      reopenFullscreenVerdict() {
+      showGiftDetail() {
         const st = state.eventData && state.eventData.stageState;
-        if (!st || !st.currentMasterId || typeof st.chosenOptionIndex !== 'number') return;
-        const master = state.membersMap[st.currentMasterId];
-        const angelGiver = master ? Object.values(state.membersMap).find(m => m.targetMemberId === master.id) : null;
-        if (!master || !angelGiver) return;
-
-        const chosenOpt = angelGiver.quizOptions[st.chosenOptionIndex];
-        const chosenUrl = typeof chosenOpt === 'string' ? chosenOpt : chosenOpt.url;
-        const isSuccess = chosenUrl === master.wishUrl;
-        if (isSuccess) triggerConfettiBurst();
-        showFullscreenVerdictOverlay(angelGiver, master, isSuccess);
+        if (!st || typeof st.chosenOptionIndex !== 'number') return;
+        this.setStage({ step: 'verdict_detail', currentMasterId: st.currentMasterId, chosenOptionIndex: st.chosenOptionIndex });
       },
 
-      closeFullscreenVerdict() {
-        const overlay = document.getElementById('fullscreen-verdict-overlay');
-        if (overlay) {
-          overlay.classList.add('hidden');
-          overlay.classList.remove('flex');
-        }
+      replayEffects() {
+        const st = state.eventData && state.eventData.stageState;
+        if (!st || typeof st.chosenOptionIndex !== 'number') return;
+        this.setStage({ step: 'verdict_shown', currentMasterId: st.currentMasterId, chosenOptionIndex: st.chosenOptionIndex, replayAt: Date.now() });
       },
 
-      async finishCurrentRound() {
+      nextRound() {
         if (!state.isHostUnlocked) return;
         const st = state.eventData && state.eventData.stageState;
-        const membersList = Object.values(state.membersMap);
-        const unrevealedMasters = membersList.filter(m => !m.revealedInStage);
-
-        try {
-          if (unrevealedMasters.length === 0) {
-            await updateDoc(getEventDocRef(), {
-              stageState: { step: 'idle' }
-            });
-            return;
-          }
-
-          let nextMaster = null;
-          if (st && st.currentMasterId) {
-            const currentAngel = membersList.find(m => m.targetMemberId === st.currentMasterId);
-            if (currentAngel && !currentAngel.revealedInStage) {
-              nextMaster = currentAngel;
-            }
-          }
-          if (!nextMaster) {
-            nextMaster = unrevealedMasters[0];
-          }
-
-          await updateDoc(getEventDocRef(), {
-            stageState: {
-              step: 'master_picked',
-              currentMasterId: nextMaster.id
-            }
-          });
-          showToast(`➡️ 接力交棒！下一輪收禮小主人為「${nextMaster.name}」`, 'info');
-        } catch (err) {
-          console.error(err);
-        }
+        const list = Object.values(state.membersMap);
+        const unrevealed = list.filter(m => !m.revealedInStage);
+        if (unrevealed.length === 0) return this.setStage({ step: 'done' });
+        const angel = st ? list.find(m => m.targetMemberId === st.currentMasterId) : null;
+        if (angel && !angel.revealedInStage) return this.setStage({ step: 'master_picked', currentMasterId: angel.id });
+        return this.setStage({ step: 'idle', circleEnded: true });
       },
 
-      celebrateAwards() {
-        triggerConfettiBurst();
-        showToast('🎊 恭喜所有神準讀心術小天使！聖誕快樂！', 'success');
+      showOverview() {
+        this.setStage({ step: 'done' });
+      },
+
+      hostLogout() {
+        state.isHostUnlocked = false;
+        try { sessionStorage.removeItem(HOST_SESSION_KEY); } catch (e) {}
+        renderEventUI();
+        showToast('已登出主持人', 'info');
+      },
+
+      toggleSound() {
+        sfx.enable();
+        const b = document.getElementById('pj-sound-btn');
+        if (b) { b.textContent = '🔊 音效已開啟'; b.classList.add('enabled'); }
+        sfx.ding();
       },
 
       openVerifyPinModal(memberId) {
@@ -2479,6 +2459,8 @@
 
     async function bootstrap() {
       initSnowflakes();
+      try { if (sessionStorage.getItem(HOST_SESSION_KEY) === '1') state.isHostUnlocked = true; } catch (e) {}
+      window.addEventListener('resize', () => { if (state.eventData) renderEventUI(); });
 
       if (!firebaseConfig) {
         showToast('環境尚未設定雲端資料庫組態', 'error');
