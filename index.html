@@ -442,6 +442,9 @@
             <div id="drawn-members-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <!-- 由 JS 動態渲染 -->
             </div>
+            <div class="text-right">
+              <button type="button" onclick="app.openChangePin()" class="text-xs sm:text-sm text-vintageGold-300 underline underline-offset-4 py-2">想改密碼？點這裡</button>
+            </div>
           </div>
 
           <!-- 個人秘密任務卡 -->
@@ -531,8 +534,8 @@
           <button type="button" id="btn-reset-event" onclick="app.requestHostAction('reset')" class="btn-ghost px-3 py-2 rounded-xl text-xs hover:text-orange-400">
             重置活動
           </button>
-          <button type="button" onclick="app.requestHostAction('gift_images')" class="btn-secondary px-4 py-2 rounded-xl text-xs font-black">
-            🖼️ 補禮物圖片
+          <button type="button" onclick="app.openChangePin()" class="btn-secondary px-4 py-2 rounded-xl text-xs font-black">
+            🔑 修改個人密碼
           </button>
           <button type="button" onclick="app.requestHostAction('open_curation')" class="btn-secondary px-4 py-2 rounded-xl text-xs font-black">
             ⚙️ 設定者
@@ -703,23 +706,34 @@
     </div>
   </div>
 
-  <!-- 主持人補禮物圖片（依名稱排序，不顯示送給誰） -->
-  <div id="modal-gift-images" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-sm overflow-y-auto">
-    <div class="festive-card w-full max-w-3xl rounded-2xl p-5 sm:p-6 space-y-4 border border-vintageGold-400/50 my-auto max-h-[92vh] overflow-y-auto">
-      <div class="flex items-start justify-between gap-3">
-        <div>
-          <h3 class="text-lg sm:text-xl font-black text-vintageGold-300">補禮物圖片</h3>
-          <p class="text-xs sm:text-sm text-cream-200/80 mt-1">依禮物名稱排序，不會顯示是送給誰的。可以上傳圖片檔，或貼上圖片網址，改完投影會自動更新。</p>
-        </div>
-        <button type="button" onclick="app.closeModal('modal-gift-images')" class="btn-ghost px-3 py-2 rounded-xl text-sm shrink-0">關閉</button>
+  <!-- 修改個人密碼（本人輸入原密碼後設定新密碼） -->
+  <div id="modal-change-pin" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-sm">
+    <form onsubmit="app.handleChangePin(event)" class="festive-card w-full max-w-sm rounded-2xl p-6 space-y-4 border border-vintageGold-400/50">
+      <div>
+        <h3 class="text-xl font-black text-cream-100">修改個人密碼</h3>
+        <p class="text-xs sm:text-sm text-cream-200/80 mt-1">選擇你的名字，輸入原本的密碼，再設定新的 4 位數密碼。</p>
       </div>
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <div id="gift-img-summary" class="text-sm font-bold text-cream-100"></div>
-        <label class="flex items-center gap-2 text-sm text-cream-200 cursor-pointer"><input type="checkbox" id="gift-img-only-missing" onchange="app.renderGiftImages()" class="w-4 h-4"> 只顯示需要補圖的</label>
+      <label class="block space-y-1.5">
+        <span class="text-sm font-bold text-vintageGold-300">你的名字</span>
+        <select id="change-pin-member" class="w-full px-3.5 py-3 rounded-xl bg-peacock-950 border border-vintageGold-400/40 text-cream-100 text-base focus:outline-none focus:border-vintageGold-300"></select>
+      </label>
+      <label class="block space-y-1.5">
+        <span class="text-sm font-bold text-vintageGold-300">原本的密碼</span>
+        <input id="change-pin-old" type="password" inputmode="numeric" maxlength="4" autocomplete="current-password" placeholder="4 位數字" class="w-full px-3.5 py-3 rounded-xl bg-peacock-950 border border-vintageGold-400/40 text-cream-100 text-base tracking-[0.4em] focus:outline-none focus:border-vintageGold-300">
+      </label>
+      <label class="block space-y-1.5">
+        <span class="text-sm font-bold text-vintageGold-300">新密碼</span>
+        <input id="change-pin-new" type="password" inputmode="numeric" maxlength="4" autocomplete="new-password" placeholder="4 位數字" class="w-full px-3.5 py-3 rounded-xl bg-peacock-950 border border-vintageGold-400/40 text-cream-100 text-base tracking-[0.4em] focus:outline-none focus:border-vintageGold-300">
+      </label>
+      <label class="block space-y-1.5">
+        <span class="text-sm font-bold text-vintageGold-300">再輸入一次新密碼</span>
+        <input id="change-pin-confirm" type="password" inputmode="numeric" maxlength="4" autocomplete="new-password" placeholder="4 位數字" class="w-full px-3.5 py-3 rounded-xl bg-peacock-950 border border-vintageGold-400/40 text-cream-100 text-base tracking-[0.4em] focus:outline-none focus:border-vintageGold-300">
+      </label>
+      <div class="flex gap-2.5 pt-1">
+        <button type="button" onclick="app.closeModal('modal-change-pin')" class="btn-ghost flex-1 py-3 rounded-xl text-sm">取消</button>
+        <button type="submit" id="btn-change-pin" class="btn-primary flex-1 py-3 rounded-xl text-sm">確認修改</button>
       </div>
-      <div id="gift-img-list" class="space-y-2.5"></div>
-      <input type="file" id="gift-img-file" accept="image/*" class="hidden" onchange="app.onGiftImageFile(this)">
-    </div>
+    </form>
   </div>
 
   <!-- 彈窗 4：重置活動二次確認 Modal -->
@@ -1889,33 +1903,6 @@
         .replace(/'/g, '&#039;');
     }
 
-    // 上傳的圖片縮到最長邊 480px、約 50KB 以內的 JPEG，直接存進資料庫
-    function compressImageFile(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onerror = reject;
-        reader.onload = () => {
-          const img = new Image();
-          img.onerror = reject;
-          img.onload = () => {
-            const scale = Math.min(1, 480 / Math.max(img.width, img.height));
-            const canvas = document.createElement('canvas');
-            canvas.width = Math.round(img.width * scale);
-            canvas.height = Math.round(img.height * scale);
-            const ctx = canvas.getContext('2d');
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            let q = 0.82, out = canvas.toDataURL('image/jpeg', q);
-            while (out.length > 68000 && q > 0.4) { q -= 0.08; out = canvas.toDataURL('image/jpeg', q); }
-            resolve(out);
-          };
-          img.src = reader.result;
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-
     function escapeImg(src) {
       if (src && /^data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+/=]+$/.test(src)) return src;
       return escapeAttr(src);
@@ -2343,8 +2330,6 @@
           this.openHostCurationModal();
         } else if (actionType === 'enter_stage') {
           this.enterLiveRevealStage();
-        } else if (actionType === 'gift_images') {
-          this.openGiftImages();
         } else if (actionType === 'reset') {
           const modal = document.getElementById('modal-reset-confirm');
           modal.classList.remove('hidden');
@@ -2551,132 +2536,50 @@
         this.setStage({ step: 'done' });
       },
 
-      // ===== 主持人補禮物圖片 =====
-      collectGifts() {
-        const map = new Map();
-        const members = Object.values(state.membersMap);
-        members.forEach(angel => (angel.quizOptions || []).forEach((o, idx) => {
-          const url = optUrl(o);
-          if (url && !map.has(url)) map.set(url, { url, title: optTitle(o, idx), image: optImage(o) });
-        }));
-        if (map.size === 0) {
-          members.forEach(m => {
-            if (m.wishUrl && !map.has(m.wishUrl)) map.set(m.wishUrl, { url: m.wishUrl, title: m.wishTitle || '神秘禮物', image: m.wishImage || '' });
-            Object.values(m.peerRecommendations || {}).forEach(r => {
-              if (r && r.url && !map.has(r.url)) map.set(r.url, { url: r.url, title: r.title || '夥伴推薦禮物', image: r.image || '' });
-            });
-          });
-        }
-        return [...map.values()].sort((a, b) => a.title.localeCompare(b.title, 'zh-Hant'));
-      },
-
-      openGiftImages() {
-        state.brokenGiftUrls = state.brokenGiftUrls || new Set();
-        this.renderGiftImages();
-        const modal = document.getElementById('modal-gift-images');
+      // ===== 修改個人密碼（本人操作）=====
+      openChangePin() {
+        const select = document.getElementById('change-pin-member');
+        const members = Object.values(state.membersMap).sort((a, b) => a.order - b.order);
+        select.innerHTML = '<option value="">請選擇</option>' + members.map(m => `<option value="${m.id}">${escapeHtml(m.name)}</option>`).join('');
+        if (state.unlockedMemberId) select.value = state.unlockedMemberId;
+        ['change-pin-old', 'change-pin-new', 'change-pin-confirm'].forEach(id => { document.getElementById(id).value = ''; });
+        const modal = document.getElementById('modal-change-pin');
         modal.classList.remove('hidden');
         modal.classList.add('flex');
       },
 
-      renderGiftImages() {
-        const gifts = this.collectGifts();
-        state.giftList = gifts;
-        const broken = state.brokenGiftUrls || new Set();
-        const needs = g => !g.image || broken.has(g.url);
-        const onlyMissing = document.getElementById('gift-img-only-missing').checked;
-        document.getElementById('gift-img-summary').textContent = `共 ${gifts.length} 份禮物，${gifts.filter(needs).length} 份需要補圖`;
-        document.getElementById('gift-img-list').innerHTML = gifts.map((g, i) => {
-          if (onlyMissing && !needs(g)) return '';
-          const thumb = (g.image && !broken.has(g.url))
-            ? `<img src="${escapeImg(g.image)}" alt="" class="w-full h-full object-cover" onerror="app.markGiftImageBroken(${i})" />`
-            : '<span class="text-3xl">🎁</span>';
-          const badge = !g.image
-            ? '<span class="ml-1.5 px-2 py-0.5 rounded-full bg-orange-500/20 border border-orange-400 text-orange-200 text-[11px] font-black align-middle">沒有圖片</span>'
-            : broken.has(g.url) ? '<span class="ml-1.5 px-2 py-0.5 rounded-full bg-orange-500/20 border border-orange-400 text-orange-200 text-[11px] font-black align-middle">圖片壞掉</span>' : '';
-          return `<div class="flex gap-3 p-3 rounded-xl bg-peacock-950 border border-vintageGold-400/25">
-              <div class="w-20 h-20 rounded-lg bg-peacock-900 shrink-0 overflow-hidden flex items-center justify-center">${thumb}</div>
-              <div class="min-w-0 flex-1 space-y-1.5">
-                <div class="font-black text-cream-100 text-sm leading-snug">${escapeHtml(g.title)}${badge}</div>
-                <a href="${escapeAttr(g.url)}" target="_blank" rel="noopener noreferrer" class="block text-xs text-vintageGold-300 underline truncate">${escapeHtml(g.url)}</a>
-                <div class="flex flex-wrap gap-2 pt-0.5">
-                  <button type="button" onclick="app.pickGiftImageFile(${i})" class="btn-primary px-3 py-2 rounded-lg text-xs">上傳圖片</button>
-                  <button type="button" onclick="app.pasteGiftImageUrl(${i})" class="btn-secondary px-3 py-2 rounded-lg text-xs">貼上圖片網址</button>
-                  ${g.image ? `<button type="button" onclick="app.removeGiftImage(${i})" class="btn-ghost px-3 py-2 rounded-lg text-xs">移除圖片</button>` : ''}
-                </div>
-              </div>
-            </div>`;
-        }).join('');
-      },
-
-      markGiftImageBroken(i) {
-        const g = state.giftList && state.giftList[i];
-        if (!g || state.brokenGiftUrls.has(g.url)) return;
-        state.brokenGiftUrls.add(g.url);
-        this.renderGiftImages();
-      },
-
-      pickGiftImageFile(i) {
-        state.giftImageTarget = i;
-        const input = document.getElementById('gift-img-file');
-        input.value = '';
-        input.click();
-      },
-
-      async onGiftImageFile(input) {
-        const file = input.files && input.files[0];
-        const g = state.giftList && state.giftList[state.giftImageTarget];
-        if (!file || !g) return;
-        try {
-          showToast('圖片處理中…', 'info');
-          const dataUrl = await compressImageFile(file);
-          await this.saveGiftImage(g.url, dataUrl);
-        } catch (err) {
-          console.error(err);
-          showToast('這張圖片無法使用，請換一張試試', 'error');
+      async handleChangePin(e) {
+        e.preventDefault();
+        const memberId = document.getElementById('change-pin-member').value;
+        const member = state.membersMap[memberId];
+        const oldPin = document.getElementById('change-pin-old').value.trim();
+        const newPin = document.getElementById('change-pin-new').value.trim();
+        const confirmPin = document.getElementById('change-pin-confirm').value.trim();
+        if (!member) { showToast('請先選擇你的名字', 'error'); return; }
+        if (!member.pinHash) { showToast('你還沒有設定過密碼，點自己的名字就能直接設定', 'error'); return; }
+        if (!/^\d{4}$/.test(oldPin) || !/^\d{4}$/.test(newPin) || !/^\d{4}$/.test(confirmPin)) { showToast('密碼都必須是 4 位數字', 'error'); return; }
+        if (await hashSecret(oldPin, `sun_lab_${memberId}`) !== member.pinHash) {
+          showToast('原本的密碼不正確', 'error');
+          document.getElementById('change-pin-old').value = '';
+          return;
         }
-      },
-
-      async pasteGiftImageUrl(i) {
-        const g = state.giftList && state.giftList[i];
-        if (!g) return;
-        const val = (prompt(`貼上「${g.title}」的圖片網址（在商品圖片上按右鍵 →「複製圖片網址」）`) || '').trim();
-        if (!val) return;
-        if (escapeAttr(val) === '#') { showToast('請貼上 http 或 https 開頭的圖片網址', 'error'); return; }
-        await this.saveGiftImage(g.url, val);
-      },
-
-      async removeGiftImage(i) {
-        const g = state.giftList && state.giftList[i];
-        if (!g || !confirm(`移除「${g.title}」的圖片？`)) return;
-        await this.saveGiftImage(g.url, '');
-      },
-
-      async saveGiftImage(url, image) {
-        const updates = [];
-        Object.values(state.membersMap).forEach(m => {
-          let changed = false;
-          const opts = (m.quizOptions || []).map(o => {
-            if (optUrl(o) !== url) return o;
-            changed = true;
-            return typeof o === 'string' ? { url: o, title: '', image } : { ...o, image };
-          });
-          if (changed) updates.push(updateDoc(getMemberDocRef(m.id), { quizOptions: opts }));
-          if (!(m.quizOptions || []).length) {
-            if (m.wishUrl === url) updates.push(updateDoc(getMemberDocRef(m.id), { wishImage: image }));
-            const recs = { ...(m.peerRecommendations || {}) };
-            let recChanged = false;
-            Object.keys(recs).forEach(k => { if (recs[k] && recs[k].url === url) { recs[k] = { ...recs[k], image }; recChanged = true; } });
-            if (recChanged) updates.push(updateDoc(getMemberDocRef(m.id), { peerRecommendations: recs }));
-          }
-        });
+        if (newPin !== confirmPin) {
+          showToast('兩次輸入的新密碼不一樣，請再輸入一次', 'error');
+          document.getElementById('change-pin-confirm').value = '';
+          return;
+        }
+        if (newPin === oldPin) { showToast('新密碼和原本的一樣，請換一組', 'error'); return; }
+        const btn = document.getElementById('btn-change-pin');
+        btn.disabled = true;
         try {
-          await Promise.all(updates);
-          if (state.brokenGiftUrls) state.brokenGiftUrls.delete(url);
-          showToast(image ? '圖片已更新' : '圖片已移除', 'success');
-          setTimeout(() => this.renderGiftImages(), 300);
+          await updateDoc(getMemberDocRef(memberId), { pinHash: await hashSecret(newPin, `sun_lab_${memberId}`) });
+          this.closeModal('modal-change-pin');
+          showToast(`${member.name} 的密碼已修改，下次請用新密碼`, 'success');
         } catch (err) {
           console.error(err);
-          showToast('儲存失敗，請再試一次', 'error');
+          showToast('修改失敗，請再試一次', 'error');
+        } finally {
+          btn.disabled = false;
         }
       },
 
