@@ -259,6 +259,22 @@
     @media (prefers-reduced-motion: reduce) {
       .pj-rays, .pj-twinkle, .pj-bauble, .pj-drop, .pj-cloud, .pj-v-big.dull, .pj-ribbon { animation: none !important; }
     }
+
+    /* ===== v3：提供者名牌壓在卡片上框線、小天使名字輪替、就差一點紅綠文字 ===== */
+    .pj-card { position: relative; overflow: visible; }
+    .pj-img { border-radius: 22px 22px 0 0; }
+    .pj-card.dim { opacity: 1; border-color: rgba(226,176,74,0.18); }
+    .pj-card.dim .pj-img, .pj-card.dim .pj-body { opacity: 0.42; }
+    .pj-who { position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); z-index: 3; padding: 6px 30px; border-radius: 999px; font-size: 34px; font-weight: 900; line-height: 1.3; white-space: nowrap;
+      background: #0c2b2c; color: #fdf6ee; border: 3px solid rgba(226,176,74,0.7); box-shadow: 0 6px 16px rgba(0,0,0,0.35); }
+    .pj-who.true { background: #e2b04a; color: #071f20; border-color: #fff3c4; }
+    .pj-angel-slot { display: flex; align-items: center; justify-content: center; gap: 44px; min-width: 1100px; padding: 34px 90px; border: 5px solid rgba(226,176,74,0.7); border-radius: 44px; background: #0c2b2c; }
+    .pj-angel-slot .av { font-size: 150px; line-height: 1; }
+    .pj-angel-slot .nm { font-family: 'Noto Serif TC', serif; font-size: 190px; font-weight: 900; line-height: 1.05; color: #fdf6ee; }
+    .pj-angel-slot.locked { border-color: #e2b04a; box-shadow: 0 0 60px rgba(240,206,125,0.55); animation: pjPop .6s cubic-bezier(0.22,1,0.36,1) both; }
+    .pj-angel-slot.locked .nm { color: #f0ce7d; }
+    .pj-overlay.lose .pj-v-text { color: #a3bfa8; }
+    .pj-overlay.lose .pj-v-text b { color: #d4a09b; }
   </style>
 </head>
 <body class="antialiased selection:bg-vintageGold-400 selection:text-peacock-950 relative overflow-x-hidden text-base">
@@ -515,6 +531,9 @@
           <button type="button" id="btn-reset-event" onclick="app.requestHostAction('reset')" class="btn-ghost px-3 py-2 rounded-xl text-xs hover:text-orange-400">
             重置活動
           </button>
+          <button type="button" onclick="app.requestHostAction('gift_images')" class="btn-secondary px-4 py-2 rounded-xl text-xs font-black">
+            🖼️ 補禮物圖片
+          </button>
           <button type="button" onclick="app.requestHostAction('open_curation')" class="btn-secondary px-4 py-2 rounded-xl text-xs font-black">
             ⚙️ 設定者
           </button>
@@ -681,6 +700,25 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- 主持人補禮物圖片（依名稱排序，不顯示送給誰） -->
+  <div id="modal-gift-images" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-sm overflow-y-auto">
+    <div class="festive-card w-full max-w-3xl rounded-2xl p-5 sm:p-6 space-y-4 border border-vintageGold-400/50 my-auto max-h-[92vh] overflow-y-auto">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <h3 class="text-lg sm:text-xl font-black text-vintageGold-300">補禮物圖片</h3>
+          <p class="text-xs sm:text-sm text-cream-200/80 mt-1">依禮物名稱排序，不會顯示是送給誰的。可以上傳圖片檔，或貼上圖片網址，改完投影會自動更新。</p>
+        </div>
+        <button type="button" onclick="app.closeModal('modal-gift-images')" class="btn-ghost px-3 py-2 rounded-xl text-sm shrink-0">關閉</button>
+      </div>
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div id="gift-img-summary" class="text-sm font-bold text-cream-100"></div>
+        <label class="flex items-center gap-2 text-sm text-cream-200 cursor-pointer"><input type="checkbox" id="gift-img-only-missing" onchange="app.renderGiftImages()" class="w-4 h-4"> 只顯示需要補圖的</label>
+      </div>
+      <div id="gift-img-list" class="space-y-2.5"></div>
+      <input type="file" id="gift-img-file" accept="image/*" class="hidden" onchange="app.onGiftImageFile(this)">
     </div>
   </div>
 
@@ -1388,7 +1426,7 @@
           <div>
             <div class="relative h-28 bg-peacock-900 border-b border-vintageGold-400/20 flex items-center justify-center overflow-hidden">
               ${image 
-                ? `<img src="${escapeAttr(image)}" alt="${escapeHtml(title)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" class="w-full h-full object-cover" />
+                ? `<img src="${escapeImg(image)}" alt="${escapeHtml(title)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" class="w-full h-full object-cover" />
                    <div style="display:none;" class="w-full h-full flex-col items-center justify-center text-cream-200/50 gap-1"><span class="text-3xl">🎁</span></div>`
                 : `<div class="w-full h-full flex flex-col items-center justify-center text-cream-200/50 gap-1"><span class="text-3xl">🎁</span></div>`
               }
@@ -1494,20 +1532,32 @@
       pj.countdownTimers = [];
     }
 
-    function runAngelCountdown(angel, master) {
+    function runAngelRoll(angel, master, list) {
       clearCountdown();
       const inner = document.getElementById('pj-angel-inner');
-      const showNum = (n) => { inner.innerHTML = `<div class="pj-ov-label">送禮給 ${escapeHtml(master.name)} 的小天使是…</div><div class="pj-count">${n}</div>`; sfx.drum(); };
-      showNum(3);
-      pj.countdownTimers.push(setTimeout(() => showNum(2), 950));
-      pj.countdownTimers.push(setTimeout(() => showNum(1), 1900));
+      const pool = list.filter(m => m.id !== master.id);
+      inner.innerHTML = `<div class="pj-ov-label">送禮給 ${escapeHtml(master.name)} 的小天使是…</div>
+        <div class="pj-angel-slot" id="pj-angel-slot"><span class="av" id="pj-as-av"></span><span class="nm" id="pj-as-nm"></span></div>`;
+      const show = (m) => {
+        document.getElementById('pj-as-av').textContent = avatarOf(m);
+        document.getElementById('pj-as-nm').textContent = m.name;
+      };
+      const seq = [];
+      let t = 0, d = 50, prev = null;
+      while (t < 3900) {
+        let m;
+        do { m = pool[Math.floor(Math.random() * pool.length)]; } while (pool.length > 2 && (m === prev || m.id === angel.id));
+        seq.push({ at: t, m });
+        prev = m; t += d; d *= 1.13;
+      }
+      seq.forEach(({ at, m }) => pj.countdownTimers.push(setTimeout(() => { show(m); sfx.tick(); }, at)));
       pj.countdownTimers.push(setTimeout(() => {
-        inner.innerHTML = `
-          <div class="pj-ov-label">送禮給 ${escapeHtml(master.name)} 的小天使是</div>
-          <div class="pj-angel-avatar">${avatarOf(angel)}</div>
-          <div class="pj-angel-name">${escapeHtml(angel.name)}</div>`;
+        show(angel);
+        const slot = document.getElementById('pj-angel-slot');
+        if (slot) slot.classList.add('locked');
+        inner.querySelector('.pj-ov-label').textContent = `送禮給 ${master.name} 的小天使是`;
         sfx.fanfare();
-      }, 2850));
+      }, t + 250));
     }
 
     function pjShow(panelId) {
@@ -1543,7 +1593,7 @@
       document.getElementById('pj-cards').innerHTML = opts.map((o, idx) => {
         const title = optTitle(o, idx);
         const image = optImage(o);
-        let cls = '', bottom = '';
+        let cls = '', bottom = '', whoTag = '';
         if (detail) {
           const prov = getProvider(o, master, list);
           const isChosen = chosenIdx === idx;
@@ -1551,14 +1601,14 @@
           const tags = [];
           if (isChosen) tags.push('<span class="pj-tag sent">實際送出</span>');
           if (angel.guessedOptionIndex === idx) tags.push('<span class="pj-tag guess">原本猜這</span>');
-          bottom = `<span class="pj-provider ${prov.isTrue ? 'true' : ''}">${prov.isTrue ? `${escapeHtml(prov.name)} 本人許願` : `${escapeHtml(prov.name)} 推薦`}</span>
-                    <div class="pj-tags">${tags.join('')}</div>`;
+          whoTag = `<span class="pj-who ${prov.isTrue ? 'true' : ''}">${escapeHtml(prov.name)}</span>`;
+          bottom = `<div class="pj-tags">${tags.join('')}</div>`;
         }
         const img = image
-          ? `<img src="${escapeAttr(image)}" alt="" onerror="this.remove()" /><span style="position:absolute;z-index:-1">🎁</span>`
+          ? `<img src="${escapeImg(image)}" alt="" onerror="this.remove()" /><span style="position:absolute;z-index:-1">🎁</span>`
           : '🎁';
         return `<div class="pj-card ${cls}">
-            <div class="pj-img">${img}<span class="pj-letter">${OPTION_LABELS[idx]}</span></div>
+            ${whoTag}<div class="pj-img">${img}<span class="pj-letter">${OPTION_LABELS[idx]}</span></div>
             <div class="pj-body"><div class="pj-title">${escapeHtml(title)}</div>${bottom}</div>
           </div>`;
       }).join('');
@@ -1649,7 +1699,7 @@
       } else if (st.step === 'angel_revealed') {
         pjShow('pj-master');
         angelOv.classList.add('on');
-        if (isNewStep) runAngelCountdown(angel, master);
+        if (isNewStep) runAngelRoll(angel, master, list);
       } else if (st.step === 'choosing') {
         pjShow('pj-gifts');
         renderPjGifts(angel, master, list, null);
@@ -1667,7 +1717,7 @@
                <div class="pj-v-big lux">成功送禮！</div>
                <div class="pj-v-text"><b>${escapeHtml(angel.name)}</b> 猜中了 <b>${escapeHtml(master.name)}</b> 本人想要的禮物</div>`
             : `<div class="pj-v-big dull">就差一點！</div>
-               <div class="pj-v-text"><b>${escapeHtml(angel.name)}</b> 送出的是 <b>${escapeHtml(prov.name)}</b> 推薦的禮物<br>${escapeHtml(master.name)} 一樣收到一份用心挑選的好禮</div>`;
+               <div class="pj-v-text"><b>${escapeHtml(angel.name)}</b> 送出的是 <b>${escapeHtml(prov.name)}</b> 推薦的禮物<br><b>${escapeHtml(master.name)}</b> 一樣收到一份用心挑選的好禮</div>`;
           document.getElementById('pj-verdict-decor').innerHTML = buildVerdictDecor(prov.isTrue);
           verdictOv.classList.toggle('win', prov.isTrue);
           verdictOv.classList.toggle('lose', !prov.isTrue);
@@ -1710,7 +1760,7 @@
         const title = escapeHtml(optTitle(o, idx));
         const image = optImage(o);
         const img = image
-          ? `<img src="${escapeAttr(image)}" alt="" onerror="this.style.display='none'" class="w-full h-full object-cover" />`
+          ? `<img src="${escapeImg(image)}" alt="" onerror="this.style.display='none'" class="w-full h-full object-cover" />`
           : '<span class="text-3xl">🎁</span>';
         if (!detail) {
           const picked = state.hostPickIndex === idx;
@@ -1727,7 +1777,7 @@
         return `<div class="rounded-xl overflow-hidden border-2 ${prov.isTrue ? 'border-vintageGold-400 bg-peacock-800' : isChosen ? 'border-dashed border-orange-400 bg-peacock-950' : 'border-vintageGold-400/20 bg-peacock-950 opacity-60'}">
             <div class="p-2.5 space-y-1">
               <div class="text-sm font-black text-cream-100 leading-snug line-clamp-2">${OPTION_LABELS[idx]}. ${title}</div>
-              <div class="text-xs font-bold ${prov.isTrue ? 'text-vintageGold-300' : 'text-cream-200/80'}">${prov.isTrue ? `${escapeHtml(prov.name)} 本人許願` : `${escapeHtml(prov.name)} 推薦`}</div>
+              <div class="text-xs font-bold ${prov.isTrue ? 'text-vintageGold-300' : 'text-cream-200/80'}">${escapeHtml(prov.name)}${prov.isTrue ? '（本人）' : ''}</div>
               ${isChosen ? '<div class="text-xs font-black text-orange-300">實際送出</div>' : ''}
             </div>
           </div>`;
@@ -1768,7 +1818,7 @@
       } else if (st.step === 'master_picked' && master) {
         label = '第二步：揭曉小天使';
         main = pairLine(false);
-        actions = btn('揭曉小天使（3 秒倒數）', 'app.revealCurrentAngel()');
+        actions = btn('揭曉小天使（名字輪替約 4 秒）', 'app.revealCurrentAngel()');
       } else if (st.step === 'angel_revealed' && angel) {
         label = '第三步：顯示四份禮物';
         main = pairLine(true);
@@ -1780,6 +1830,14 @@
       } else if (st.step === 'verdict_shown' && angel) {
         const prov = getProvider((angel.quizOptions || [])[st.chosenOptionIndex], master, list);
         label = '結果已公布';
+        const autoKey = `${st.currentMasterId}_${st.replayAt || 0}`;
+        if (!prov.isTrue && pj.autoKey !== autoKey) {
+          pj.autoKey = autoKey;
+          setTimeout(() => {
+            const s2 = state.eventData && state.eventData.stageState;
+            if (s2 && s2.step === 'verdict_shown' && `${s2.currentMasterId}_${s2.replayAt || 0}` === autoKey) app.showGiftDetail();
+          }, 3200);
+        }
         main = pairLine(true) + `<div class="text-xl font-black ${prov.isTrue ? 'text-vintageGold-300' : ''}" style="${prov.isTrue ? '' : 'color:#8e9bb8'}">${prov.isTrue ? '成功送禮！' : '就差一點！'}</div>`;
         actions = btn('顯示每份禮物是誰提供的', 'app.showGiftDetail()') + btn('再播一次特效', 'app.replayEffects()', false) + undoBtn;
       } else if (st.step === 'verdict_detail' && angel) {
@@ -1829,6 +1887,38 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
+    }
+
+    // 上傳的圖片縮到最長邊 480px、約 50KB 以內的 JPEG，直接存進資料庫
+    function compressImageFile(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = reject;
+        reader.onload = () => {
+          const img = new Image();
+          img.onerror = reject;
+          img.onload = () => {
+            const scale = Math.min(1, 480 / Math.max(img.width, img.height));
+            const canvas = document.createElement('canvas');
+            canvas.width = Math.round(img.width * scale);
+            canvas.height = Math.round(img.height * scale);
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            let q = 0.82, out = canvas.toDataURL('image/jpeg', q);
+            while (out.length > 68000 && q > 0.4) { q -= 0.08; out = canvas.toDataURL('image/jpeg', q); }
+            resolve(out);
+          };
+          img.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function escapeImg(src) {
+      if (src && /^data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+/=]+$/.test(src)) return src;
+      return escapeAttr(src);
     }
 
     function escapeAttr(url) {
@@ -2253,6 +2343,8 @@
           this.openHostCurationModal();
         } else if (actionType === 'enter_stage') {
           this.enterLiveRevealStage();
+        } else if (actionType === 'gift_images') {
+          this.openGiftImages();
         } else if (actionType === 'reset') {
           const modal = document.getElementById('modal-reset-confirm');
           modal.classList.remove('hidden');
@@ -2457,6 +2549,135 @@
 
       showOverview() {
         this.setStage({ step: 'done' });
+      },
+
+      // ===== 主持人補禮物圖片 =====
+      collectGifts() {
+        const map = new Map();
+        const members = Object.values(state.membersMap);
+        members.forEach(angel => (angel.quizOptions || []).forEach((o, idx) => {
+          const url = optUrl(o);
+          if (url && !map.has(url)) map.set(url, { url, title: optTitle(o, idx), image: optImage(o) });
+        }));
+        if (map.size === 0) {
+          members.forEach(m => {
+            if (m.wishUrl && !map.has(m.wishUrl)) map.set(m.wishUrl, { url: m.wishUrl, title: m.wishTitle || '神秘禮物', image: m.wishImage || '' });
+            Object.values(m.peerRecommendations || {}).forEach(r => {
+              if (r && r.url && !map.has(r.url)) map.set(r.url, { url: r.url, title: r.title || '夥伴推薦禮物', image: r.image || '' });
+            });
+          });
+        }
+        return [...map.values()].sort((a, b) => a.title.localeCompare(b.title, 'zh-Hant'));
+      },
+
+      openGiftImages() {
+        state.brokenGiftUrls = state.brokenGiftUrls || new Set();
+        this.renderGiftImages();
+        const modal = document.getElementById('modal-gift-images');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      },
+
+      renderGiftImages() {
+        const gifts = this.collectGifts();
+        state.giftList = gifts;
+        const broken = state.brokenGiftUrls || new Set();
+        const needs = g => !g.image || broken.has(g.url);
+        const onlyMissing = document.getElementById('gift-img-only-missing').checked;
+        document.getElementById('gift-img-summary').textContent = `共 ${gifts.length} 份禮物，${gifts.filter(needs).length} 份需要補圖`;
+        document.getElementById('gift-img-list').innerHTML = gifts.map((g, i) => {
+          if (onlyMissing && !needs(g)) return '';
+          const thumb = (g.image && !broken.has(g.url))
+            ? `<img src="${escapeImg(g.image)}" alt="" class="w-full h-full object-cover" onerror="app.markGiftImageBroken(${i})" />`
+            : '<span class="text-3xl">🎁</span>';
+          const badge = !g.image
+            ? '<span class="ml-1.5 px-2 py-0.5 rounded-full bg-orange-500/20 border border-orange-400 text-orange-200 text-[11px] font-black align-middle">沒有圖片</span>'
+            : broken.has(g.url) ? '<span class="ml-1.5 px-2 py-0.5 rounded-full bg-orange-500/20 border border-orange-400 text-orange-200 text-[11px] font-black align-middle">圖片壞掉</span>' : '';
+          return `<div class="flex gap-3 p-3 rounded-xl bg-peacock-950 border border-vintageGold-400/25">
+              <div class="w-20 h-20 rounded-lg bg-peacock-900 shrink-0 overflow-hidden flex items-center justify-center">${thumb}</div>
+              <div class="min-w-0 flex-1 space-y-1.5">
+                <div class="font-black text-cream-100 text-sm leading-snug">${escapeHtml(g.title)}${badge}</div>
+                <a href="${escapeAttr(g.url)}" target="_blank" rel="noopener noreferrer" class="block text-xs text-vintageGold-300 underline truncate">${escapeHtml(g.url)}</a>
+                <div class="flex flex-wrap gap-2 pt-0.5">
+                  <button type="button" onclick="app.pickGiftImageFile(${i})" class="btn-primary px-3 py-2 rounded-lg text-xs">上傳圖片</button>
+                  <button type="button" onclick="app.pasteGiftImageUrl(${i})" class="btn-secondary px-3 py-2 rounded-lg text-xs">貼上圖片網址</button>
+                  ${g.image ? `<button type="button" onclick="app.removeGiftImage(${i})" class="btn-ghost px-3 py-2 rounded-lg text-xs">移除圖片</button>` : ''}
+                </div>
+              </div>
+            </div>`;
+        }).join('');
+      },
+
+      markGiftImageBroken(i) {
+        const g = state.giftList && state.giftList[i];
+        if (!g || state.brokenGiftUrls.has(g.url)) return;
+        state.brokenGiftUrls.add(g.url);
+        this.renderGiftImages();
+      },
+
+      pickGiftImageFile(i) {
+        state.giftImageTarget = i;
+        const input = document.getElementById('gift-img-file');
+        input.value = '';
+        input.click();
+      },
+
+      async onGiftImageFile(input) {
+        const file = input.files && input.files[0];
+        const g = state.giftList && state.giftList[state.giftImageTarget];
+        if (!file || !g) return;
+        try {
+          showToast('圖片處理中…', 'info');
+          const dataUrl = await compressImageFile(file);
+          await this.saveGiftImage(g.url, dataUrl);
+        } catch (err) {
+          console.error(err);
+          showToast('這張圖片無法使用，請換一張試試', 'error');
+        }
+      },
+
+      async pasteGiftImageUrl(i) {
+        const g = state.giftList && state.giftList[i];
+        if (!g) return;
+        const val = (prompt(`貼上「${g.title}」的圖片網址（在商品圖片上按右鍵 →「複製圖片網址」）`) || '').trim();
+        if (!val) return;
+        if (escapeAttr(val) === '#') { showToast('請貼上 http 或 https 開頭的圖片網址', 'error'); return; }
+        await this.saveGiftImage(g.url, val);
+      },
+
+      async removeGiftImage(i) {
+        const g = state.giftList && state.giftList[i];
+        if (!g || !confirm(`移除「${g.title}」的圖片？`)) return;
+        await this.saveGiftImage(g.url, '');
+      },
+
+      async saveGiftImage(url, image) {
+        const updates = [];
+        Object.values(state.membersMap).forEach(m => {
+          let changed = false;
+          const opts = (m.quizOptions || []).map(o => {
+            if (optUrl(o) !== url) return o;
+            changed = true;
+            return typeof o === 'string' ? { url: o, title: '', image } : { ...o, image };
+          });
+          if (changed) updates.push(updateDoc(getMemberDocRef(m.id), { quizOptions: opts }));
+          if (!(m.quizOptions || []).length) {
+            if (m.wishUrl === url) updates.push(updateDoc(getMemberDocRef(m.id), { wishImage: image }));
+            const recs = { ...(m.peerRecommendations || {}) };
+            let recChanged = false;
+            Object.keys(recs).forEach(k => { if (recs[k] && recs[k].url === url) { recs[k] = { ...recs[k], image }; recChanged = true; } });
+            if (recChanged) updates.push(updateDoc(getMemberDocRef(m.id), { peerRecommendations: recs }));
+          }
+        });
+        try {
+          await Promise.all(updates);
+          if (state.brokenGiftUrls) state.brokenGiftUrls.delete(url);
+          showToast(image ? '圖片已更新' : '圖片已移除', 'success');
+          setTimeout(() => this.renderGiftImages(), 300);
+        } catch (err) {
+          console.error(err);
+          showToast('儲存失敗，請再試一次', 'error');
+        }
       },
 
       reselectGift() {
