@@ -296,6 +296,8 @@
     </div>
   </header>
 
+  <div id="demo-banner" class="hidden relative z-30 bg-orange-500 text-peacock-950 text-center text-sm font-black py-2 px-4">彩排模式：這裡是假資料，怎麼按都不會影響真正的活動（個人密碼都是 0000）</div>
+
   <!-- 全域明顯跳出提示 Toast -->
   <div id="toast-container" class="fixed top-24 left-1/2 -translate-x-1/2 z-[90] flex flex-col items-center gap-2.5 w-11/12 max-w-lg pointer-events-none"></div>
 
@@ -499,6 +501,7 @@
               <div id="hc-step-main" class="space-y-3"></div>
               <div id="hc-actions" class="flex flex-col gap-2.5"></div>
             </div>
+            <button type="button" id="btn-demo-reset" onclick="app.resetDemo()" class="hidden w-full btn-ghost py-3 rounded-xl text-sm">重新開始彩排（清除假資料重來）</button>
             <p class="text-xs text-cream-200/70 px-1 leading-relaxed">投影那台電腦不要登入主持人，畫面會跟著你的操作自動切換。音效從投影電腦播放，開場前記得在投影畫面右下角按一次「啟用音效」。</p>
           </div>
 
@@ -735,7 +738,14 @@
     import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'sun-lab-xmas-2026';
+    // 彩排模式：網址加上 ?demo=1，使用另一份獨立的假資料，不會碰到真資料
+    const IS_DEMO = new URLSearchParams(window.location.search).get('demo') === '1';
+    const appId = (typeof __app_id !== 'undefined' ? __app_id : 'sun-lab-xmas-2026') + (IS_DEMO ? '-demo' : '');
+    const DEMO_NAMES = ['小明', '小華', '阿美', '小強', '佳佳', '阿德', '小玉', '志明'];
+    const DEMO_GIFTS = ['無線肩頸按摩器', '手沖咖啡入門組', '香氛蠟燭禮盒', '降噪藍牙耳機', '質感保溫瓶', '迷你投影機', '皮革筆記本', '擴香石',
+      '桌上型加濕器', '陶瓷馬克杯', '保暖手套', '1000 片拼圖', '多肉盆栽', '藍牙小音箱', '電動牙刷', '羊毛圍巾',
+      '烘豆禮盒', 'LED 夜燈', '瑜珈墊', '卡卡頌桌遊', '按摩滾輪', '木質手機架', '精釀啤酒組', '刺繡帆布袋',
+      '花草茶禮盒', '露營燈', '收納托盤', '閱讀燈', '明信片組', '筆電支架', '厚底拖鞋', '香氛護手霜'];
     const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
       apiKey: "AIzaSyBAudnOQyXx0fAMsVKw9yqhN53NxmbtopY",
       authDomain: "secret-santa-2de6b.firebaseapp.com",
@@ -1047,10 +1057,55 @@
       if (targetEl) targetEl.classList.remove('hidden');
     }
 
+    // 彩排用假資料：8 人都已填完、已配對（避開自己推薦過的人），狀態停在階段二；每個人的個人密碼都是 0000
+    let demoSeedingPromise = null;
+    function seedDemoData() {
+      if (!demoSeedingPromise) demoSeedingPromise = seedDemoDataNow().finally(() => { demoSeedingPromise = null; });
+      return demoSeedingPromise;
+    }
+    async function seedDemoDataNow() {
+      const total = DEMO_NAMES.length;
+      let g = 0;
+      const members = await Promise.all(DEMO_NAMES.map(async (name, idx) => {
+        const id = `member_${idx}`;
+        return {
+          id, name, order: idx,
+          avatar: AVATAR_ICONS[idx % AVATAR_ICONS.length],
+          hasSubmitted: true, hasDraft: false,
+          pinHash: await hashSecret('0000', `sun_lab_${id}`),
+          wishUrl: `https://example.com/gift-${idx}`, wishTitle: DEMO_GIFTS[g++ % DEMO_GIFTS.length], wishImage: '',
+          assignedPeers: getAssignedPeerIdsForMember(idx, total),
+          peerRecommendations: {},
+          revealedInStage: false, revealedOrder: 0, actualChosenIndex: null, wasCorrect: null, guessedOptionIndex: null
+        };
+      }));
+      members.forEach(m => m.assignedPeers.forEach(pid => {
+        m.peerRecommendations[pid] = { url: `https://example.com/rec-${m.id}-${pid}`, title: DEMO_GIFTS[g++ % DEMO_GIFTS.length], image: '' };
+      }));
+      const cycle = buildSingleCyclePairs(members);
+      members.forEach(m => {
+        m.targetMemberId = cycle[m.id];
+        m.quizOptions = buildOptionsForMaster(members.find(x => x.id === cycle[m.id]), members);
+      });
+      await Promise.all(members.map(({ id, ...data }) => setDoc(getMemberDocRef(id), data)));
+      await setDoc(getEventDocRef(), {
+        title: '彩排模式｜聖誕大亂鬥（假資料）',
+        budget: HARDCODED_CONFIG.budget,
+        hostPinHash: await hashSecret(HARDCODED_CONFIG.hostPin, 'sun_lab_xmas_host_master'),
+        status: 'drawn',
+        stageState: { step: 'idle' },
+        createdAt: Date.now()
+      });
+    }
+
     async function ensureHardcodedDataInitialized() {
       try {
         const eventDocRef = getEventDocRef();
         const membersSnap = await getDocs(getMembersCollectionRef());
+        if (membersSnap.empty && IS_DEMO) {
+          await seedDemoData();
+          return;
+        }
         if (membersSnap.empty) {
           const hostPinHash = await hashSecret(HARDCODED_CONFIG.hostPin, 'sun_lab_xmas_host_master');
           const total = HARDCODED_CONFIG.participants.length;
@@ -1684,9 +1739,10 @@
       const revealed = list.filter(m => m.revealedInStage).length;
       const unrevealed = list.filter(m => !m.revealedInStage);
       document.getElementById('hc-progress').textContent = `已揭曉 ${revealed} / ${list.length} 組`;
+      document.getElementById('btn-demo-reset').classList.toggle('hidden', !IS_DEMO);
 
       const stepKey = `${st.step}_${st.currentMasterId || ''}`;
-      if (stepKey !== pj.hcStepKey) { pj.hcStepKey = stepKey; state.hostPickIndex = null; }
+      if (stepKey !== pj.hcStepKey) { pj.hcStepKey = stepKey; state.hostPickIndex = null; if (st.step !== 'rolling') pj.rollingKey = ''; }
 
       const master = st.currentMasterId ? state.membersMap[st.currentMasterId] : null;
       const angel = master ? getAngelOf(master.id, list) : null;
@@ -1697,10 +1753,18 @@
           <span class="text-vintageGold-300 text-base font-sans">送給</span>
           <span class="text-vintageGold-300">${avatarOf(master)} ${escapeHtml(master.name)}</span></div>` : '';
 
+      const undoBtn = `<button type="button" onclick="app.reselectGift()" class="btn-ghost w-full py-3 rounded-xl text-sm mt-2">選錯了，重新選擇禮物</button>`;
       let label = '', main = '', actions = '';
       if (st.step === 'rolling') {
         label = '轉盤轉動中';
         main = '<div class="text-xl font-black text-cream-100">正在抽出小主人…</div>';
+        if (!pj.rollingSeenAt || pj.rollingKey !== stepKey) {
+          pj.rollingSeenAt = Date.now(); pj.rollingKey = stepKey;
+          setTimeout(() => { if (state.eventData) renderEventUI(); }, 8000);
+        }
+        if (Date.now() - pj.rollingSeenAt > 7500) {
+          actions = btn('轉盤卡住了？重新抽', 'app.drawNextMaster()', false);
+        }
       } else if (st.step === 'master_picked' && master) {
         label = '第二步：揭曉小天使';
         main = pairLine(false);
@@ -1716,15 +1780,15 @@
       } else if (st.step === 'verdict_shown' && angel) {
         const prov = getProvider((angel.quizOptions || [])[st.chosenOptionIndex], master, list);
         label = '結果已公布';
-        main = pairLine(true) + `<div class="text-xl font-black ${prov.isTrue ? 'text-vintageGold-300' : 'text-orange-300'}">${prov.isTrue ? '成功送禮！' : '就差一點！'}</div>`;
-        actions = btn('顯示每份禮物是誰提供的', 'app.showGiftDetail()') + btn('再播一次特效', 'app.replayEffects()', false);
+        main = pairLine(true) + `<div class="text-xl font-black ${prov.isTrue ? 'text-vintageGold-300' : ''}" style="${prov.isTrue ? '' : 'color:#8e9bb8'}">${prov.isTrue ? '成功送禮！' : '就差一點！'}</div>`;
+        actions = btn('顯示每份禮物是誰提供的', 'app.showGiftDetail()') + btn('再播一次特效', 'app.replayEffects()', false) + undoBtn;
       } else if (st.step === 'verdict_detail' && angel) {
         label = '這一輪結束';
         main = pairLine(true) + hostCardsHtml(angel, master, list, true, st.chosenOptionIndex);
         let nextLabel = '這一圈結束，重新抽小主人';
         if (unrevealed.length === 0) nextLabel = '顯示全部配對總覽';
         else if (!angel.revealedInStage) nextLabel = `下一輪：換 ${escapeHtml(angel.name)} 當小主人`;
-        actions = btn(nextLabel, 'app.nextRound()');
+        actions = btn(nextLabel, 'app.nextRound()') + undoBtn;
       } else if (st.step === 'done') {
         label = '全部揭曉完畢';
         main = '<div class="text-lg font-bold text-cream-100">投影正在顯示全部配對總覽，聖誕快樂！</div>';
@@ -2313,8 +2377,10 @@
         const unrevealed = Object.values(state.membersMap).filter(m => !m.revealedInStage);
         if (unrevealed.length === 0) return;
         const chosenMaster = unrevealed[Math.floor(Math.random() * unrevealed.length)];
-        await this.setStage({ step: 'rolling' });
-        setTimeout(() => {
+        clearTimeout(state.rollTimeoutId);
+        pj.rollingKey = '';
+        await this.setStage({ step: 'rolling', rollId: Date.now() });
+        state.rollTimeoutId = setTimeout(() => {
           this.setStage({ step: 'master_picked', currentMasterId: chosenMaster.id });
         }, 4200);
       },
@@ -2391,6 +2457,28 @@
 
       showOverview() {
         this.setStage({ step: 'done' });
+      },
+
+      reselectGift() {
+        const st = state.eventData && state.eventData.stageState;
+        if (!state.isHostUnlocked || !st || !st.currentMasterId) return;
+        if (!confirm('回到「選禮物」這一步，重新點選並公布答案？')) return;
+        this.setStage({ step: 'choosing', currentMasterId: st.currentMasterId });
+      },
+
+      async resetDemo() {
+        if (!IS_DEMO) return;
+        if (!confirm('清除彩排的假資料並重新開始？（不會影響真正的活動）')) return;
+        try {
+          await Promise.all(Object.keys(state.membersMap).map(id => deleteDoc(getMemberDocRef(id))));
+          await deleteDoc(getEventDocRef());
+          await seedDemoData();
+          state.unlockedMemberId = null;
+          showToast('彩排資料已重設，回到階段二', 'success');
+        } catch (err) {
+          console.error(err);
+          showToast('重設失敗，請再按一次', 'error');
+        }
       },
 
       hostLogout() {
@@ -2548,6 +2636,7 @@
 
     async function bootstrap() {
       initSnowflakes();
+      if (IS_DEMO) document.getElementById('demo-banner').classList.remove('hidden');
       try { if (sessionStorage.getItem(HOST_SESSION_KEY) === '1') state.isHostUnlocked = true; } catch (e) {}
       window.addEventListener('resize', () => { if (state.eventData) renderEventUI(); });
 
