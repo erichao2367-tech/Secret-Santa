@@ -538,7 +538,7 @@
           <button type="button" onclick="app.openChangePin()" class="btn-secondary px-4 py-2 rounded-xl text-xs font-black">
             🔑 修改個人密碼
           </button>
-          <button type="button" onclick="app.requestHostAction('open_curation')" class="btn-secondary px-4 py-2 rounded-xl text-xs font-black">
+          <button type="button" id="btn-open-curation" onclick="app.requestHostAction('open_curation')" class="btn-secondary px-4 py-2 rounded-xl text-xs font-black">
             ⚙️ 設定者
           </button>
         </div>
@@ -1297,6 +1297,8 @@
       if (ev.status !== 'stage') hideProjection();
       const resetBtn = document.getElementById('btn-reset-event');
       if (resetBtn) resetBtn.classList.toggle('hidden', ev.status !== 'collecting');
+      const curationBtn = document.getElementById('btn-open-curation');
+      if (curationBtn) curationBtn.classList.toggle('hidden', ev.status !== 'collecting');
 
       if (ev.status === 'collecting') {
         statusPill.textContent = '🎁 階段一：秘密許願與推薦中';
@@ -2403,6 +2405,10 @@
       },
 
       async publishCuratedGame() {
+        if (!state.eventData || state.eventData.status !== 'collecting') {
+          showToast('已經配對過了，不能再重新發佈（會打亂所有人的配對）', 'error');
+          return;
+        }
         const members = Object.values(state.membersMap).sort((a, b) => a.order - b.order);
         if (members.length !== 8 || members.some(m => !m.hasSubmitted || !m.wishUrl)) {
           showToast('尚有夥伴未正式完成 4 份禮物填寫，無法發佈！', 'error');
