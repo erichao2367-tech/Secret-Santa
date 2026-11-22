@@ -520,6 +520,7 @@
               <div id="hc-step-main" class="space-y-3"></div>
               <div id="hc-actions" class="flex flex-col gap-2.5"></div>
             </div>
+            <button type="button" onclick="app.exitStage()" class="w-full btn-ghost py-3 rounded-xl text-sm">退出舞台，回到階段二（清除揭曉進度）</button>
             <button type="button" id="btn-demo-reset" onclick="app.resetDemo()" class="hidden w-full btn-ghost py-3 rounded-xl text-sm">重新開始彩排（清除假資料重來）</button>
             <p class="text-xs text-cream-200/70 px-1 leading-relaxed">投影那台電腦不要登入主持人，畫面會跟著你的操作自動切換。音效從投影電腦播放，開場前記得在投影畫面右下角按一次「啟用音效」。</p>
           </div>
@@ -840,6 +841,16 @@
       hostPickIndex: null
     };
     const HOST_SESSION_KEY = 'sun_lab_xmas_host_session';
+    // 主持人功能只允許在手機上使用（觸控螢幕＋小尺寸），電腦和投影一律不能操作
+    function isHostDevice() {
+      const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+      return Boolean(coarse && Math.min(window.screen.width, window.screen.height) <= 820);
+    }
+    function denyHostOnDesktop() {
+      if (isHostDevice()) return false;
+      showToast('主持人功能只能用手機操作，電腦和投影不能使用', 'error');
+      return true;
+    }
 
     function initSnowflakes() {
       const container = document.getElementById('snow-container');
@@ -2282,6 +2293,7 @@
       },
 
       requestHostAction(actionType) {
+        if (denyHostOnDesktop()) return;
         if (state.isHostUnlocked) {
           this.runHostAction(actionType);
         } else {
@@ -2290,6 +2302,7 @@
       },
 
       openHostAuthModal(actionType) {
+        if (denyHostOnDesktop()) return;
         state.pendingHostAction = actionType;
         document.getElementById('host-auth-input').value = '';
         document.getElementById('host-auth-desc').textContent = '請輸入設定者專屬密碼以繼續操作';
@@ -2301,6 +2314,7 @@
 
       async handleHostAuthSubmit(e) {
         e.preventDefault();
+        if (denyHostOnDesktop()) { this.closeModal('modal-host-auth'); return; }
         if (!state.eventData) return;
         const inputPin = document.getElementById('host-auth-input').value.trim();
         const inputHash = await hashSecret(inputPin, 'sun_lab_xmas_host_master');
@@ -2428,6 +2442,8 @@
       },
 
       async enterLiveRevealStage() {
+        if (!state.isHostUnlocked || !isHostDevice()) return;
+        if (!confirm('確定要開啟派對現場揭曉舞台嗎？投影畫面會切換到揭曉畫面。')) return;
         try {
           await updateDoc(getEventDocRef(), {
             status: 'stage',
@@ -2441,6 +2457,7 @@
       },
 
       async setStage(stageState) {
+        if (!state.isHostUnlocked || !isHostDevice()) { showToast('主持人功能只能用手機操作', 'error'); return; }
         try {
           await updateDoc(getEventDocRef(), { stageState });
         } catch (err) {
@@ -2580,6 +2597,21 @@
           showToast('修改失敗，請再試一次', 'error');
         } finally {
           btn.disabled = false;
+        }
+      },
+
+      async exitStage() {
+        if (!state.isHostUnlocked || !isHostDevice()) return;
+        if (!confirm('退出舞台並回到階段二？所有揭曉進度都會清除，配對和大家的猜測不會受影響。')) return;
+        try {
+          await Promise.all(Object.keys(state.membersMap).map(id => updateDoc(getMemberDocRef(id), {
+            revealedInStage: false, revealedOrder: 0, actualChosenIndex: null, wasCorrect: null
+          })));
+          await updateDoc(getEventDocRef(), { status: 'drawn', stageState: { step: 'idle' } });
+          showToast('已回到階段二，揭曉進度已清除', 'success');
+        } catch (err) {
+          console.error(err);
+          showToast('操作失敗，請再按一次', 'error');
         }
       },
 
@@ -2761,7 +2793,7 @@
     async function bootstrap() {
       initSnowflakes();
       if (IS_DEMO) document.getElementById('demo-banner').classList.remove('hidden');
-      try { if (sessionStorage.getItem(HOST_SESSION_KEY) === '1') state.isHostUnlocked = true; } catch (e) {}
+      try { if (isHostDevice() && sessionStorage.getItem(HOST_SESSION_KEY) === '1') state.isHostUnlocked = true; } catch (e) {}
       window.addEventListener('resize', () => { if (state.eventData) renderEventUI(); });
 
       if (!firebaseConfig) {
